@@ -33,6 +33,7 @@ class GameBoard {
 	}
 
 	boardState(){
+		console.log();
 		for(let line of this.board){
 			for(let element of line) {
 				process.stdout.write(` ${element} `);
@@ -43,7 +44,8 @@ class GameBoard {
 		for(let i = 1; i <= this.width; i++){
 			process.stdout.write(` ${i} `);
 		}
-		process.stdout.write("\n");
+		console.log();
+		console.log();
 	}
 
 	checkHorizontal(){
