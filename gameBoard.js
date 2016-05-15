@@ -1,12 +1,13 @@
 "use strict";
 
-class gameBoard {
+class GameBoard {
 	
 	constructor(width, height, connectWin){
 		this.width = width;
 		this.height = height;
 		this.board = Array.from(Array(8), x => Array.from(Array(8), x => 0));
 		this.connectWin = connectWin;
+		this.boardState();
 	}
 
 	//TODO: improve this algorithm
@@ -32,7 +33,17 @@ class gameBoard {
 	}
 
 	boardState(){
-		console.log(this.board);
+		for(let line of this.board){
+			for(let element of line) {
+				process.stdout.write(` ${element} `);
+			}
+			process.stdout.write("\n");
+		}
+		console.log(`${new Array(3 * this.width).fill("-").join("")}`)
+		for(let i = 1; i <= this.width; i++){
+			process.stdout.write(` ${i} `);
+		}
+		process.stdout.write("\n");
 	}
 
 	checkHorizontal(){
@@ -53,9 +64,18 @@ class gameBoard {
 			}
 			if (sequenceLength >= this.connectWin){
 				console.log(["H", i, sequenceStart]);
-				return;
+				return {
+					type: "H",
+					x	: i,
+					y	: sequenceStart
+				};
 			}
 		}
+		return {
+			type: null,
+			x	: null,
+			y	: null
+		};
 	}
 
 	checkVertical(){
@@ -75,10 +95,18 @@ class gameBoard {
 				}
 			}
 			if (sequenceLength >= this.connectWin){
-				console.log([ "V", sequenceStart, i]);
-				return;
+				return {
+					type: "V",
+					x	: sequenceStart,
+					y	: i
+				};
 			}
 		}
+		return {
+			type: null,
+			x	: null,
+			y	: null
+		};
 	}
 
 	checkLeftRightDiagonal(){
@@ -100,11 +128,19 @@ class gameBoard {
 					}
 				}
 				if (sequenceLength >= this.connectWin){
-					console.log([ "LR", k, sequenceStart]);
-					return;
+					return {
+						type: "LR",
+						x	: k,
+						y	: sequenceStart
+					};
 				}
 			}
-		}	
+		}
+		return {
+			type: null,
+			x	: null,
+			y	: null
+		};
 	}
 
 	checkRightLeftDiagonal(){
@@ -126,11 +162,19 @@ class gameBoard {
 					}
 				}
 				if (sequenceLength >= this.connectWin){
-					console.log([ "RL", k, sequenceStart]);
-					return;
+					return {
+						type: "RL",
+						x	: k,
+						y	: sequenceStart
+					};
 				}
 			}
 		}
+		return {
+			type: null,
+			x	: null,
+			y	: null
+		};
 	}
 
 	checkWin(){
@@ -141,23 +185,23 @@ class gameBoard {
 	}
 }
 
-var newGame = new gameBoard(8, 8, 4);
-newGame.addDisc(1, 5);
-newGame.addDisc(1, 6);
-newGame.addDisc(1, 7);
-newGame.addDisc(1, 4);
-newGame.addDisc(1, 5);
-newGame.addDisc(1, 6);
-newGame.addDisc(1, 7);
-newGame.addDisc(2, 4);
-newGame.addDisc(1, 5);
-newGame.addDisc(1, 6);
-newGame.addDisc(1, 7);
-newGame.addDisc(2, 4);
-newGame.addDisc(1, 5);
-newGame.addDisc(1, 4);
-newGame.addDisc(1, 6);
-newGame.addDisc(1, 7);
-newGame.addDisc(2, 4);
+// var newGame = new GameBoard(8, 8, 4);
+// newGame.addDisc(1, 5);
+// newGame.addDisc(1, 6);
+// newGame.addDisc(1, 7);
+// newGame.addDisc(1, 4);
+// newGame.addDisc(1, 5);
+// newGame.addDisc(1, 6);
+// newGame.addDisc(1, 7);
+// newGame.addDisc(2, 4);
+// newGame.addDisc(1, 5);
+// newGame.addDisc(1, 6);
+// newGame.addDisc(1, 7);
+// newGame.addDisc(2, 4);
+// newGame.addDisc(1, 5);
+// newGame.addDisc(1, 4);
+// newGame.addDisc(1, 6);
+// newGame.addDisc(1, 7);
+// newGame.addDisc(2, 4);
 
-newGame.boardState();
+// newGame.boardState();
