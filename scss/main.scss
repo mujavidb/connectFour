@@ -1,0 +1,49 @@
+body {
+    margin:0;
+}
+
+.connectFourBoard {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    max-width: calc(94px * 8);
+    border: 15px solid #9CD1EA;
+    border-radius: 35px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.column:hover {
+    background-color: rgba(0,0,0,0.05);
+    cursor: pointer;
+}
+
+.deselect.column:hover {
+    background-color: transparent;
+    cursor: default;
+}
+
+.connectFourBoard img {
+    flex-grow: 0;
+    z-index: 5;
+}
+
+.discArea {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+// top: calc( 15px + (5 * 94px) + 7px);
+// left: calc( 15px + (0 * 94px) + 7px);
+.disc {
+    position: absolute;
+    z-index: -5;
+    top: calc( 15px + (5 * 94px) + 7px);
+    left: calc( 15px + (0 * 94px) + 7px);
+}
