@@ -5,29 +5,25 @@ class GameBoard {
     constructor(width, height, connectWin) {
         this.width = width
         this.height = height
-        this.board = Array.from(Array(8), x => Array.from(Array(8), x => 0))
+        this.board = Array.from(Array(height), x => Array.from(Array(width), x => 0))
         this.connectWin = connectWin
         this.winStatus = null
+		this.lastMove = []
     }
 
-    //TODO: improve this algorithm
-    isPossibleMove(disc, column) {
+    isPossibleMove(column) {
         let i = 0
-        while (this.board[i][column] != 0 && i < this.height) i++
-            if (i < 0) {
-                console.log("Impossible move")
-                return false
-            } else {
-                return true
-            }
+        while (i < this.height && this.board[i][column] != 0) i++
+        return (i < 0 || i == this.height) ? false : true
     }
 
     addDisc(disc, column) {
         column -= 1
-        if (this.isPossibleMove(disc, column)) {
+        if (this.isPossibleMove(column)) {
             let i = 0
-            while (this.board[i][column] != 0 && i < this.height) i++
-                this.board[i][column] = disc
+            while (this.board[i][column] != 0) i++
+            this.board[i][column] = disc
+			this.lastMove = [i, column]
             return true
         } else {
             return false
@@ -37,15 +33,18 @@ class GameBoard {
     boardState() {
         console.log()
         for (let line of this.board) {
+			let lineString = ""
             for (let element of line) {
-                process.stdout.write(` ${element} `)
+                lineString += ` ${element} `
             }
-            process.stdout.write("\n")
+			console.log(lineString)
         }
         console.log(`${new Array(3 * this.width).fill("-").join("")}`)
+		let numberString = ""
         for (let i = 1; i <= this.width; i++) {
-            process.stdout.write(` ${i} `)
+            numberString += ` ${i} `
         }
+        console.log(numberString)
         console.log()
         console.log()
     }
@@ -143,6 +142,7 @@ class GameBoard {
         return false
     }
 
+	//FIXME: Sometimes doesnt spot a sequence
     checkRightLeftDiagonal() {
         for (var k = this.connectWin - 1; k < this.height; k++) {
             for (var i = 0; i < this.width - this.connectWin + 1; i++) {

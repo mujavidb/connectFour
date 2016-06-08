@@ -8,6 +8,7 @@
   "author": "Mujavid Bukhari",
   "license": "ISC",
   "devDependencies": {
-    "babel-cli": "^6.8.0"
+    "babel-cli": "^6.8.0",
+    "uglify-js": "^2.6.2"
   }
 }
