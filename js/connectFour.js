@@ -12,6 +12,9 @@ class GameBoard {
     }
 
     isPossibleMove(column) {
+        if (this.winStatus) {
+            return false;
+        }
         let i = 0;
         while (i < this.height && this.board[i][column] != 0) i++;
         return i < 0 || i == this.height ? false : true;
@@ -50,11 +53,23 @@ class GameBoard {
     }
 
     checkHorizontal() {
+        var previousItem;
+        var sequenceStart;
+        var sequenceLength;
         for (var i = 0; i < this.height; i++) {
-            var previousItem = null;
-            var sequenceStart = null;
-            var sequenceLength = 0;
+            previousItem = null;
+            sequenceStart = null;
+            sequenceLength = 0;
             for (var j = 0; j < this.width; j++) {
+                if (sequenceLength == this.connectWin) {
+                    console.log(["H", i, sequenceStart]);
+                    this.winStatus = {
+                        type: "H",
+                        x: i,
+                        y: sequenceStart
+                    };
+                    return true;
+                }
                 if (this.board[i][j] != 0) {
                     if (this.board[i][j] == previousItem) {
                         sequenceLength += 1;
@@ -69,15 +84,6 @@ class GameBoard {
                     sequenceLength = 1;
                     sequenceStart = j;
                 }
-            }
-            if (sequenceLength >= this.connectWin) {
-                console.log(["H", i, sequenceStart]);
-                this.winStatus = {
-                    type: "H",
-                    x: i,
-                    y: sequenceStart
-                };
-                return true;
             }
         }
         return false;
@@ -97,6 +103,10 @@ class GameBoard {
                         sequenceLength = 1;
                         sequenceStart = j;
                     }
+                } else {
+                    previousItem = this.board[j][i];
+                    sequenceLength = 1;
+                    sequenceStart = j;
                 }
             }
             if (sequenceLength >= this.connectWin) {
@@ -118,7 +128,9 @@ class GameBoard {
                 var previousItem = null;
                 var sequenceStart = null;
                 var sequenceLength = 0;
-                for (let j = 0 + i; j < k + i + 1 && j < this.height - 1; j++, m--) {
+                console.log();
+                for (let j = i; j < this.width && m >= 0; j++, m--) {
+                    console.log(sequenceLength);
                     if (this.board[m][j] != 0) {
                         if (this.board[m][j] == previousItem) {
                             sequenceLength += 1;
@@ -127,6 +139,10 @@ class GameBoard {
                             sequenceLength = 1;
                             sequenceStart = j;
                         }
+                    } else {
+                        previousItem = this.board[m][j];
+                        sequenceLength = 1;
+                        sequenceStart = j;
                     }
                 }
                 if (sequenceLength >= this.connectWin) {
@@ -142,7 +158,6 @@ class GameBoard {
         return false;
     }
 
-    //FIXME: Sometimes doesnt spot a sequence
     checkRightLeftDiagonal() {
         for (var k = this.connectWin - 1; k < this.height; k++) {
             for (var i = 0; i < this.width - this.connectWin + 1; i++) {
@@ -159,6 +174,10 @@ class GameBoard {
                             sequenceLength = 1;
                             sequenceStart = j;
                         }
+                    } else {
+                        previousItem = this.board[m][j];
+                        sequenceLength = 1;
+                        sequenceStart = j;
                     }
                 }
                 if (sequenceLength >= this.connectWin) {
@@ -189,7 +208,7 @@ class Play {
     constructor(players) {
         this.game = new GameBoard(8, 6, 4);
         this.players = Array.from(Array(players), (x, i) => i + 1);
-        this.winningSequence = [];
+        this.winningSequence = {};
         this.currentPlayer = 1;
 
         this.game.boardState();
@@ -204,16 +223,15 @@ class Play {
 
         let userInput = parseInt(column);
         this.game.addDisc(this.currentPlayer, userInput);
-        addDiscToBoard(this.game.lastMove, this.currentPlayer, this.game.height);
 
         if (this.game.checkWin()) {
             console.log(`Player ${ this.currentPlayer } wins!`);
             this.winningSequence = this.game.winStatus;
-            // this.game.boardState()
-            console.log(this.game.winStatus);
+            console.log(this.winningSequence);
+            addDiscToBoard(this.game.lastMove, this.currentPlayer, this.game.height);
         } else {
+            addDiscToBoard(this.game.lastMove, this.currentPlayer, this.game.height);
             this.currentPlayer == this.players.length ? this.currentPlayer = 1 : this.currentPlayer++;
-            // this.game.boardState()
             console.log(`Player ${ this.currentPlayer } to move`);
         }
     }
@@ -272,12 +290,11 @@ function addDiscToBoard(location, player, maxHeight) {
 
     if (theGame.winningSequence.type) {
         document.getElementsByClassName("connectFourBoard")[0].classList.add("deselectAll");
-        return;
+        document.body.classList.add(player == 1 ? "redWin" : "yellowWin");
+    } else {
+        if (location[0] == maxHeight - 1) {
+            columns[location[1]].classList.add("deselect");
+        }
+        document.body.classList.toggle("switch");
     }
-
-    if (location[0] == maxHeight - 1) {
-        columns[location[1]].classList.add("deselect");
-    }
-
-    document.body.classList.toggle("switch");
 }

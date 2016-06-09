@@ -12,6 +12,9 @@ class GameBoard {
     }
 
     isPossibleMove(column) {
+		if (this.winStatus) {
+			return false
+		}
         let i = 0
         while (i < this.height && this.board[i][column] != 0) i++
         return (i < 0 || i == this.height) ? false : true
@@ -50,11 +53,23 @@ class GameBoard {
     }
 
     checkHorizontal() {
+		var previousItem
+		var sequenceStart
+		var sequenceLength
         for (var i = 0; i < this.height; i++) {
-            var previousItem = null
-            var sequenceStart = null
-            var sequenceLength = 0
+            previousItem = null
+            sequenceStart = null
+            sequenceLength = 0
             for (var j = 0; j < this.width; j++) {
+				if (sequenceLength == this.connectWin) {
+	                console.log(["H", i, sequenceStart])
+	                this.winStatus = {
+	                    type: "H",
+	                    x: i,
+	                    y: sequenceStart
+	                }
+	                return true
+	            }
                 if (this.board[i][j] != 0) {
                     if (this.board[i][j] == previousItem) {
                         sequenceLength += 1
@@ -69,15 +84,6 @@ class GameBoard {
                     sequenceLength = 1
                     sequenceStart = j
                 }
-            }
-            if (sequenceLength >= this.connectWin) {
-                console.log(["H", i, sequenceStart])
-                this.winStatus = {
-                    type: "H",
-                    x: i,
-                    y: sequenceStart
-                }
-                return true
             }
         }
         return false
@@ -97,6 +103,10 @@ class GameBoard {
                         sequenceLength = 1
                         sequenceStart = j
                     }
+                } else {
+                    previousItem = this.board[j][i]
+                    sequenceLength = 1
+                    sequenceStart = j
                 }
             }
             if (sequenceLength >= this.connectWin) {
@@ -118,7 +128,9 @@ class GameBoard {
                 var previousItem = null
                 var sequenceStart = null
                 var sequenceLength = 0
-                for (let j = 0 + i; j < (k + i + 1) && j < this.height - 1; j++, m--) {
+				console.log()
+                for (let j = i; j < this.width && m >= 0; j++, m--) {
+					console.log(sequenceLength)
                     if (this.board[m][j] != 0) {
                         if (this.board[m][j] == previousItem) {
                             sequenceLength += 1
@@ -127,7 +139,11 @@ class GameBoard {
                             sequenceLength = 1
                             sequenceStart = j
                         }
-                    }
+                    } else {
+						previousItem = this.board[m][j]
+						sequenceLength = 1
+						sequenceStart = j
+					}
                 }
                 if (sequenceLength >= this.connectWin) {
                     this.winStatus = {
@@ -142,7 +158,6 @@ class GameBoard {
         return false
     }
 
-	//FIXME: Sometimes doesnt spot a sequence
     checkRightLeftDiagonal() {
         for (var k = this.connectWin - 1; k < this.height; k++) {
             for (var i = 0; i < this.width - this.connectWin + 1; i++) {
@@ -159,7 +174,11 @@ class GameBoard {
                             sequenceLength = 1
                             sequenceStart = j
                         }
-                    }
+                    } else {
+						previousItem = this.board[m][j]
+						sequenceLength = 1
+						sequenceStart = j
+					}
                 }
                 if (sequenceLength >= this.connectWin) {
                     this.winStatus = {

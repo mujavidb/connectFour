@@ -59,6 +59,22 @@ body {
     color: goldenrod;
 }
 
+.messageArea {
+    margin-top:20px;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: calc( 18px + 1vw );
+}
+
+.turnMessages {
+    .red {
+        display: none;
+    }
+    .yellow {
+        display: block;
+    }
+}
+
 .switch .turnMessages{
     .red {
         display: block;
@@ -68,11 +84,28 @@ body {
     }
 }
 
-.turnMessages {
+.winMessages {
     .red {
         display: none;
     }
     .yellow {
+        display: none;
+    }
+}
+
+.redWin .turnMessages,
+.yellowWin .turnMessages {
+    display: none;
+}
+
+.redWin {
+    .winMessages .red {
+        display: block;
+    }
+}
+
+.yellowWin .winMessages {
+    .winMessages .yellow {
         display: block;
     }
 }

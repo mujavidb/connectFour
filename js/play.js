@@ -5,7 +5,7 @@ class Play {
     constructor(players) {
         this.game = new GameBoard(8, 6, 4)
         this.players = Array.from(Array(players), (x, i) => i + 1)
-        this.winningSequence = []
+        this.winningSequence = {}
         this.currentPlayer = 1
 
         this.game.boardState()
@@ -20,18 +20,18 @@ class Play {
 
         let userInput = parseInt(column)
         this.game.addDisc(this.currentPlayer, userInput)
-		addDiscToBoard(this.game.lastMove, this.currentPlayer, this.game.height)
 
         if (this.game.checkWin()) {
             console.log(`Player ${this.currentPlayer} wins!`)
             this.winningSequence = this.game.winStatus
-            // this.game.boardState()
-            console.log(this.game.winStatus)
+            console.log(this.winningSequence)
+			addDiscToBoard(this.game.lastMove, this.currentPlayer, this.game.height)
         } else {
+			addDiscToBoard(this.game.lastMove, this.currentPlayer, this.game.height)
             this.currentPlayer == this.players.length ? this.currentPlayer = 1 : this.currentPlayer++;
-            // this.game.boardState()
             console.log(`Player ${this.currentPlayer} to move`)
         }
+
     }
 }
 

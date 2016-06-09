@@ -30,12 +30,11 @@ function addDiscToBoard(location, player, maxHeight){
 
     if (theGame.winningSequence.type) {
         document.getElementsByClassName("connectFourBoard")[0].classList.add("deselectAll")
-        return
+        document.body.classList.add( player == 1 ? "redWin" : "yellowWin" )
+    } else {
+        if (location[0] == maxHeight - 1) {
+            columns[location[1]].classList.add("deselect")
+        }
+        document.body.classList.toggle("switch")
     }
-
-    if (location[0] == maxHeight - 1) {
-        columns[location[1]].classList.add("deselect")
-    }
-
-    document.body.classList.toggle("switch")
 }
