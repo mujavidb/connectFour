@@ -128,9 +128,7 @@ class GameBoard {
                 var previousItem = null;
                 var sequenceStart = null;
                 var sequenceLength = 0;
-                console.log();
                 for (let j = i; j < this.width && m >= 0; j++, m--) {
-                    console.log(sequenceLength);
                     if (this.board[m][j] != 0) {
                         if (this.board[m][j] == previousItem) {
                             sequenceLength += 1;
@@ -262,8 +260,23 @@ class Play {
 
 let theGame = new Play(2);
 
+var connectFourArea = document.querySelector('.connectFourBoard');
 var columns = document.querySelectorAll('.connectFourBoard .column');
 var discArea = document.querySelector('.discArea');
+
+let previousPosition = connectFourArea.getBoundingClientRect();
+
+window.addEventListener('resize', () => {
+    let newBasePosition = connectFourArea.getBoundingClientRect();
+    let discsInBoard = discArea.childNodes;
+    let leftAdjust = parseFloat(newBasePosition.left) - parseFloat(previousPosition.left);
+
+    Array.prototype.forEach.call(discsInBoard, disc => {
+        disc.style.left = `${ parseFloat(disc.style.left.slice(0, -2)) + leftAdjust }px`;
+    });
+
+    previousPosition = newBasePosition;
+}, false);
 
 Array.prototype.forEach.call(columns, column => {
     column.addEventListener('click', () => {
@@ -282,9 +295,10 @@ Array.prototype.forEach.call(columns, column => {
 
 function addDiscToBoard(location, player, maxHeight) {
     let disc = document.createElement("img");
+    let basePosition = connectFourArea.getBoundingClientRect();
     disc.classList.add("disc");
-    disc.style.top = `calc( 15px + ${ (5 - location[0]) * 94 }px + 7px)`;
-    disc.style.left = `calc( 15px + ${ location[1] * 94 }px + 7px)`;
+    disc.style.top = `${ basePosition.top + 15 + (5 - location[0]) * 94 + 7 }px`;
+    disc.style.left = `${ basePosition.left + 15 + location[1] * 94 + 7 }px`;
     disc.src = player == 1 ? "img/red_disc.png" : "img/yellow_disc.png";
     discArea.appendChild(disc);
 

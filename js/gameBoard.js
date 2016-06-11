@@ -128,9 +128,7 @@ class GameBoard {
                 var previousItem = null
                 var sequenceStart = null
                 var sequenceLength = 0
-				console.log()
                 for (let j = i; j < this.width && m >= 0; j++, m--) {
-					console.log(sequenceLength)
                     if (this.board[m][j] != 0) {
                         if (this.board[m][j] == previousItem) {
                             sequenceLength += 1

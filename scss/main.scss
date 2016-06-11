@@ -8,6 +8,7 @@ body {
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: stretch;
+    margin: 120px auto 0;
     max-width: calc(94px * 8);
     border: 15px solid #9CD1EA;
     border-radius: 35px;
@@ -18,6 +19,7 @@ body {
     flex-direction: column-reverse;
     background-color: transparent;
     transition: background-color 0.3s ease;
+    position: relative;
 }
 
 .column:hover {
@@ -27,6 +29,27 @@ body {
 
 .switch .column:hover {
     background-color: rgba(200, 47, 70, 0.20);
+}
+
+.column::after {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.column:hover::after {
+    content: '';
+    position:absolute;
+    opacity: 1;
+    width:80px;
+    height: 80px;
+    background-image: url("../img/yellow_disc.png");
+    background-repeat: no-repeat;
+    left: 6px;
+    top: -100px;
+}
+
+.switch .column:hover::after {
+    background-image: url("../img/red_disc.png");
 }
 
 .deselectAll .column:hover,
