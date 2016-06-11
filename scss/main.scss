@@ -2,6 +2,18 @@ body {
     margin:0;
 }
 
+.winHighlightArea {
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: -5;
+}
+
+.yellowWin .winHighlightArea,
+.redWin .winHighlightArea {
+    z-index: 10;
+}
+
 .connectFourBoard {
     display:flex;
     flex-direction: row;
