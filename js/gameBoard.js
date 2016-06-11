@@ -53,13 +53,10 @@ class GameBoard {
     }
 
     checkHorizontal() {
-		var previousItem
-		var sequenceStart
-		var sequenceLength
         for (var i = 0; i < this.height; i++) {
-            previousItem = null
-            sequenceStart = null
-            sequenceLength = 0
+            var previousItem = null
+            var sequenceStart = null
+            var sequenceLength = 0
             for (var j = 0; j < this.width; j++) {
 				if (sequenceLength == this.connectWin) {
 	                console.log(["H", i, sequenceStart])
@@ -95,6 +92,14 @@ class GameBoard {
             var sequenceStart = null
             var sequenceLength = 0
             for (var j = 0; j < this.height; j++) {
+				if (sequenceLength == this.connectWin) {
+	                this.winStatus = {
+	                    type: "V",
+	                    x: i,
+	                    y: sequenceStart
+	                }
+	                return true
+	            }
                 if (this.board[j][i] != 0) {
                     if (this.board[j][i] == previousItem) {
                         sequenceLength += 1
@@ -108,14 +113,6 @@ class GameBoard {
                     sequenceLength = 1
                     sequenceStart = j
                 }
-            }
-            if (sequenceLength >= this.connectWin) {
-                this.winStatus = {
-                    type: "V",
-                    x: sequenceStart,
-                    y: i
-                }
-                return true
             }
         }
         return false

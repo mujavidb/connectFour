@@ -31,25 +31,27 @@ body {
     background-color: rgba(200, 47, 70, 0.20);
 }
 
-.column::after {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
 .column:hover::after {
     content: '';
     position:absolute;
-    opacity: 1;
     width:80px;
     height: 80px;
     background-image: url("../img/yellow_disc.png");
     background-repeat: no-repeat;
     left: 6px;
-    top: -100px;
+    top: -110px;
 }
 
 .switch .column:hover::after {
     background-image: url("../img/red_disc.png");
+}
+
+.deselect.column:hover::after {
+    display: none;
+}
+
+.deselectAll .column:hover::after {
+    display: none;
 }
 
 .deselectAll .column:hover,

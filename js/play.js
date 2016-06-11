@@ -7,8 +7,6 @@ class Play {
         this.players = Array.from(Array(players), (x, i) => i + 1)
         this.winningSequence = {}
         this.currentPlayer = 1
-
-        this.game.boardState()
         console.log(`Player ${this.currentPlayer} to move`)
     }
 

@@ -5,15 +5,32 @@ let theGame = new Play(2)
 var connectFourArea = document.querySelector('.connectFourBoard')
 var columns = document.querySelectorAll('.connectFourBoard .column')
 var discArea = document.querySelector('.discArea')
+var restartButton = document.getElementsByClassName("restartGame")[0]
 
 let previousPosition = connectFourArea.getBoundingClientRect()
 
+restartButton.addEventListener('click', () => {
+    //remove discs
+    while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
+    //remove deslectAll
+    connectFourArea.classList.remove("deselectAll")
+    //remove all deselects
+    Array.prototype.forEach.call(discArea.childNodes, (disc) => {
+        disc.classList.remove("deselect")
+    })
+    //remove win classes and return to normal
+    document.body.classList.remove("redWin")
+    document.body.classList.remove("yellowWin")
+    document.body.classList.add("switch")
+    //new game
+    theGame = new Play(2)
+}, false)
+
 window.addEventListener('resize', () => {
     let newBasePosition = connectFourArea.getBoundingClientRect()
-    let discsInBoard = discArea.childNodes
     let leftAdjust = parseFloat(newBasePosition.left) - parseFloat(previousPosition.left)
 
-    Array.prototype.forEach.call(discsInBoard, (disc) => {
+    Array.prototype.forEach.call(discArea.childNodes, (disc) => {
         disc.style.left = `${ parseFloat(disc.style.left.slice(0,-2)) + leftAdjust }px`
     })
 
@@ -45,7 +62,7 @@ function addDiscToBoard(location, player, maxHeight){
     discArea.appendChild(disc)
 
     if (theGame.winningSequence.type) {
-        document.getElementsByClassName("connectFourBoard")[0].classList.add("deselectAll")
+        connectFourArea.classList.add("deselectAll")
         document.body.classList.add( player == 1 ? "redWin" : "yellowWin" )
     } else {
         if (location[0] == maxHeight - 1) {
