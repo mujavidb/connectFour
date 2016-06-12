@@ -275,9 +275,7 @@ function addDiscToBoard(location, player, maxHeight) {
     if (theGame.winningSequence.type) {
         connectFourArea.classList.add("deselectAll");
         document.body.classList.add(player == 1 ? "redWin" : "yellowWin");
-        if (theGame.winningSequence.type == "V") {
-            verticalHighlight(theGame.winningSequence.x, theGame.winningSequence.y);
-        }
+        highlightWin(theGame.winningSequence.type, theGame.winningSequence.x, theGame.winningSequence.y);
     } else {
         if (location[0] == maxHeight - 1) {
             columns[location[1]].classList.add("deselect");
@@ -340,6 +338,21 @@ Array.prototype.forEach.call(columns, column => {
     }, false);
 });
 
+function highlightWin(type, x, y) {
+    if (type == "H") {
+        horizontalHighlight(x, y);
+    }
+    if (type == "V") {
+        verticalHighlight(x, y);
+    }
+    if (type == "RL") {
+        leftRightHighlight(x, y);
+    }
+    if (type == "LR") {
+        rightLeftHighlight(x, y);
+    }
+}
+
 function verticalHighlight(x, y) {
     let height = 376; // 4 * 94
     let width = 94;
@@ -356,4 +369,45 @@ function verticalHighlight(x, y) {
     styles += `stroke: none;`;
     highlight.setAttributeNS(null, "style", styles);
     winHighlightArea.appendChild(highlight);
+}
+
+function horizontalHighlight(x, y) {
+    let height = 94;
+    let width = 376; // 4 * 94
+    let highlight = document.createElementNS(svgNS, "rect");
+    let styles = "";
+    highlight.setAttributeNS(null, "x", `${ 15 + y * height }`);
+    highlight.setAttributeNS(null, "y", `${ 15 + (6 - x - 1) * height }`);
+    highlight.setAttributeNS(null, "rx", "47");
+    highlight.setAttributeNS(null, "ry", "47");
+    highlight.setAttributeNS(null, "width", `${ width }`);
+    highlight.setAttributeNS(null, "height", `${ height }`);
+    styles += `fill: ${ theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(238, 204, 60, 0.35)" };`;
+    styles += `stroke: none;`;
+    highlight.setAttributeNS(null, "style", styles);
+    winHighlightArea.appendChild(highlight);
+}
+
+function leftRightHighlight(x, y) {
+    let diagonal = 132.936; // a^2 + b^2 = diagonal^2
+    let width = 496;
+    let height = 94;
+    let transform = document.createElementNS(svgNS, "g");
+    let highlight = document.createElementNS(svgNS, "rect");
+    let styles = "";
+
+    transform.setAttributeNS(null, "transform", "rotate(135 438 250)");
+    highlight.setAttributeNS(null, "x", `${ 15 + y * height }`);
+    highlight.setAttributeNS(null, "y", `${ 15 + (6 - x - 1) * height }`);
+    highlight.setAttributeNS(null, "rx", "47");
+    highlight.setAttributeNS(null, "ry", "47");
+    highlight.setAttributeNS(null, "width", `${ width }`);
+    highlight.setAttributeNS(null, "height", `${ height }`);
+    styles += `fill: ${ theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(238, 204, 60, 0.35)" };`;
+    styles += `stroke: none;`;
+    // styles += `transform: rotate(-45deg, 47, 47);`
+    highlight.setAttributeNS(null, "style", styles);
+
+    transform.appendChild(highlight);
+    winHighlightArea.appendChild(transform);
 }
