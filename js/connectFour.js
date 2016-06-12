@@ -1,5 +1,9 @@
 "use strict";
 
+function p(x) {
+    console.log(x);
+}
+
 class GameBoard {
 
     constructor(width, height, connectWin) {
@@ -58,15 +62,6 @@ class GameBoard {
             var sequenceStart = null;
             var sequenceLength = 0;
             for (var j = 0; j < this.width; j++) {
-                if (sequenceLength == this.connectWin) {
-                    console.log(["H", i, sequenceStart]);
-                    this.winStatus = {
-                        type: "H",
-                        x: i,
-                        y: sequenceStart
-                    };
-                    return true;
-                }
                 if (this.board[i][j] != 0) {
                     if (this.board[i][j] == previousItem) {
                         sequenceLength += 1;
@@ -76,10 +71,18 @@ class GameBoard {
                         sequenceStart = j;
                     }
                 } else {
-                    //TODO: DRY this block out
                     previousItem = this.board[i][j];
                     sequenceLength = 1;
                     sequenceStart = j;
+                }
+                if (sequenceLength == this.connectWin) {
+                    console.log(["H", i, sequenceStart]);
+                    this.winStatus = {
+                        type: "H",
+                        x: i,
+                        y: sequenceStart
+                    };
+                    return true;
                 }
             }
         }
@@ -92,14 +95,6 @@ class GameBoard {
             var sequenceStart = null;
             var sequenceLength = 0;
             for (var j = 0; j < this.height; j++) {
-                if (sequenceLength == this.connectWin) {
-                    this.winStatus = {
-                        type: "V",
-                        x: i,
-                        y: sequenceStart
-                    };
-                    return true;
-                }
                 if (this.board[j][i] != 0) {
                     if (this.board[j][i] == previousItem) {
                         sequenceLength += 1;
@@ -112,6 +107,14 @@ class GameBoard {
                     previousItem = this.board[j][i];
                     sequenceLength = 1;
                     sequenceStart = j;
+                }
+                if (sequenceLength == this.connectWin) {
+                    this.winStatus = {
+                        type: "V",
+                        x: i,
+                        y: sequenceStart
+                    };
+                    return true;
                 }
             }
         }
@@ -139,14 +142,14 @@ class GameBoard {
                         sequenceLength = 1;
                         sequenceStart = j;
                     }
-                }
-                if (sequenceLength >= this.connectWin) {
-                    this.winStatus = {
-                        type: "LR",
-                        x: k,
-                        y: sequenceStart
-                    };
-                    return true;
+                    if (sequenceLength >= this.connectWin) {
+                        this.winStatus = {
+                            type: "LR",
+                            x: k,
+                            y: sequenceStart
+                        };
+                        return true;
+                    }
                 }
             }
         }
@@ -174,14 +177,14 @@ class GameBoard {
                         sequenceLength = 1;
                         sequenceStart = j;
                     }
-                }
-                if (sequenceLength >= this.connectWin) {
-                    this.winStatus = {
-                        type: "RL",
-                        x: k,
-                        y: sequenceStart
-                    };
-                    return true;
+                    if (sequenceLength >= this.connectWin) {
+                        this.winStatus = {
+                            type: "RL",
+                            x: k,
+                            y: sequenceStart
+                        };
+                        return true;
+                    }
                 }
             }
         }
@@ -340,20 +343,17 @@ Array.prototype.forEach.call(columns, column => {
 function verticalHighlight(x, y) {
     let height = 376; // 4 * 94
     let width = 94;
+    let boardHeight = 564;
     let highlight = document.createElementNS(svgNS, "rect");
     let styles = "";
-
-    highlight.setAttributeNS(null, "id", "verticalWin");
-    highlight.setAttributeNS(null, "x", `${ 15 + x * 94 }`);
-    console.log(y * 94);
-    highlight.setAttributeNS(null, "y", `${ 30 + 564 - 400 - y * 94 + 10 }`);
+    highlight.setAttributeNS(null, "x", `${ 15 + x * width }`);
+    highlight.setAttributeNS(null, "y", `${ 15 + boardHeight - height - y * 94 }`);
     highlight.setAttributeNS(null, "rx", "47");
     highlight.setAttributeNS(null, "ry", "47");
     highlight.setAttributeNS(null, "width", `${ width }`);
     highlight.setAttributeNS(null, "height", `${ height }`);
-    styles += `fill: ${ theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : rgba(238, 204, 60, 0.35) };`;
+    styles += `fill: ${ theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(238, 204, 60, 0.35)" };`;
     styles += `stroke: none;`;
     highlight.setAttributeNS(null, "style", styles);
-
     winHighlightArea.appendChild(highlight);
 }

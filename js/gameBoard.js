@@ -1,5 +1,9 @@
 "use strict"
 
+function p(x){
+	console.log(x)
+}
+
 class GameBoard {
 
     constructor(width, height, connectWin) {
@@ -58,6 +62,19 @@ class GameBoard {
             var sequenceStart = null
             var sequenceLength = 0
             for (var j = 0; j < this.width; j++) {
+				if (this.board[i][j] != 0) {
+                    if (this.board[i][j] == previousItem) {
+                        sequenceLength += 1
+                    } else {
+                        previousItem = this.board[i][j]
+                        sequenceLength = 1
+                        sequenceStart = j
+                    }
+                } else {
+                    previousItem = this.board[i][j]
+                    sequenceLength = 1
+                    sequenceStart = j
+                }
 				if (sequenceLength == this.connectWin) {
 	                console.log(["H", i, sequenceStart])
 	                this.winStatus = {
@@ -67,20 +84,6 @@ class GameBoard {
 	                }
 	                return true
 	            }
-                if (this.board[i][j] != 0) {
-                    if (this.board[i][j] == previousItem) {
-                        sequenceLength += 1
-                    } else {
-                        previousItem = this.board[i][j]
-                        sequenceLength = 1
-                        sequenceStart = j
-                    }
-                } else {
-                    //TODO: DRY this block out
-                    previousItem = this.board[i][j]
-                    sequenceLength = 1
-                    sequenceStart = j
-                }
             }
         }
         return false
@@ -92,14 +95,6 @@ class GameBoard {
             var sequenceStart = null
             var sequenceLength = 0
             for (var j = 0; j < this.height; j++) {
-				if (sequenceLength == this.connectWin) {
-	                this.winStatus = {
-	                    type: "V",
-	                    x: i,
-	                    y: sequenceStart
-	                }
-	                return true
-	            }
                 if (this.board[j][i] != 0) {
                     if (this.board[j][i] == previousItem) {
                         sequenceLength += 1
@@ -113,6 +108,14 @@ class GameBoard {
                     sequenceLength = 1
                     sequenceStart = j
                 }
+				if (sequenceLength == this.connectWin) {
+	                this.winStatus = {
+	                    type: "V",
+	                    x: i,
+	                    y: sequenceStart
+	                }
+	                return true
+	            }
             }
         }
         return false
@@ -139,14 +142,14 @@ class GameBoard {
 						sequenceLength = 1
 						sequenceStart = j
 					}
-                }
-                if (sequenceLength >= this.connectWin) {
-                    this.winStatus = {
-                        type: "LR",
-                        x: k,
-                        y: sequenceStart
-                    }
-                    return true
+					if (sequenceLength >= this.connectWin) {
+	                    this.winStatus = {
+	                        type: "LR",
+	                        x: k,
+	                        y: sequenceStart
+	                    }
+	                    return true
+	                }
                 }
             }
         }
@@ -174,14 +177,14 @@ class GameBoard {
 						sequenceLength = 1
 						sequenceStart = j
 					}
-                }
-                if (sequenceLength >= this.connectWin) {
-                    this.winStatus = {
-                        type: "RL",
-                        x: k,
-                        y: sequenceStart
-                    }
-                    return true
+					if (sequenceLength >= this.connectWin) {
+	                    this.winStatus = {
+	                        type: "RL",
+	                        x: k,
+	                        y: sequenceStart
+	                    }
+	                    return true
+	                }
                 }
             }
         }

@@ -135,14 +135,10 @@ body {
     display: none;
 }
 
-.redWin {
-    .winMessages .red {
-        display: block;
-    }
+.redWin .winMessages .red {
+    display: block;
 }
 
-.yellowWin .winMessages {
-    .winMessages .yellow {
-        display: block;
-    }
+.yellowWin .winMessages .yellow {
+    display: block;
 }

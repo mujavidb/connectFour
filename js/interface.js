@@ -87,21 +87,17 @@ Array.prototype.forEach.call(columns, (column) => {
 function verticalHighlight(x, y) {
     let height = 376 // 4 * 94
     let width = 94
+    let boardHeight = 564
     let highlight = document.createElementNS(svgNS, "rect")
     let styles = ""
-
-    highlight.setAttributeNS(null, "id", "verticalWin")
-    highlight.setAttributeNS(null, "x", `${ 15 + (x * 94)}`)
-    console.log(((y) * 94))
-    highlight.setAttributeNS(null, "y", `${ 30 + 564 - 400 - (y * 94) + 10}`)
+    highlight.setAttributeNS(null, "x", `${ 15 + (x * width)}`)
+    highlight.setAttributeNS(null, "y", `${ 15 + boardHeight - height - (y * 94)}`)
     highlight.setAttributeNS(null, "rx", "47")
     highlight.setAttributeNS(null, "ry", "47")
     highlight.setAttributeNS(null, "width", `${width}`)
     highlight.setAttributeNS(null, "height", `${height}`)
-    styles += `fill: ${theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : rgba(238, 204, 60, 0.35)};`
+    styles += `fill: ${theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(238, 204, 60, 0.35)"};`
     styles += `stroke: none;`
     highlight.setAttributeNS(null, "style", styles)
-
     winHighlightArea.appendChild(highlight)
-
 }
