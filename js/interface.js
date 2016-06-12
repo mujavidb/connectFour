@@ -140,7 +140,7 @@ function leftRightHighlight(x, y) {
     let highlight = document.createElementNS(svgNS, "rect")
     let styles = ""
 
-    transform.setAttributeNS(null, "transform", "rotate(135 438 250)")
+    transform.setAttributeNS(null, "transform", `rotate(135 ${15 + (y * height) + 47} ${15 + ((6 - x - 1) * height) + 47})`)
     highlight.setAttributeNS(null, "x", `${ 15 + (y * height)}`)
     highlight.setAttributeNS(null, "y", `${ 15 + ((6 - x - 1) * height)}`)
     highlight.setAttributeNS(null, "rx", "47")
@@ -149,7 +149,29 @@ function leftRightHighlight(x, y) {
     highlight.setAttributeNS(null, "height", `${height}`)
     styles += `fill: ${theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(238, 204, 60, 0.35)"};`
     styles += `stroke: none;`
-    // styles += `transform: rotate(-45deg, 47, 47);`
+    highlight.setAttributeNS(null, "style", styles)
+
+    transform.appendChild(highlight)
+    winHighlightArea.appendChild(transform)
+}
+
+function rightLeftHighlight(x, y) {
+    let diagonal = 132.936 // a^2 + b^2 = diagonal^2
+    let width = 496
+    let height = 94
+    let transform = document.createElementNS(svgNS, "g")
+    let highlight = document.createElementNS(svgNS, "rect")
+    let styles = ""
+
+    transform.setAttributeNS(null, "transform", `rotate(45 ${15 + (y * height) + 47} ${15 + ((6 - x - 1) * height) + 47})`)
+    highlight.setAttributeNS(null, "x", `${ 15 + (y * height)}`)
+    highlight.setAttributeNS(null, "y", `${ 15 + ((6 - x - 1) * height)}`)
+    highlight.setAttributeNS(null, "rx", "47")
+    highlight.setAttributeNS(null, "ry", "47")
+    highlight.setAttributeNS(null, "width", `${width}`)
+    highlight.setAttributeNS(null, "height", `${height}`)
+    styles += `fill: ${theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(238, 204, 60, 0.35)"};`
+    styles += `stroke: none;`
     highlight.setAttributeNS(null, "style", styles)
 
     transform.appendChild(highlight)
