@@ -1,7 +1,7 @@
 //TODO: Structure JS correctly
 //TODO: Make complete design responsive
 //TODO: Improve Design
-//TODO: Add Dropping Animation
+//TODO: Add Slide down Animation
 
 let addDiscToBoard
 
@@ -10,7 +10,8 @@ let setup = (function(){
     let theGame = new Play(2)
     var connectFourArea = document.querySelector('.connectFourBoard')
     var columns = document.querySelectorAll('.connectFourBoard .column')
-    var discArea = document.getElementById('discArea')
+    var discSVG = document.getElementById('discArea')
+    var discArea = document.getElementById('discAreaGroup')
     let winHighlightArea = document.getElementById("winHighlight")
     let redScore = document.getElementById("redScore")
     let yellowScore = document.getElementById("yellowScore")
@@ -49,13 +50,12 @@ let setup = (function(){
     function placeHighlightOverBoard(){
         winHighlightArea.style.top = `${previousPosition.top}px`
         winHighlightArea.style.left = `${previousPosition.left}px`
-        discArea.style.top = `${previousPosition.top}px`
-        discArea.style.left = `${previousPosition.left}px`
+        discSVG.style.top = `${previousPosition.top}px`
+        discSVG.style.left = `${previousPosition.left}px`
     }
 
     window.addEventListener('resize', () => {
-        let newBasePosition = connectFourArea.getBoundingClientRect()
-        previousPosition = newBasePosition
+        previousPosition = connectFourArea.getBoundingClientRect()
         placeHighlightOverBoard()
     }, false)
 
@@ -63,22 +63,29 @@ let setup = (function(){
         //Update button
         restartButton.classList.remove("newGame")
         restartButton.innerHTML = "Restart"
-        //remove discs
-        while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
+        restartButton.disabled = true
         //remove highlights
         while (winHighlightArea.firstChild) winHighlightArea.removeChild(winHighlightArea.firstChild)
-        //remove deslectAll
-        connectFourArea.classList.remove("deselectAll")
-        //remove all deselects
-        Array.prototype.forEach.call(discArea.childNodes, (disc) => {
-            disc.classList.remove("deselect")
-        })
-        //remove win classes and return to normal
-        document.body.classList.remove("redWin")
-        document.body.classList.remove("yellowWin")
-        document.body.classList.add("switch")
-        //new game
-        theGame = new Play(2)
+        //animate discs down and out
+        discArea.classList.add("moveOut")
+        setTimeout(() => {
+            restartButton.disabled = false
+            //remove discs
+            while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
+            discArea.classList.remove("moveOut")
+            //remove deslectAll
+            connectFourArea.classList.remove("deselectAll")
+            //remove all deselects
+            Array.prototype.forEach.call(discArea.childNodes, (disc) => {
+                disc.classList.remove("deselect")
+            })
+            //remove win classes and return to normal
+            document.body.classList.remove("redWin")
+            document.body.classList.remove("yellowWin")
+            document.body.classList.add("switch")
+            //new game
+            theGame = new Play(2)
+        }, 2000)
     }, false)
 
     Array.prototype.forEach.call(columns, (column) => {

@@ -3,12 +3,28 @@
 body {
     font-family: "Open Sans", sans-serif;
     font-weight: 400;
+    text-rendering: optimizelegibility;
+	-moz-osx-font-smoothing: grayscale;
+	font-feature-settings: "liga";
     margin:0;
 }
 
 h1, h2, h3, h4, h5 {
     font-weight: 600;
 }
+
+.winHighlightArea,
+.connectFourBoard,
+.column,
+.messageArea {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 
 .winHighlightArea,
 .discArea {
@@ -183,10 +199,37 @@ h2 {
     background-color: rgb(28, 143, 216);
 }
 
+.buttonArea .restartGame:disabled {
+    cursor: not-allowed;
+}
+
 .restartGame.newGame {
     background-color: rgb(38, 180, 146);
 }
 
 .restartGame.newGame:hover {
     background-color: rgb(15, 135, 106);
+}
+
+@-webkit-keyframes slideDown {
+    0% { transform: translateY(0px)}
+    15% { transform: translateY(-10px)}
+    100% { transform: translateY(1200px)}
+}
+
+@keyframes slideDown {
+    0% { transform: translateY(0px)}
+    15% { transform: translateY(-10px)}
+    100% { transform: translateY(1200px)}
+}
+
+#discAreaGroup.moveOut {
+    -webkit-animation-name: slideDown;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-timing-function: ease-out;
+    animation-name: slideDown;
+    animation-duration: 2s;
+	animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
 }
