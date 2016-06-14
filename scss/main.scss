@@ -182,3 +182,11 @@ h2 {
     cursor: pointer;
     background-color: rgb(28, 143, 216);
 }
+
+.restartGame.newGame {
+    background-color: rgb(38, 180, 146);
+}
+
+.restartGame.newGame:hover {
+    background-color: rgb(15, 135, 106);
+}

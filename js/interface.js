@@ -30,9 +30,11 @@ let setup = (function(){
         if (theGame.winningSequence.type) {
             connectFourArea.classList.add("deselectAll")
             document.body.classList.add( player == 1 ? "redWin" : "yellowWin" )
+            restartButton.classList.add("newGame")
+            restartButton.innerHTML = "New Game"
             highlightWin(theGame.winningSequence.type, theGame.winningSequence.x, theGame.winningSequence.y)
             if (player == 1) {
-                redScore.innerHTML = `${ parseFloat(redScore.innerHTML) + 1}`
+                redScore.innerHTML = `${ parseInt(redScore.innerHTML) + 1}`
             } else {
                 yellowScore.innerHTML = `${ parseInt(yellowScore.innerHTML) + 1}`
             }
@@ -58,6 +60,9 @@ let setup = (function(){
     }, false)
 
     restartButton.addEventListener('click', () => {
+        //Update button
+        restartButton.classList.remove("newGame")
+        restartButton.innerHTML = "Restart"
         //remove discs
         while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
         //remove highlights
