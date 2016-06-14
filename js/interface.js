@@ -1,7 +1,6 @@
 //TODO: Structure JS correctly
 //TODO: Make complete design responsive
 //TODO: Improve Design
-//TODO: Add Slide down Animation
 
 let addDiscToBoard
 
