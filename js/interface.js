@@ -8,19 +8,19 @@
 let theGame = new Play(2)
 var connectFourArea = document.querySelector('.connectFourBoard')
 var columns = document.querySelectorAll('.connectFourBoard .column')
-var discArea = document.querySelector('.discArea')
+var discArea = document.getElementById('discArea')
 let winHighlightArea = document.getElementById("winHighlight")
 var restartButton = document.getElementsByClassName("restartGame")[0]
 let previousPosition = connectFourArea.getBoundingClientRect()
 var svgNS = "http://www.w3.org/2000/svg";
 
 function addDiscToBoard(location, player, maxHeight){
-    let disc = document.createElement("img")
-    let basePosition = connectFourArea.getBoundingClientRect()
-    disc.classList.add("disc")
-    disc.style.top = `${basePosition.top + 15 + (5 - location[0]) * 94 + 7}px`
-    disc.style.left = `${basePosition.left + 15 + (location[1]) * 94 + 7}px`
-    disc.src = player == 1 ? "img/red_disc.png" : "img/yellow_disc.png"
+    let disc = document.createElementNS(svgNS, "image")
+    disc.setAttributeNS("http://www.w3.org/1999/xlink", "href", player == 1 ? "img/red_disc.png" : "img/yellow_disc.png")
+    disc.setAttribute("x", `${ 15 + (location[1]) * 94 + 7}px`)
+    disc.setAttribute("y", `${ 15 + (5 - location[0]) * 94 + 7}px`)
+    disc.setAttribute("width", "80")
+    disc.setAttribute("height", "80")
     discArea.appendChild(disc)
 
     if (theGame.winningSequence.type) {
@@ -38,20 +38,15 @@ function addDiscToBoard(location, player, maxHeight){
 function placeHighlightOverBoard(){
     winHighlightArea.style.top = `${previousPosition.top}px`
     winHighlightArea.style.left = `${previousPosition.left}px`
+    discArea.style.top = `${previousPosition.top}px`
+    discArea.style.left = `${previousPosition.left}px`
 }
 
 placeHighlightOverBoard()
 
 window.addEventListener('resize', () => {
     let newBasePosition = connectFourArea.getBoundingClientRect()
-    let leftAdjust = parseFloat(newBasePosition.left) - parseFloat(previousPosition.left)
-
-    Array.prototype.forEach.call(discArea.childNodes, (disc) => {
-        disc.style.left = `${ parseFloat(disc.style.left.slice(0,-2)) + leftAdjust }px`
-    })
-
     previousPosition = newBasePosition
-
     placeHighlightOverBoard()
 }, false)
 
@@ -90,18 +85,7 @@ Array.prototype.forEach.call(columns, (column) => {
 })
 
 function highlightWin(type, x, y){
-    if (type == "H") {
-        horizontalHighlight(x, y)
-    }
-    if (type == "V") {
-        verticalHighlight(x, y)
-    }
-    if (type == "RL") {
-        diagonalHighlight(x, y, 135)
-    }
-    if (type == "LR") {
-        diagonalHighlight(x, y, 45)
-    }
+    type == "H" ? horizontalHighlight(x, y) : type == "V" ? verticalHighlight(x, y) : diagonalHighlight(x, y, type == "RL" ? 135 : 45)
 }
 
 function createSVGHighlight(x, y, width, height, player){
