@@ -233,7 +233,7 @@ class Play {
 //TODO: Structure JS correctly
 //TODO: Make complete design responsive
 //TODO: Improve Design
-//TODO: Add Player Scoring
+//TODO: Add Dropping Animation
 
 let addDiscToBoard;
 
@@ -244,6 +244,8 @@ let setup = function () {
     var columns = document.querySelectorAll('.connectFourBoard .column');
     var discArea = document.getElementById('discArea');
     let winHighlightArea = document.getElementById("winHighlight");
+    let redScore = document.getElementById("redScore");
+    let yellowScore = document.getElementById("yellowScore");
     var restartButton = document.getElementsByClassName("restartGame")[0];
     let previousPosition = connectFourArea.getBoundingClientRect();
     var svgNS = "http://www.w3.org/2000/svg";
@@ -261,6 +263,11 @@ let setup = function () {
             connectFourArea.classList.add("deselectAll");
             document.body.classList.add(player == 1 ? "redWin" : "yellowWin");
             highlightWin(theGame.winningSequence.type, theGame.winningSequence.x, theGame.winningSequence.y);
+            if (player == 1) {
+                redScore.innerHTML = `${ parseFloat(redScore.innerHTML) + 1 }`;
+            } else {
+                yellowScore.innerHTML = `${ parseInt(yellowScore.innerHTML) + 1 }`;
+            }
         } else {
             if (location[0] == maxHeight - 1) {
                 columns[location[1]].classList.add("deselect");
