@@ -1,6 +1,7 @@
 //TODO: Structure JS correctly
 //TODO: Make complete design responsive
 //TODO: Improve Design
+//TODO: Compatible for iOS8
 
 let addDiscToBoard
 
