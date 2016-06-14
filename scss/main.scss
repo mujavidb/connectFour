@@ -2,7 +2,8 @@ body {
     margin:0;
 }
 
-.winHighlightArea {
+.winHighlightArea,
+.discArea {
     position: absolute;
     top:0;
     left: 0;
@@ -75,17 +76,6 @@ body {
 .connectFourBoard img {
     flex-grow: 0;
     z-index: 5;
-}
-
-.discArea {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.disc {
-    position: absolute;
-    z-index: -5;
 }
 
 .red {
