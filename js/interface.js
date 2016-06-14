@@ -1,3 +1,10 @@
+
+//TODO: Structure JS correctly
+//TODO: Add Player Scoring
+//TODO: Make complete design responsive
+//TODO: Improve Design
+//TODO: Make discs all SVG
+
 let theGame = new Play(2)
 var connectFourArea = document.querySelector('.connectFourBoard')
 var columns = document.querySelectorAll('.connectFourBoard .column')
@@ -90,90 +97,55 @@ function highlightWin(type, x, y){
         verticalHighlight(x, y)
     }
     if (type == "RL") {
-        leftRightHighlight(x, y)
+        diagonalHighlight(x, y, 135)
     }
     if (type == "LR") {
-        rightLeftHighlight(x, y)
+        diagonalHighlight(x, y, 45)
     }
+}
+
+function createSVGHighlight(x, y, width, height, player){
+    let highlight = document.createElementNS(svgNS, "rect")
+    let styles = ""
+    highlight.setAttributeNS(null, "x", `${ x }`)
+    highlight.setAttributeNS(null, "y", `${ y }`)
+    highlight.setAttributeNS(null, "rx", "47")
+    highlight.setAttributeNS(null, "ry", "47")
+    highlight.setAttributeNS(null, "width", `${width}`)
+    highlight.setAttributeNS(null, "height", `${height}`)
+    styles += `fill: ${player == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(255, 171, 0, 0.4)"};`
+    styles += `stroke: none;`
+    highlight.setAttributeNS(null, "style", styles)
+    return highlight
 }
 
 function verticalHighlight(x, y) {
     let height = 376 // 4 * 94
     let width = 94
     let boardHeight = 564
-    let highlight = document.createElementNS(svgNS, "rect")
-    let styles = ""
-    highlight.setAttributeNS(null, "x", `${ 15 + (x * width)}`)
-    highlight.setAttributeNS(null, "y", `${ 15 + boardHeight - height - (y * 94)}`)
-    highlight.setAttributeNS(null, "rx", "47")
-    highlight.setAttributeNS(null, "ry", "47")
-    highlight.setAttributeNS(null, "width", `${width}`)
-    highlight.setAttributeNS(null, "height", `${height}`)
-    styles += `fill: ${theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(238, 204, 60, 0.35)"};`
-    styles += `stroke: none;`
-    highlight.setAttributeNS(null, "style", styles)
+    let left = 15 + (x * width)
+    let top = 15 + boardHeight - height - (y * 94)
+    let highlight = createSVGHighlight(left, top, 94, 376, theGame.currentPlayer)
     winHighlightArea.appendChild(highlight)
 }
 
 function horizontalHighlight(x, y) {
     let height = 94
     let width = 376 // 4 * 94
-    let highlight = document.createElementNS(svgNS, "rect")
-    let styles = ""
-    highlight.setAttributeNS(null, "x", `${ 15 + (y * height)}`)
-    highlight.setAttributeNS(null, "y", `${ 15 + ((6 - x - 1) * height)}`)
-    highlight.setAttributeNS(null, "rx", "47")
-    highlight.setAttributeNS(null, "ry", "47")
-    highlight.setAttributeNS(null, "width", `${width}`)
-    highlight.setAttributeNS(null, "height", `${height}`)
-    styles += `fill: ${theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(238, 204, 60, 0.35)"};`
-    styles += `stroke: none;`
-    highlight.setAttributeNS(null, "style", styles)
+    let left = 15 + (y * height)
+    let top = 15 + ((6 - x - 1) * height)
+    let highlight = createSVGHighlight(left, top, 376, 94, theGame.currentPlayer)
     winHighlightArea.appendChild(highlight)
 }
 
-function leftRightHighlight(x, y) {
-    let diagonal = 132.936 // a^2 + b^2 = diagonal^2
+function diagonalHighlight(x, y, angle) {
     let width = 496
     let height = 94
     let transform = document.createElementNS(svgNS, "g")
-    let highlight = document.createElementNS(svgNS, "rect")
-    let styles = ""
-
-    transform.setAttributeNS(null, "transform", `rotate(135 ${15 + (y * height) + 47} ${15 + ((6 - x - 1) * height) + 47})`)
-    highlight.setAttributeNS(null, "x", `${ 15 + (y * height)}`)
-    highlight.setAttributeNS(null, "y", `${ 15 + ((6 - x - 1) * height)}`)
-    highlight.setAttributeNS(null, "rx", "47")
-    highlight.setAttributeNS(null, "ry", "47")
-    highlight.setAttributeNS(null, "width", `${width}`)
-    highlight.setAttributeNS(null, "height", `${height}`)
-    styles += `fill: ${theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(238, 204, 60, 0.35)"};`
-    styles += `stroke: none;`
-    highlight.setAttributeNS(null, "style", styles)
-
-    transform.appendChild(highlight)
-    winHighlightArea.appendChild(transform)
-}
-
-function rightLeftHighlight(x, y) {
-    let diagonal = 132.936 // a^2 + b^2 = diagonal^2
-    let width = 496
-    let height = 94
-    let transform = document.createElementNS(svgNS, "g")
-    let highlight = document.createElementNS(svgNS, "rect")
-    let styles = ""
-
-    transform.setAttributeNS(null, "transform", `rotate(45 ${15 + (y * height) + 47} ${15 + ((6 - x - 1) * height) + 47})`)
-    highlight.setAttributeNS(null, "x", `${ 15 + (y * height)}`)
-    highlight.setAttributeNS(null, "y", `${ 15 + ((6 - x - 1) * height)}`)
-    highlight.setAttributeNS(null, "rx", "47")
-    highlight.setAttributeNS(null, "ry", "47")
-    highlight.setAttributeNS(null, "width", `${width}`)
-    highlight.setAttributeNS(null, "height", `${height}`)
-    styles += `fill: ${theGame.currentPlayer == 1 ? "rgba(200, 47, 70, 0.30)" : "rgba(238, 204, 60, 0.35)"};`
-    styles += `stroke: none;`
-    highlight.setAttributeNS(null, "style", styles)
-
+    let left = 15 + (y * height)
+    let top = 15 + ((6 - x - 1) * height)
+    let highlight = createSVGHighlight(left, top, 496, 94, theGame.currentPlayer)
+    transform.setAttributeNS(null, "transform", `rotate(${angle} ${left + 47} ${top + 47})`)
     transform.appendChild(highlight)
     winHighlightArea.appendChild(transform)
 }
