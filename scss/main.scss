@@ -28,9 +28,9 @@ h1, h2, h3, h4, h5 {
 .gameContainer,
 .messageArea {
     position: relative;
-    max-width: 788px;
-    min-width: 540px;
-    width:90%;
+    min-width: 380px;
+    max-width: 700px;
+    width: 80%;
     height: auto;
     margin: 0 auto;
 }
@@ -68,9 +68,7 @@ h1, h2, h3, h4, h5 {
     outline:none;
     position: relative;
     width: 12.5%;
-    height: calc(90px + 58vw);
-    min-height: 400px;
-    max-height: 585px;
+    height: 532px;
 }
 
 .column:first-child {
@@ -108,7 +106,25 @@ h1, h2, h3, h4, h5 {
     background-repeat: no-repeat;
     background-size: contain;
     left: 9.57%;
-    top: calc( -18px - 12% );
+    top: -80px;
+}
+
+@media (max-width:880px){
+    .connectFourBoard {
+
+    }
+    .column:hover::after {
+        top: calc(-10% - 2vw);
+    }
+}
+
+@media (max-width:540px){
+    .connectFourBoard {
+        margin-top: 8%;
+    }
+    .column:hover::after {
+        display: none;
+    }
 }
 
 .switch .column:hover::after {
