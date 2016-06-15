@@ -20,26 +20,38 @@ let setup = (function(){
     var restartButton = document.getElementsByClassName("restartGame")[0]
     var svgNS = "http://www.w3.org/2000/svg"
 
+    function animateDiscDown(disc, y){
+        const finalLocation = 18 + (5 - y) * 94 + 7
+        const transitionSpeed = `transform ${ (0.3 / 5) * (5 - y) }s ease-in`
+        disc.style.transition = transitionSpeed
+        setTimeout(() => {
+            disc.style.transform = `translateY(${finalLocation + 80}px)`
+        }, 20)
+    }
+
     addDiscToBoard = function(location, player, maxHeight){
         let disc = document.createElementNS(svgNS, "image")
         disc.setAttributeNS("http://www.w3.org/1999/xlink", "href", player == 1 ? "img/red_disc.svg" : "img/yellow_disc.svg")
-        disc.setAttribute("x", `${ 18 + (location[1]) * 94 + 7}px`)
-        disc.setAttribute("y", `${ 18 + (5 - location[0]) * 94 + 7}px`)
+        disc.setAttribute("x", `${ 18 + (location[1]) * 94 + 7}`)
+        disc.setAttribute("y", "-80")
         disc.setAttribute("width", "80")
         disc.setAttribute("height", "80")
         discArea.appendChild(disc)
+        animateDiscDown(disc, location[0])
 
         if (theGame.winningSequence.type) {
-            connectFourArea.classList.add("deselectAll")
-            document.body.classList.add( player == 1 ? "redWin" : "yellowWin" )
-            restartButton.classList.add("newGame")
-            restartButton.innerHTML = "New Game"
-            highlightWin(theGame.winningSequence.type, theGame.winningSequence.x, theGame.winningSequence.y)
-            if (player == 1) {
-                redScore.innerHTML = `${ parseInt(redScore.innerHTML) + 1}`
-            } else {
-                yellowScore.innerHTML = `${ parseInt(yellowScore.innerHTML) + 1}`
-            }
+            setTimeout(() => {
+                connectFourArea.classList.add("deselectAll")
+                document.body.classList.add( player == 1 ? "redWin" : "yellowWin" )
+                restartButton.classList.add("newGame")
+                restartButton.innerHTML = "New Game"
+                highlightWin(theGame.winningSequence.type, theGame.winningSequence.x, theGame.winningSequence.y)
+                if (player == 1) {
+                    redScore.innerHTML = `${ parseInt(redScore.innerHTML) + 1}`
+                } else {
+                    yellowScore.innerHTML = `${ parseInt(yellowScore.innerHTML) + 1}`
+                }
+            }, 100 + (300 / 5) * (5 - location[0]))
         } else {
             if (location[0] == maxHeight - 1) {
                 columns[location[1]].classList.add("deselect")
