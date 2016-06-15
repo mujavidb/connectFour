@@ -25,10 +25,13 @@ h1, h2, h3, h4, h5 {
     user-select: none;
 }
 
-.gameContainer {
+.gameContainer,
+.messageArea {
     position: relative;
-    width: 788px;
-    height: 600px;
+    max-width: 788px;
+    min-width: 540px;
+    width:90%;
+    height: auto;
     margin: 0 auto;
 }
 
@@ -51,10 +54,9 @@ h1, h2, h3, h4, h5 {
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: stretch;
-    margin: 100px auto 0;
-    width: 788px;
-    height: 600px;
-    padding-top: 18px;
+    margin: 14% auto 0;
+    width: 100%;
+    height: auto;
 }
 
 .column {
@@ -62,17 +64,21 @@ h1, h2, h3, h4, h5 {
     flex-direction: column-reverse;
     background-color: transparent;
     transition: background-color 0.2s ease;
+    border:none;
+    outline:none;
     position: relative;
-    width: 94px;
-    height: calc(94px * 6);
+    width: 12.5%;
+    height: calc(90px + 58vw);
+    min-height: 400px;
+    max-height: 585px;
 }
 
 .column:first-child {
-    margin-left:18px
+    margin-left: 2.3%;
 }
 
 .column:last-child {
-    margin-right:18px
+    margin-right: 2.3%;
 }
 
 .boardSinglet {
@@ -86,23 +92,23 @@ h1, h2, h3, h4, h5 {
 }
 
 #singleColumn:hover rect {
-    background-color: rgba(238, 204, 60, 0.25);
+    fill: rgba(238, 204, 60, 0.25);
 }
 
 .switch #singleColumn:hover rect {
-    background-color: rgba(200, 47, 70, 0.20);
+    fill: rgba(200, 47, 70, 0.20);
 }
 
 .column:hover::after {
     content: '';
     position:absolute;
-    width:76px;
-    height: 76px;
+    width: 80.85%;
+    height: 80.85%;
     background-image: url("../img/yellow_disc.svg");
     background-repeat: no-repeat;
     background-size: contain;
-    left: 10px;
-    top: -100px;
+    left: 9.57%;
+    top: calc( -18px - 12% );
 }
 
 .switch .column:hover::after {
@@ -142,7 +148,6 @@ h2 {
 }
 
 .messageArea {
-    width: calc(94px * 8);
     margin: 15px auto 5px;
     text-align: center;
 

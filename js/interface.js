@@ -4,7 +4,6 @@
 //TODO: Compatible for iOS8
 //TODO: Add ability to play opponents online
 //TODO: Drop discs into board
-//TODO: Make entire board SVG
 
 let addDiscToBoard
 
