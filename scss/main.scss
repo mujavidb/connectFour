@@ -305,3 +305,48 @@ h2 {
 	animation-fill-mode: forwards;
     animation-timing-function: ease-out;
 }
+
+.modalOverlay {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100vw;
+    height: 100vh;
+    z-index: 20;
+}
+
+.show.modalOverlay{
+    display: flex;
+}
+
+.modal {
+    box-sizing: border-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    padding: 40px;
+    width: 80vw;
+    height: auto;
+    background-color: #fafafa;
+    border-radius: 10px;
+    transform: translateY(800px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.show .modal {
+    transform: translateY(0px);
+    opacity: 1;
+}
+
+.modal h3 {
+    color: #4c4c4c;
+    text-align: center;
+    font-size: 24px;
+}

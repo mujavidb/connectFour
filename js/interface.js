@@ -3,7 +3,7 @@
 //TODO: Improve Design
 //TODO: Compatible for iOS8
 //TODO: Add ability to play opponents online
-//TODO: Drop discs into board
+//TODO: Rotate on z-axis when board is emptied
 
 let addDiscToBoard
 
@@ -11,14 +11,15 @@ let setup = (function(){
 
     let theGame = new Play(2)
     let connectFourArea = document.getElementsByClassName("gameContainer")[0]
-    var columns = document.querySelectorAll('.column')
-    var discSVG = document.getElementById('discArea')
-    var discArea = document.getElementById('discAreaGroup')
+    let columns = document.querySelectorAll('.column')
+    let discSVG = document.getElementById('discArea')
+    let discArea = document.getElementById('discAreaGroup')
     let winHighlightArea = document.getElementById("winHighlight")
     let redScore = document.getElementById("redScore")
     let yellowScore = document.getElementById("yellowScore")
-    var restartButton = document.getElementsByClassName("restartGame")[0]
-    var svgNS = "http://www.w3.org/2000/svg"
+    let restartButton = document.getElementsByClassName("restartGame")[0]
+    let modal = document.getElementsByClassName("modalOverlay")[0]
+    let svgNS = "http://www.w3.org/2000/svg"
 
     function animateDiscDown(disc, y){
         const finalLocation = 18 + (5 - y) * 94 + 7
@@ -59,6 +60,14 @@ let setup = (function(){
             document.body.classList.toggle("switch")
         }
     }
+
+    window.addEventListener('resize', () => {
+        if (screen.width < 390) {
+            modal.classList.add("show")
+        } else {
+            modal.classList.remove("show")
+        }
+    }, false)
 
     restartButton.addEventListener('click', () => {
         restartButton.disabled = true
