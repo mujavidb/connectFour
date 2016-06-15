@@ -186,6 +186,7 @@ h2 {
     max-width: 200px;
     outline: medium none;
     border: medium none;
+    box-shadow: 0 5px #2a87c2;
     border-radius: 10px;
     font-size: 20px;
     font-weight: 600;
@@ -196,19 +197,44 @@ h2 {
 
 .restartGame:hover {
     cursor: pointer;
-    background-color: rgb(28, 143, 216);
+    background-color: rgb(87, 169, 221);
+    box-shadow: 0 4px #2a87c2;
+    transform: translateY(1px);
+}
+
+.restartGame:active {
+    box-shadow: 0 0 #2a87c2;
+    transform: translateY(5px);
 }
 
 .buttonArea .restartGame:disabled {
     cursor: not-allowed;
+    position: relative;
+}
+
+.buttonArea .restartGame:disabled::before {
+    content: url(circularLoader.svg);
+    position: absolute;
+    top: 30%;
+    left: 12%;
+}
+
+.yellowWin .restartGame:disabled::before,
+.redWin .restartGame:disabled::before {
+    left: 7%;
 }
 
 .restartGame.newGame {
     background-color: rgb(38, 180, 146);
+    box-shadow: 0 5px rgb(23, 145, 116);
 }
 
 .restartGame.newGame:hover {
-    background-color: rgb(15, 135, 106);
+    box-shadow: 0 4px rgb(23, 145, 116);
+}
+
+.restartGame.newGame:active {
+    box-shadow: 0 0 rgb(23, 145, 116);
 }
 
 @-webkit-keyframes slideDown {

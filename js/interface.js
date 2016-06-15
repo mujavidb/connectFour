@@ -2,6 +2,9 @@
 //TODO: Make complete design responsive
 //TODO: Improve Design
 //TODO: Compatible for iOS8
+//TODO: Add ability to play opponents online
+//TODO: Drop discs into board
+//TODO: Make entire board SVG
 
 let addDiscToBoard
 
@@ -60,9 +63,6 @@ let setup = (function(){
     }, false)
 
     restartButton.addEventListener('click', () => {
-        //Update button
-        restartButton.classList.remove("newGame")
-        restartButton.innerHTML = "Restart"
         restartButton.disabled = true
         //remove highlights
         while (winHighlightArea.firstChild) winHighlightArea.removeChild(winHighlightArea.firstChild)
@@ -70,6 +70,9 @@ let setup = (function(){
         discArea.classList.add("moveOut")
         setTimeout(() => {
             restartButton.disabled = false
+            //Update button
+            restartButton.classList.remove("newGame")
+            restartButton.innerHTML = "Restart"
             //remove discs
             while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
             discArea.classList.remove("moveOut")
