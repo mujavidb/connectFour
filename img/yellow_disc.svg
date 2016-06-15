@@ -1,0 +1,29 @@
+<svg width="80" height="80" viewbox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<circle cx="40" cy="40" r="40" fill="#FFAD00" />
+	<circle cx="40" cy="40" r="37" fill="#EE7C0D" />
+	<g>
+		<rect x="38.5" y="6" width="3" height="10" fill="#FFAD00" />
+		<rect x="38.5" y="64" width="3" height="10" fill="#FFAD00" />
+	</g>
+	<g transform="rotate(30 40 40)">
+		<rect x="38.5" y="6" width="3" height="10" fill="#FFAD00" />
+		<rect x="38.5" y="64" width="3" height="10" fill="#FFAD00" />
+	</g>
+	<g transform="rotate(60 40 40)">
+		<rect x="38.5" y="6" width="3" height="10" fill="#FFAD00" />
+		<rect x="38.5" y="64" width="3" height="10" fill="#FFAD00" />
+	</g>
+	<g transform="rotate(90 40 40)">
+		<rect x="38.5" y="6" width="3" height="10" fill="#FFAD00" />
+		<rect x="38.5" y="64" width="3" height="10" fill="#FFAD00" />
+	</g>
+	<g transform="rotate(120 40 40)">
+		<rect x="38.5" y="6" width="3" height="10" fill="#FFAD00" />
+		<rect x="38.5" y="64" width="3" height="10" fill="#FFAD00" />
+	</g>
+	<g transform="rotate(150 40 40)">
+		<rect x="38.5" y="6" width="3" height="10" fill="#FFAD00" />
+		<rect x="38.5" y="64" width="3" height="10" fill="#FFAD00" />
+	</g>
+	<polygon id="M" stroke="none" fill="#FFAD00" fill-rule="evenodd" points="47.0654297 34.6816406 47.0019531 34.6689453 41.0224609 49.484375 39.359375 49.484375 33.3798828 34.6816406 33.3164062 34.6943359 33.5703125 42.171875 33.5703125 47.5292969 35.6396484 47.8847656 35.6396484 49.484375 29 49.484375 29 47.8847656 31.0693359 47.5292969 31.0693359 32.9677734 29 32.6123047 29 31 31.0693359 31 34.2685547 31 40.1591797 46.0185547 40.2353516 46.0185547 46.1132812 31 51.3945312 31 51.3945312 32.6123047 49.3251953 32.9677734 49.3251953 47.5292969 51.3945312 47.8847656 51.3945312 49.484375 44.7548828 49.484375 44.7548828 47.8847656 46.8242188 47.5292969 46.8242188 42.171875"></polygon>
+</svg>

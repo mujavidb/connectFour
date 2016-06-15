@@ -1,0 +1,42 @@
+<svg width="788" height="600" viewBox="0 0 788 600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <style>
+        .boardSinglet {
+            fill: #9CD2EA;
+            stroke: none;
+            fill-rule: evenodd;
+        }
+		#singleColumn:hover {
+			cursor: pointer;
+		}
+    </style>
+	<defs>
+        <rect id="path-1" x="0" y="0" width="752" height="564"></rect>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-18" y="-18" width="788" height="600">
+            <rect x="-18" y="-18" width="788" height="600" fill="white"></rect>
+            <use xlink:href="#path-1" fill="black"></use>
+        </mask>
+        <path id="singlet" class="boardSinglet" d="M0,0 L94,0 L94,94 L0,94 L0,0 Z M47,83 C66.882251,83 83,66.882251 83,47 C83,27.117749 66.882251,11 47,11 C27.117749,11 11,27.117749 11,47 C11,66.882251 27.117749,83 47,83 Z"></path>
+        <g id="singleColumn">
+            <rect x="0" y="0" width="94" height="564" fill="none"></rect>
+			<use xlink:href="#singlet"></use>
+			<use xlink:href="#singlet" transform="translate(0 94)"></use>
+			<use xlink:href="#singlet" transform="translate(0 188)"></use>
+			<use xlink:href="#singlet" transform="translate(0 282)"></use>
+			<use xlink:href="#singlet" transform="translate(0 376)"></use>
+			<use xlink:href="#singlet" transform="translate(0 470)"></use>
+		</g>
+	</defs>
+	<g id="boardSquares" transform="translate(18 18)">
+		<use xlink:href="#singleColumn" transform="translate(0 0)"></use>
+		<use xlink:href="#singleColumn" transform="translate(94 0)"></use>
+		<use xlink:href="#singleColumn" transform="translate(188 0)"></use>
+		<use xlink:href="#singleColumn" transform="translate(282 0)"></use>
+		<use xlink:href="#singleColumn" transform="translate(376 0)"></use>
+		<use xlink:href="#singleColumn" transform="translate(470 0)"></use>
+		<use xlink:href="#singleColumn" transform="translate(564 0)"></use>
+		<use xlink:href="#singleColumn" transform="translate(658 0)"></use>
+	</g>
+	<g id="boardBorder" stroke="none" fill="none" fill-rule="evenodd" transform="translate(18, 18)" stroke-linejoin="round">
+	    <use id="Rectangle-1" stroke="#9CD1EA" mask="url(#mask-2)" stroke-width="36" xlink:href="#path-1"></use>
+	</g>
+</svg>

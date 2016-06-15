@@ -25,6 +25,12 @@ h1, h2, h3, h4, h5 {
     user-select: none;
 }
 
+.gameContainer {
+    position: relative;
+    width: 788px;
+    height: 600px;
+    margin: 0 auto;
+}
 
 .winHighlightArea,
 .discArea {
@@ -46,9 +52,9 @@ h1, h2, h3, h4, h5 {
     justify-content: flex-start;
     align-items: stretch;
     margin: 100px auto 0;
-    width: calc(94px * 8);
-    border: 15px solid #9CD1EA;
-    border-radius: 35px;
+    width: 788px;
+    height: 600px;
+    padding-top: 18px;
 }
 
 .column {
@@ -57,14 +63,33 @@ h1, h2, h3, h4, h5 {
     background-color: transparent;
     transition: background-color 0.2s ease;
     position: relative;
+    width: 94px;
+    height: calc(94px * 6);
 }
 
-.column:hover {
-    background-color: rgba(238, 204, 60, 0.25);
+.column:first-child {
+    margin-left:18px
+}
+
+.column:last-child {
+    margin-right:18px
+}
+
+.boardSinglet {
+    fill: #9CD2EA;
+    stroke: none;
+    fill-rule: evenodd;
+}
+
+#singleColumn:hover {
     cursor: pointer;
 }
 
-.switch .column:hover {
+#singleColumn:hover rect {
+    background-color: rgba(238, 204, 60, 0.25);
+}
+
+.switch #singleColumn:hover rect {
     background-color: rgba(200, 47, 70, 0.20);
 }
 
@@ -73,7 +98,7 @@ h1, h2, h3, h4, h5 {
     position:absolute;
     width:76px;
     height: 76px;
-    background-image: url("../img/yellow_disc.png");
+    background-image: url("../img/yellow_disc.svg");
     background-repeat: no-repeat;
     background-size: contain;
     left: 10px;
@@ -81,7 +106,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .switch .column:hover::after {
-    background-image: url("../img/red_disc.png");
+    background-image: url("../img/red_disc.svg");
 }
 
 .deselect.column:hover::after {
@@ -216,7 +241,7 @@ h2 {
     content: url(circularLoader.svg);
     position: absolute;
     top: 30%;
-    left: 12%;
+    left: 10%;
 }
 
 .yellowWin .restartGame:disabled::before,
@@ -246,7 +271,7 @@ h2 {
 @keyframes slideDown {
     0% { transform: translateY(0px)}
     15% { transform: translateY(-10px)}
-    100% { transform: translateY(1200px)}
+    100% { transform: translateY(800px)}
 }
 
 #discAreaGroup.moveOut {
@@ -255,7 +280,7 @@ h2 {
     -webkit-animation-fill-mode: forwards;
     -webkit-animation-timing-function: ease-out;
     animation-name: slideDown;
-    animation-duration: 2s;
+    animation-duration: 1.5s;
 	animation-fill-mode: forwards;
     animation-timing-function: ease-out;
 }
