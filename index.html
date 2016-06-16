@@ -26,9 +26,6 @@
 
     <div class="gameContainer">
 
-        <svg class="winHighlightArea" id="winHighlight" viewBox="0 0 788 600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        </svg>
-
         <div class="connectFourBoard">
             <button class="column"></button>
             <button class="column"></button>
@@ -60,23 +57,28 @@
         		</g>
         	</defs>
 
-            <image id="boardShadows" x="0" y="-4" width="788" height="600" xlink:href="img/boardShadows.svg"></image>
-            <g id="discAreaGroup"></g>
+            <g class="perspective">
+                <g class="perspectiveChild">
+                    <image id="boardShadows" x="0" y="-4" width="788" height="600" xlink:href="img/boardShadows.svg"></image>
+                    <g id="discAreaGroup"></g>
 
-            <g id="boardArea">
-                <g id="boardSquares" transform="translate(18 18)">
-            		<use xlink:href="#singleColumn" transform="translate(0 0)"></use>
-            		<use xlink:href="#singleColumn" transform="translate(94 0)"></use>
-            		<use xlink:href="#singleColumn" transform="translate(188 0)"></use>
-            		<use xlink:href="#singleColumn" transform="translate(282 0)"></use>
-            		<use xlink:href="#singleColumn" transform="translate(376 0)"></use>
-            		<use xlink:href="#singleColumn" transform="translate(470 0)"></use>
-            		<use xlink:href="#singleColumn" transform="translate(564 0)"></use>
-            		<use xlink:href="#singleColumn" transform="translate(658 0)"></use>
-            	</g>
-            	<g id="boardBorder" stroke="none" fill="none" fill-rule="evenodd" transform="translate(18, 18)" stroke-linejoin="round">
-            	    <use id="Rectangle-1" stroke="#9CD1EA" mask="url(#mask-2)" stroke-width="36" xlink:href="#path-1"></use>
-            	</g>
+                    <g id="boardArea">
+                        <g id="boardSquares" transform="translate(18 18)">
+                    		<use xlink:href="#singleColumn" transform="translate(0 0)"></use>
+                    		<use xlink:href="#singleColumn" transform="translate(94 0)"></use>
+                    		<use xlink:href="#singleColumn" transform="translate(188 0)"></use>
+                    		<use xlink:href="#singleColumn" transform="translate(282 0)"></use>
+                    		<use xlink:href="#singleColumn" transform="translate(376 0)"></use>
+                    		<use xlink:href="#singleColumn" transform="translate(470 0)"></use>
+                    		<use xlink:href="#singleColumn" transform="translate(564 0)"></use>
+                    		<use xlink:href="#singleColumn" transform="translate(658 0)"></use>
+                    	</g>
+                    	<g id="boardBorder" stroke="none" fill="none" fill-rule="evenodd" transform="translate(18, 18)" stroke-linejoin="round">
+                    	    <use id="Rectangle-1" stroke="#9CD1EA" mask="url(#mask-2)" stroke-width="36" xlink:href="#path-1"></use>
+                    	</g>
+                    </g>
+                    <g id="winHighlight" class="winHighlightArea"></g>
+                </g>
             </g>
         </svg>
     </div>

@@ -13,7 +13,6 @@ h1, h2, h3, h4, h5 {
     font-weight: 600;
 }
 
-.winHighlightArea,
 .connectFourBoard,
 .column,
 .messageArea {
@@ -35,17 +34,17 @@ h1, h2, h3, h4, h5 {
     margin: 0 auto;
 }
 
-.winHighlightArea,
-.discArea {
-    position: absolute;
-    top:0;
-    left: 0;
-    z-index: -5;
+.perspective {
+    perspective-origin: center center;
+    perspective: 5000px;
 }
 
-.yellowWin .winHighlightArea,
-.redWin .winHighlightArea {
-    z-index: 10;
+.perspectiveChild {
+    transition: transform 0.3s ease;
+}
+
+.perspectiveChild.active {
+    transform: rotateX(-15deg);
 }
 
 .connectFourBoard {
@@ -71,6 +70,17 @@ h1, h2, h3, h4, h5 {
     height: 532px;
 }
 
+.column:hover::after {
+    content: '';
+    position:absolute;
+    width: 80.85%;
+    height: 80.85%;
+    background-image: url("../img/yellow_disc.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    left: 9.57%;
+    top: -80px;
+}
 .column:first-child {
     margin-left: 2.3%;
 }
@@ -85,29 +95,6 @@ h1, h2, h3, h4, h5 {
     fill-rule: evenodd;
 }
 
-#singleColumn:hover {
-    cursor: pointer;
-}
-
-#singleColumn:hover rect {
-    fill: rgba(238, 204, 60, 0.25);
-}
-
-.switch #singleColumn:hover rect {
-    fill: rgba(200, 47, 70, 0.20);
-}
-
-.column:hover::after {
-    content: '';
-    position:absolute;
-    width: 80.85%;
-    height: 80.85%;
-    background-image: url("../img/yellow_disc.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    left: 9.57%;
-    top: -80px;
-}
 
 @media (max-width:880px){
     .connectFourBoard {
@@ -125,6 +112,13 @@ h1, h2, h3, h4, h5 {
     .column:hover::after {
         display: none;
     }
+}
+
+.discArea {
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: -5;
 }
 
 .switch .column:hover::after {

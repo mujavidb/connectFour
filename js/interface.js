@@ -17,6 +17,7 @@ let setup = (function(){
     let winHighlightArea = document.getElementById("winHighlight")
     let redScore = document.getElementById("redScore")
     let yellowScore = document.getElementById("yellowScore")
+    let perspective = document.getElementsByClassName("perspectiveChild")[0]
     let restartButton = document.getElementsByClassName("restartGame")[0]
     let modal = document.getElementsByClassName("modalOverlay")[0]
     let svgNS = "http://www.w3.org/2000/svg"
@@ -75,6 +76,7 @@ let setup = (function(){
         while (winHighlightArea.firstChild) winHighlightArea.removeChild(winHighlightArea.firstChild)
         //animate discs down and out
         discArea.classList.add("moveOut")
+        perspective.classList.add("active")
         setTimeout(() => {
             restartButton.disabled = false
             //Update button
@@ -83,6 +85,7 @@ let setup = (function(){
             //remove discs
             while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
             discArea.classList.remove("moveOut")
+            perspective.classList.remove("active")
             //remove deslectAll
             connectFourArea.classList.remove("deselectAll")
             //remove all deselects
