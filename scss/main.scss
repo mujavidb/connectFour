@@ -1,21 +1,37 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
 
+// Variables
+$redDiscFore: #B83549;
+$redDiscBack: #FF7590;
+$yellowDiscFore: #EE7C0D;
+$yellowDiscBack: #FFAD00;
+$redDisc: "../img/red_disc.svg";
+$yellowDisc: "../img/yellow_disc.svg";
+$boardShadow: rgb(114, 180, 211);
+$gameInfoBoard: #a8b4cf;
+$gameInfoShadow: #7a8aae;
+$restartGreenFore: rgb(38, 180, 146);
+$restartGreenShadow: rgb(23, 145, 116);
+$restartBlueFore: rgb(87, 169, 221);
+$restartBlueShadow: #2a87c2;
+
 body {
     font-family: "Open Sans", sans-serif;
     font-weight: 400;
     text-rendering: optimizelegibility;
 	-moz-osx-font-smoothing: grayscale;
-	font-feature-settings: "liga";
     margin:0;
+    position: relative;
 }
 
 h1, h2, h3, h4, h5 {
     font-weight: 600;
+    line-height: 1.4;
 }
 
 .connectFourBoard,
 .column,
-.messageArea {
+.gameInfo {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -24,10 +40,9 @@ h1, h2, h3, h4, h5 {
     user-select: none;
 }
 
-.gameContainer,
-.messageArea {
+.gameContainer {
     position: relative;
-    min-width: 380px;
+    min-width: 300px;
     max-width: 700px;
     width: 80%;
     height: auto;
@@ -68,6 +83,11 @@ h1, h2, h3, h4, h5 {
     position: relative;
     width: 12.5%;
     height: 532px;
+    min-height: 228px;
+}
+
+.column:hover {
+    cursor: pointer;
 }
 
 .column:hover::after {
@@ -75,12 +95,17 @@ h1, h2, h3, h4, h5 {
     position:absolute;
     width: 80.85%;
     height: 80.85%;
-    background-image: url("../img/yellow_disc.svg");
+    background-image: url($yellowDisc);
     background-repeat: no-repeat;
     background-size: contain;
     left: 9.57%;
     top: -80px;
 }
+
+.switch .column:hover::after {
+    background-image: url($redDisc);
+}
+
 .column:first-child {
     margin-left: 2.3%;
 }
@@ -97,8 +122,8 @@ h1, h2, h3, h4, h5 {
 
 
 @media (max-width:880px){
-    .connectFourBoard {
-
+    .column {
+        height: calc( (80vw + 1vw) /8 * 6 );
     }
     .column:hover::after {
         top: calc(-10% - 2vw);
@@ -112,6 +137,23 @@ h1, h2, h3, h4, h5 {
     .column:hover::after {
         display: none;
     }
+
+    @media (max-height:440px){
+        body {
+            background-color: rgba(255, 240, 80, 0.3);
+        }
+        .switch {
+            background-color: rgba(255, 115, 135, 0.2);
+        }
+        .gameContainer,
+        .buttonArea {
+            width: 50%;
+        }
+        .gameContainer .column {
+            min-height: auto;
+            height: 228px;
+        }
+    }
 }
 
 .discArea {
@@ -119,10 +161,6 @@ h1, h2, h3, h4, h5 {
     top:0;
     left: 0;
     z-index: -5;
-}
-
-.switch .column:hover::after {
-    background-image: url("../img/red_disc.svg");
 }
 
 .deselect.column:hover::after {
@@ -144,40 +182,65 @@ h1, h2, h3, h4, h5 {
     z-index: 5;
 }
 
-h2 {
-    margin: 5px 0 20px;
-    font-size: 32px;
-}
-
-.red {
-    color: #ff4754;
-}
-
+.red,
 .yellow {
-    color: #f5b005;
+    color: white;
 }
 
-.messageArea {
-    margin: 15px auto 5px;
+.gameInfo {
+    margin: 15px auto 15px;
     text-align: center;
+    background-color: $gameInfoBoard;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding: 15px 20px;
+    box-shadow: 0 -5px $gameInfoShadow;
+    position: relative;
+    min-width: 280px;
+    max-width: 680px;
+    width: calc(80% - 20px);
+    height: auto;
+}
 
-    .scores {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        font-size: 24px;
-    }
+.redScore,
+.yellowScore {
+    width: 8vw;
+    height: 8vw;
+    max-width: 70px;
+    max-height: 70px;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
 
-    .scores h5 {
-        margin: 0;
-    }
+.redScore {
+    background-color: $redDiscFore;
+    border: 4px solid $redDiscBack;
+}
 
-    .scores .red {
-        text-align: left;
-    }
-    .scores .yellow {
-        text-align: right;
-    }
+.yellowScore {
+    background-color: $yellowDiscFore;
+    border: 4px solid $yellowDiscBack;
+}
+
+.redScore h5,
+.yellowScore h5 {
+    margin: 0;
+    color: white;
+    font-size: 36px;
+    width: 100%;
+}
+
+.gameInfo h2 {
+    margin: 0;
+    font-size: 32px;
 }
 
 .turnMessages {
@@ -220,31 +283,58 @@ h2 {
     display: block;
 }
 
+.buttonArea {
+    margin: 5px auto 0;
+}
+
+@media (max-width:880px){
+    .gameInfo h2 {
+        font-size: 4vw;
+    }
+}
+
+@media (max-width:540px){
+    .gameInfo {
+        padding: 2.5vw 3vw;
+        border-radius: 3vw;
+        box-shadow: 0 -3px $gameInfoShadow;
+    }
+    .redScore h5,
+    .yellowScore h5 {
+        font-size: 3.5vw;
+    }
+    @media (max-height:440px){
+        .gameInfo {
+            display: none;
+        }
+    }
+}
+
 .restartGame {
-    width: 100%;
+    width: 200px;
     padding: 15px;
-    max-width: 200px;
     outline: medium none;
     border: medium none;
-    box-shadow: 0 5px #2a87c2;
+    box-shadow: 0 -5px $restartBlueShadow;
     border-radius: 10px;
     font-size: 20px;
     font-weight: 600;
     color: white;
-    background-color: rgb(87, 169, 221);
+    background-color: $restartBlueFore;
+    margin: 0 auto;
+    display: block;
     transition: background-color 0.3s ease;
 }
 
 .restartGame:hover {
     cursor: pointer;
-    background-color: rgb(87, 169, 221);
-    box-shadow: 0 4px #2a87c2;
-    transform: translateY(1px);
+    box-shadow: 0 -4px $restartBlueShadow;
+    transform: translateY(-1px);
 }
 
 .restartGame:active {
-    box-shadow: 0 0 #2a87c2;
-    transform: translateY(5px);
+    box-shadow: 0 0 $restartBlueShadow;
+    transform: translateY(-5px);
 }
 
 .buttonArea .restartGame:disabled {
@@ -253,7 +343,7 @@ h2 {
 }
 
 .buttonArea .restartGame:disabled::before {
-    content: url(circularLoader.svg);
+    content: url(../img/circularLoader.svg);
     position: absolute;
     top: 30%;
     left: 10%;
@@ -265,16 +355,53 @@ h2 {
 }
 
 .restartGame.newGame {
-    background-color: rgb(38, 180, 146);
-    box-shadow: 0 5px rgb(23, 145, 116);
+    background-color: $restartGreenFore;
+    box-shadow: 0 -5px $restartGreenShadow;
 }
 
 .restartGame.newGame:hover {
-    box-shadow: 0 4px rgb(23, 145, 116);
+    box-shadow: 0 -4px $restartGreenShadow;
 }
 
 .restartGame.newGame:active {
-    box-shadow: 0 0 rgb(23, 145, 116);
+    box-shadow: 0 0 $restartGreenShadow;
+}
+
+@media (max-width:540px){
+    .restartGame {
+        width: 150px;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 16px;
+        box-shadow: 0 -3px $restartBlueShadow;
+    }
+    .restartGame:hover {
+        box-shadow: 0 -2px $restartBlueShadow;
+    }
+
+    .restartGame:active {
+        box-shadow: 0 0 $restartBlueShadow;
+        transform: translateY(-3px);
+    }
+    .restartGame.newGame {
+        box-shadow: 0 -3px $restartGreenShadow;
+    }
+
+    .restartGame.newGame:hover {
+        box-shadow: 0 -2px $restartGreenShadow;
+    }
+
+    .restartGame.newGame:active {
+        box-shadow: 0 0 $restartGreenShadow;
+    }
+    .buttonArea .restartGame:disabled::before {
+        display: none;
+    }
+    @media (max-height:440px){
+        .messageArea {
+            margin-top: 10px;
+        }
+    }
 }
 
 @-webkit-keyframes slideDown {
@@ -301,9 +428,7 @@ h2 {
 }
 
 .modalOverlay {
-    display: none;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -311,36 +436,42 @@ h2 {
     width: 100vw;
     height: 100vh;
     z-index: 20;
+    opacity:0;
+    visibility: hidden;
+    transition: visibility 0s linear 1s, opacity 0.3s ease;
 }
 
-.show.modalOverlay{
-    display: flex;
+.show.modalOverlay {
+    visibility: visible;
+    opacity:1;
+    transition: opacity 0.3s ease;
 }
 
-.modal {
+.modalContent {
     box-sizing: border-box;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flex;
-    display: -o-flex;
-    display: flex;
-    padding: 40px;
-    width: 80vw;
+    position: absolute;
+    top: 30vw;
+    left: 10%;
+    padding: 12vw 6vw;
+    width: 80%;
     height: auto;
-    background-color: #fafafa;
+    background-color: rgb(40, 174, 154);
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     transform: translateY(800px);
     opacity: 0;
+    transition: transform 0.3s ease, opacity 0.5s ease;
+}
+
+.show .modalContent {
+    transform: translateY(0px);
+    opacity: 1;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.show .modal {
-    transform: translateY(0px);
-    opacity: 1;
-}
-
-.modal h3 {
-    color: #4c4c4c;
+.modalContent h3 {
+    color: rgba(255, 255, 255, 0.8);
     text-align: center;
-    font-size: 24px;
+    font-size: 6vw;
+    margin: 0;
 }

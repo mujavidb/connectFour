@@ -38,72 +38,51 @@
         </div>
 
         <svg id="discArea" class="discArea" viewBox="0 0 788 600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <!-- SVG DEFINITIONS -->
             <defs>
-                <rect id="path-1" x="0" y="0" width="752" height="564"></rect>
-                <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="-18" y="-18" width="788" height="600">
-                    <rect x="-18" y="-18" width="788" height="600" fill="white"></rect>
-                    <use xlink:href="#path-1" fill="black"></use>
-                </mask>
-                <path id="singlet" class="boardSinglet" d="M0,0 L94,0 L94,94 L0,94 L0,0 Z M47,83 C66.882251,83 83,66.882251 83,47 C83,27.117749 66.882251,11 47,11 C27.117749,11 11,27.117749 11,47 C11,66.882251 27.117749,83 47,83 Z"></path>
-                <g id="singleColumn">
-                    <rect x="0" y="0" width="94" height="564" fill="none"></rect>
-        			<use xlink:href="#singlet"></use>
-        			<use xlink:href="#singlet" transform="translate(0 94)"></use>
-        			<use xlink:href="#singlet" transform="translate(0 188)"></use>
-        			<use xlink:href="#singlet" transform="translate(0 282)"></use>
-        			<use xlink:href="#singlet" transform="translate(0 376)"></use>
-        			<use xlink:href="#singlet" transform="translate(0 470)"></use>
-        		</g>
-        	</defs>
+                <clipPath id="clipBottom">
+        		    <rect x="14" y="5" width="760" height="25"></rect>
+        		</clipPath>
+            </defs>
 
             <g class="perspective">
                 <g class="perspectiveChild">
-                    <image id="boardShadows" x="0" y="-4" width="788" height="600" xlink:href="img/boardShadows.svg"></image>
-                    <g id="discAreaGroup"></g>
 
-                    <g id="boardArea">
-                        <g id="boardSquares" transform="translate(18 18)">
-                    		<use xlink:href="#singleColumn" transform="translate(0 0)"></use>
-                    		<use xlink:href="#singleColumn" transform="translate(94 0)"></use>
-                    		<use xlink:href="#singleColumn" transform="translate(188 0)"></use>
-                    		<use xlink:href="#singleColumn" transform="translate(282 0)"></use>
-                    		<use xlink:href="#singleColumn" transform="translate(376 0)"></use>
-                    		<use xlink:href="#singleColumn" transform="translate(470 0)"></use>
-                    		<use xlink:href="#singleColumn" transform="translate(564 0)"></use>
-                    		<use xlink:href="#singleColumn" transform="translate(658 0)"></use>
-                    	</g>
-                    	<g id="boardBorder" stroke="none" fill="none" fill-rule="evenodd" transform="translate(18, 18)" stroke-linejoin="round">
-                    	    <use id="Rectangle-1" stroke="#9CD1EA" mask="url(#mask-2)" stroke-width="36" xlink:href="#path-1"></use>
-                    	</g>
-                    </g>
-                    <g id="winHighlight" class="winHighlightArea"></g>
+                    <rect x="14" y="4" width="760" height="50" ry="20" rx="20" fill="rgb(114, 180, 211)" clip-path="url(#clipBottom)"></rect>
+                    <image id="boardShadows" x="10" y="6" width="768" height="580" xlink:href="img/boardShadows.svg"></image>
+
+                    <g id="discAreaGroup" transform="translate(10 10) scale(0.9746 0.9667)"></g>
+
+                    <image id="boardShadows" x="10" y="10" width="768" height="580" xlink:href="img/board.svg"></image>
+
+                    <g id="winHighlight" class="winHighlightArea" transform="translate(10 10) scale(0.9746 0.9667)"></g>
                 </g>
             </g>
         </svg>
     </div>
 
-    <div class="messageArea">
-        <div class="scores">
-            <h5 class="red">Red Score: <span id="redScore">0</span></h5>
-            <h5 class="yellow">Yellow Score: <span id="yellowScore">0</span></h5>
+    <div class="gameInfo">
+        <div class="redScore"><h5 id="redScore">0</h5></div>
+        <div class="messageArea">
+            <div class="turnMessages">
+                <h2 class="red">Red player's turn</h2>
+                <h2 class="yellow">Yellow player's turn</h2>
+            </div>
+            <div class="winMessages">
+                <h2 class="red">Red player wins!</h2>
+                <h2 class="yellow">Yellow player wins!</h2>
+            </div>
         </div>
-        <div class="turnMessages">
-            <h2 class="red">Red player's turn</h2>
-            <h2 class="yellow">Yellow player's turn</h2>
-        </div>
-        <div class="winMessages">
-            <h2 class="red">Red player wins!</h2>
-            <h2 class="yellow">Yellow player wins!</h2>
-        </div>
-        <div class="buttonArea">
-            <button class="restartGame">Restart</button>
-        </div>
+        <div class="yellowScore"><h5 id="yellowScore">0</h5></div>
+    </div>
+    <div class="buttonArea">
+        <button class="restartGame">Restart</button>
     </div>
 
-    <div class="modalOverlay">
-        <div class="modal">
-            <h3>To get started, please rotate your screen into the landscape position.</h3>
+    <div class="modalWindow">
+        <div class="modalOverlay">
+            <div class="modalContent">
+                <h3>To get started, please rotate your screen into the landscape position.</h3>
+            </div>
         </div>
     </div>
 

@@ -1,13 +1,12 @@
 //TODO: Structure JS correctly
-//TODO: Make complete design responsive
 //TODO: Improve Design
 //TODO: Compatible for iOS8
 //TODO: Add ability to play opponents online
-//TODO: Rotate on z-axis when board is emptied
+//TODO: Make complete design responsive
 
 let addDiscToBoard
 
-let setup = (function(){
+let setup = (() => {
 
     let theGame = new Play(2)
     let connectFourArea = document.getElementsByClassName("gameContainer")[0]
@@ -62,59 +61,13 @@ let setup = (function(){
         }
     }
 
-    window.addEventListener('resize', () => {
-        if (screen.width < 390) {
+    function ensureScreenSize(){
+        if (screen.width < 350) {
             modal.classList.add("show")
         } else {
             modal.classList.remove("show")
         }
-    }, false)
-
-    restartButton.addEventListener('click', () => {
-        restartButton.disabled = true
-        //remove highlights
-        while (winHighlightArea.firstChild) winHighlightArea.removeChild(winHighlightArea.firstChild)
-        //animate discs down and out
-        discArea.classList.add("moveOut")
-        perspective.classList.add("active")
-        setTimeout(() => {
-            restartButton.disabled = false
-            //Update button
-            restartButton.classList.remove("newGame")
-            restartButton.innerHTML = "Restart"
-            //remove discs
-            while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
-            discArea.classList.remove("moveOut")
-            perspective.classList.remove("active")
-            //remove deslectAll
-            connectFourArea.classList.remove("deselectAll")
-            //remove all deselects
-            Array.prototype.forEach.call(discArea.childNodes, (disc) => {
-                disc.classList.remove("deselect")
-            })
-            //remove win classes and return to normal
-            document.body.classList.remove("redWin")
-            document.body.classList.remove("yellowWin")
-            document.body.classList.add("switch")
-            //new game
-            theGame = new Play(2)
-        }, 1500)
-    }, false)
-
-    Array.prototype.forEach.call(columns, (column) => {
-        column.addEventListener('click', () => {
-            for(let i = 0; i < columns.length; i++){
-                if (columns[i] === column){
-                    if (theGame.isPossibleMove(i)) {
-                        theGame.playerMove(i + 1)
-                        break
-                    } else {
-                        console.log("Move not possible")
-                    }
-                }
-            }
-        }, false)
-    })
+    }
 
     function highlightWin(type, x, y){
         type == "H" ? horizontalHighlight(x, y) : type == "V" ? verticalHighlight(x, y) : diagonalHighlight(x, y, type == "RL" ? 135 : 45)
@@ -165,6 +118,61 @@ let setup = (function(){
         transform.appendChild(highlight)
         winHighlightArea.appendChild(transform)
     }
+
+    // Setup code
+    (() => {
+        window.addEventListener('resize', () => {
+            ensureScreenSize()
+        }, false)
+
+        ensureScreenSize()
+
+        restartButton.addEventListener('click', () => {
+            restartButton.disabled = true
+            //remove highlights
+            while (winHighlightArea.firstChild) winHighlightArea.removeChild(winHighlightArea.firstChild)
+            //animate discs down and out
+            discArea.classList.add("moveOut")
+            perspective.classList.add("active")
+            setTimeout(() => {
+                restartButton.disabled = false
+                //Update button
+                restartButton.classList.remove("newGame")
+                restartButton.innerHTML = "Restart"
+                //remove discs
+                while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
+                discArea.classList.remove("moveOut")
+                perspective.classList.remove("active")
+                //remove deslectAll
+                connectFourArea.classList.remove("deselectAll")
+                //remove all deselects
+                for (let disc of discArea.childNodes) {
+                    disc.classList.remove("deselect")
+                }
+                //remove win classes and return to normal
+                document.body.classList.remove("redWin")
+                document.body.classList.remove("yellowWin")
+                document.body.classList.add("switch")
+                //new game
+                theGame = new Play(2)
+            }, 1500)
+        }, false)
+
+        for (let column of columns) {
+            column.addEventListener('click', () => {
+                for(let i = 0; i < columns.length; i++){
+                    if (columns[i] === column){
+                        if (theGame.isPossibleMove(i)) {
+                            theGame.playerMove(i + 1)
+                            break
+                        } else {
+                            console.log("Move not possible")
+                        }
+                    }
+                }
+            }, false)
+        }
+    })();
 
 })()
 
