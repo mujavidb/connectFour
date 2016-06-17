@@ -1,7 +1,7 @@
 //TODO: Add background to game
 //TODO: Structure JS correctly
 //TODO: Compatible for iOS8
-//TODO: Add ability to play opponents online
+//TODO: Add ability to play opponents online, yes
 
 let addDiscToBoard
 
