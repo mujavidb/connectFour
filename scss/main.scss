@@ -87,7 +87,7 @@ h1, h2, h3, h4, h5 {
     outline:none;
     position: relative;
     width: 12.5%;
-    height: 532px;
+    height: 540px;
     min-height: 228px;
     padding: 0;
 }
@@ -105,7 +105,7 @@ h1, h2, h3, h4, h5 {
     background-image: url($yellowDisc);
     background-repeat: no-repeat;
     background-size: contain;
-    left: 8%;
+    left: 10%;
     top: -80px;
 }
 
@@ -115,15 +115,15 @@ h1, h2, h3, h4, h5 {
 }
 
 .column:active::after {
-    transform: translateY(10px);
+    transform: translateY(8px);
 }
 
 .column:first-child {
-    margin-left: 3.6%;
+    margin-left: 2.3%;
 }
 
 .column:last-child {
-    margin-right: 3.6%;
+    margin-right: 2.3%;
 }
 
 @media (max-width:880px){
@@ -193,7 +193,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .gameInfo {
-    margin: 15px auto 15px;
+    margin: 24px auto;
     text-align: center;
     background: linear-gradient(to right, $redDiscFore, $yellowDiscFore);
     border-radius: 20px;
@@ -206,8 +206,8 @@ h1, h2, h3, h4, h5 {
     padding: 15px 20px;
     position: relative;
     min-width: 280px;
-    max-width: 680px;
-    width: calc(80% - 20px);
+    max-width: 700px;
+    width: 80%;
     height: auto;
 }
 
@@ -357,31 +357,49 @@ h1, h2, h3, h4, h5 {
     }
 }
 
-.restartGame {
-    width: 200px;
-    padding: 15px;
+.buttonArea {
+    width: 60%;
+    max-width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+    align-content: stretch;
+}
+
+.buttonArea button {
+    padding: 15px 40px;
     outline: medium none;
     border: medium none;
-    box-shadow: 0 -5px $restartGreenShadow;
     border-radius: 10px;
     font-size: 20px;
     font-weight: 600;
     color: white;
-    background-color: $restartGreenFore;
-    margin: 0 auto;
     display: block;
     transition: background-color 0.3s ease;
 }
 
-.restartGame:hover {
+.buttonArea button:hover {
     cursor: pointer;
-    box-shadow: 0 -4px $restartGreenShadow;
     transform: translateY(-1px);
+}
+
+.buttonArea button:active {
+    cursor: pointer;
+    transform: translateY(-5px);
+}
+
+.restartGame {
+    background-color: $restartGreenFore;
+    box-shadow: 0 -5px $restartGreenShadow;
+}
+
+.restartGame:hover {
+    box-shadow: 0 -4px $restartGreenShadow;
 }
 
 .restartGame:active {
     box-shadow: 0 0 $restartGreenShadow;
-    transform: translateY(-5px);
 }
 
 .buttonArea .restartGame:disabled {

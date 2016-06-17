@@ -37,25 +37,25 @@
             <button class="column"></button>
         </div>
 
-        <svg id="discArea" class="discArea" viewBox="0 0 788 600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg id="discArea" class="discArea" viewBox="0 0 788 607" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <defs>
                 <clipPath id="clipBottom">
-        		    <rect x="14" y="0" width="760" height="25"></rect>
+        		    <rect x="0" y="0" width="788" height="25"></rect>
         		</clipPath>
             </defs>
 
             <g class="perspective">
                 <g class="perspectiveChild">
 
-                    <image id="boardShadows" x="10" y="1" width="768" height="580" xlink:href="img/boardShadows.svg"></image>
+                    <image id="boardShadows" x="0" y="3" width="788" height="600" xlink:href="img/boardShadows.svg"></image>
 
                     <!-- TODO: Add mask to fade out dropping discs -->
-                    <g id="discAreaGroup" transform="translate(10 5) scale(0.9746 0.9667)"></g>
+                    <g id="discAreaGroup" transform="translate(0 8)"></g>
 
-                    <rect x="14" y="0" width="760" height="50" ry="20" rx="20" fill="#29799E" clip-path="url(#clipBottom)"></rect>
-                    <image x="10" y="5" width="768" height="580" xlink:href="img/board.svg"></image>
+                    <rect x="0" y="0" width="788" height="50" ry="20" rx="20" fill="#29799E" clip-path="url(#clipBottom)"></rect>
+                    <image x="0" y="7" width="788" height="600" xlink:href="img/board.svg"></image>
 
-                    <g id="winHighlight" class="winHighlightArea" transform="translate(10 5) scale(0.9746 0.9667)"></g>
+                    <g id="winHighlight" class="winHighlightArea" transform="translate(0 7)"></g>
                 </g>
             </g>
         </svg>
@@ -76,7 +76,9 @@
         <div class="yellowScore"><h5 id="yellowScore">0</h5></div>
     </div>
     <div class="buttonArea">
+        <button class="playOnline">Play Online</button>
         <button class="restartGame">New Game</button>
+        <button class="settings">Settings</button>
     </div>
 
     <div class="modalWindow">

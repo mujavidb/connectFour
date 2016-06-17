@@ -3,7 +3,6 @@
 //TODO: Compatible for iOS8
 //TODO: Add ability to play opponents online, yes
 //TODO: Structure CSS
-//TODO: Fix board spaces
 //TODO: Utilise lobotomised owl for spacing and switch to REMs
 
 let addDiscToBoard
