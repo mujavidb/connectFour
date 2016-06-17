@@ -1,13 +1,17 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);
 
 // Variables
-$redDiscFore: #B83549;
-$redDiscBack: #FF7590;
-$yellowDiscFore: #EE7C0D;
-$yellowDiscBack: #FFAD00;
+$mainBackground: #22355E;
+$redDiscFore: #b23548;
+$redDiscForeDark: #7b2431;
+$redDiscBack: #ff6684;
+$yellowDiscFore: #E59139;
+$yellowDiscForeDark: #935d24;
+$yellowDiscBack: #ffd932;
 $redDisc: "../img/red_disc.svg";
 $yellowDisc: "../img/yellow_disc.svg";
-$boardShadow: rgb(114, 180, 211);
+$boardFore: #5EAACD;
+$boardShadow: #29799E;
 $gameInfoBoard: #a8b4cf;
 $gameInfoShadow: #7a8aae;
 $restartGreenFore: rgb(38, 180, 146);
@@ -22,6 +26,7 @@ body {
 	-moz-osx-font-smoothing: grayscale;
     margin:0;
     position: relative;
+    background-color: $mainBackground;
 }
 
 h1, h2, h3, h4, h5 {
@@ -121,13 +126,6 @@ h1, h2, h3, h4, h5 {
     margin-right: 3.6%;
 }
 
-.boardSinglet {
-    fill: #9CD2EA;
-    stroke: none;
-    fill-rule: evenodd;
-}
-
-
 @media (max-width:880px){
     .column {
         height: calc( (80vw + 1vw) /8 * 6 );
@@ -197,7 +195,7 @@ h1, h2, h3, h4, h5 {
 .gameInfo {
     margin: 15px auto 15px;
     text-align: center;
-    background-color: $gameInfoBoard;
+    background: linear-gradient(to right, $redDiscFore, $yellowDiscFore);
     border-radius: 20px;
     display: flex;
     justify-content: space-between;
@@ -206,12 +204,27 @@ h1, h2, h3, h4, h5 {
     flex-direction: row;
     box-sizing: border-box;
     padding: 15px 20px;
-    box-shadow: 0 -5px $gameInfoShadow;
     position: relative;
     min-width: 280px;
     max-width: 680px;
     width: calc(80% - 20px);
     height: auto;
+}
+
+.gameInfo::before {
+    background: linear-gradient(to right, $redDiscForeDark, $yellowDiscForeDark);
+    content: '';
+    border-radius: 20px;
+    position: absolute;
+    left: 0%;
+    top: -5px;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+}
+
+.gameInfo::after {
+    content: ""
 }
 
 .redScore,
@@ -225,6 +238,8 @@ h1, h2, h3, h4, h5 {
     display: flex;
     align-content: center;
     align-items: center;
+    z-index:0;
+    position: relative;
 }
 
 .redScore {
@@ -235,6 +250,24 @@ h1, h2, h3, h4, h5 {
 .yellowScore {
     background-color: $yellowDiscFore;
     border: 4px solid $yellowDiscBack;
+}
+
+@keyframes turnMark {
+    from { box-shadow: 0px 0px 0px 3px white;}
+    to { box-shadow: 0px 0px 0px 0px white;}
+}
+
+.yellowScore,
+.switch .redScore {
+    animation-name: turnMark;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+}
+
+.switch .yellowScore {
+    animation: none;
 }
 
 .redScore h5,
@@ -250,44 +283,48 @@ h1, h2, h3, h4, h5 {
     font-size: 32px;
 }
 
-.turnMessages {
-    .red {
-        display: none;
-    }
-    .yellow {
-        display: block;
-    }
+@keyframes wiggle {
+    0% { transform: translateX(3px);}
+    33% { transform: translateX(-3px); }
+    67% { transform: translateX(3px); }
+    100% { transform: translateX(0px); }
 }
 
-.switch .turnMessages{
-    .red {
-        display: block;
-    }
-    .yellow {
-        display: none;
-    }
+.turnMessages .red,
+.switch .turnMessages .yellow {
+    display: none;
 }
 
-.winMessages {
-    .red {
-        display: none;
-    }
-    .yellow {
-        display: none;
-    }
+.turnMessages .yellow,
+.switch .turnMessages .red {
+    display: block;
+    animation-name: wiggle;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
 }
 
+.winMessages .red,
+.winMessages .yellow,
 .redWin .turnMessages,
 .yellowWin .turnMessages {
     display: none;
 }
 
-.redWin .winMessages .red {
-    display: block;
+@keyframes bigWiggle {
+    0% { transform: translateX(6px);}
+    33% { transform: translateX(-6px); }
+    67% { transform: translateX(6px); }
+    100% { transform: translateX(0px); }
 }
 
+.redWin .winMessages .red,
 .yellowWin .winMessages .yellow {
     display: block;
+    animation-name: wiggle;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
 }
 
 .buttonArea {
@@ -302,9 +339,12 @@ h1, h2, h3, h4, h5 {
 
 @media (max-width:540px){
     .gameInfo {
-        padding: 2.5vw 3vw;
+        padding: 2.5vw 0;
         border-radius: 3vw;
-        box-shadow: 0 -3px $gameInfoShadow;
+    }
+    .gameInfo::before {
+        top: -4px;
+        border-radius: 3vw;
     }
     .redScore h5,
     .yellowScore h5 {
@@ -322,12 +362,12 @@ h1, h2, h3, h4, h5 {
     padding: 15px;
     outline: medium none;
     border: medium none;
-    box-shadow: 0 -5px $restartBlueShadow;
+    box-shadow: 0 -5px $restartGreenShadow;
     border-radius: 10px;
     font-size: 20px;
     font-weight: 600;
     color: white;
-    background-color: $restartBlueFore;
+    background-color: $restartGreenFore;
     margin: 0 auto;
     display: block;
     transition: background-color 0.3s ease;
@@ -335,12 +375,12 @@ h1, h2, h3, h4, h5 {
 
 .restartGame:hover {
     cursor: pointer;
-    box-shadow: 0 -4px $restartBlueShadow;
+    box-shadow: 0 -4px $restartGreenShadow;
     transform: translateY(-1px);
 }
 
 .restartGame:active {
-    box-shadow: 0 0 $restartBlueShadow;
+    box-shadow: 0 0 $restartGreenShadow;
     transform: translateY(-5px);
 }
 
@@ -361,45 +401,20 @@ h1, h2, h3, h4, h5 {
     left: 7%;
 }
 
-.restartGame.newGame {
-    background-color: $restartGreenFore;
-    box-shadow: 0 -5px $restartGreenShadow;
-}
-
-.restartGame.newGame:hover {
-    box-shadow: 0 -4px $restartGreenShadow;
-}
-
-.restartGame.newGame:active {
-    box-shadow: 0 0 $restartGreenShadow;
-}
-
 @media (max-width:540px){
     .restartGame {
         width: 150px;
         padding: 10px;
         border-radius: 6px;
         font-size: 16px;
-        box-shadow: 0 -3px $restartBlueShadow;
-    }
-    .restartGame:hover {
-        box-shadow: 0 -2px $restartBlueShadow;
-    }
-
-    .restartGame:active {
-        box-shadow: 0 0 $restartBlueShadow;
-        transform: translateY(-3px);
-    }
-    .restartGame.newGame {
         box-shadow: 0 -3px $restartGreenShadow;
     }
-
-    .restartGame.newGame:hover {
+    .restartGame:hover {
         box-shadow: 0 -2px $restartGreenShadow;
     }
-
-    .restartGame.newGame:active {
+    .restartGame:active {
         box-shadow: 0 0 $restartGreenShadow;
+        transform: translateY(-3px);
     }
     .buttonArea .restartGame:disabled::before {
         display: none;

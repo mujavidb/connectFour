@@ -1,7 +1,7 @@
 <svg width="788" height="600" viewBox="0 0 788 600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <style>
         .boardSinglet {
-            fill: #9CD2EA;
+            fill: #5EAACD;
             stroke: none;
             fill-rule: evenodd;
         }
@@ -37,6 +37,6 @@
 		<use xlink:href="#singleColumn" transform="translate(658 0)"></use>
 	</g>
 	<g id="boardBorder" stroke="none" fill="none" fill-rule="evenodd" transform="translate(18, 18)" stroke-linejoin="round">
-	    <use id="Rectangle-1" stroke="#9CD1EA" mask="url(#mask-2)" stroke-width="36" xlink:href="#path-1"></use>
+	    <use id="Rectangle-1" stroke="#5EAACD" mask="url(#mask-2)" stroke-width="36" xlink:href="#path-1"></use>
 	</g>
 </svg>

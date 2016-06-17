@@ -2,6 +2,9 @@
 //TODO: Structure JS correctly
 //TODO: Compatible for iOS8
 //TODO: Add ability to play opponents online, yes
+//TODO: Structure CSS
+//TODO: Fix board spaces
+//TODO: Utilise lobotomised owl for spacing and switch to REMs
 
 let addDiscToBoard
 
@@ -43,8 +46,6 @@ let setup = (() => {
             setTimeout(() => {
                 connectFourArea.classList.add("deselectAll")
                 document.body.classList.add( player == 1 ? "redWin" : "yellowWin" )
-                restartButton.classList.add("newGame")
-                restartButton.innerHTML = "New Game"
                 highlightWin(theGame.winningSequence.type, theGame.winningSequence.x, theGame.winningSequence.y)
                 if (player == 1) {
                     redScore.innerHTML = `${ parseInt(redScore.innerHTML) + 1}`
@@ -61,7 +62,7 @@ let setup = (() => {
     }
 
     function ensureScreenSize(){
-        if (screen.width < 350) {
+        if (screen.width < 320) {
             modal.classList.add("show")
         } else {
             modal.classList.remove("show")
@@ -118,13 +119,21 @@ let setup = (() => {
         winHighlightArea.appendChild(transform)
     }
 
+    function ensureColumnHeight(){
+        for (let column of columns) {
+            column.style.height = `calc( ${discSVG.style.height} - 20px )`
+        }
+    }
+
     // Setup code
     (() => {
         window.addEventListener('resize', () => {
             ensureScreenSize()
+            ensureColumnHeight()
         }, false)
 
         ensureScreenSize()
+        ensureColumnHeight()
 
         restartButton.addEventListener('click', () => {
             restartButton.disabled = true
@@ -135,9 +144,6 @@ let setup = (() => {
             perspective.classList.add("active")
             setTimeout(() => {
                 restartButton.disabled = false
-                //Update button
-                restartButton.classList.remove("newGame")
-                restartButton.innerHTML = "Restart"
                 //remove discs
                 while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
                 discArea.classList.remove("moveOut")

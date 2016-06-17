@@ -5,7 +5,8 @@ body {
   text-rendering: optimizelegibility;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
-  position: relative; }
+  position: relative;
+  background-color: #22355E; }
 
 h1, h2, h3, h4, h5 {
   font-weight: 600;
@@ -90,11 +91,6 @@ h1, h2, h3, h4, h5 {
 .column:last-child {
   margin-right: 3.6%; }
 
-.boardSinglet {
-  fill: #9CD2EA;
-  stroke: none;
-  fill-rule: evenodd; }
-
 @media (max-width: 880px) {
   .column {
     height: calc( (80vw + 1vw) /8 * 6 ); }
@@ -149,7 +145,7 @@ h1, h2, h3, h4, h5 {
 .gameInfo {
   margin: 15px auto 15px;
   text-align: center;
-  background-color: #a8b4cf;
+  background: linear-gradient(to right, #b23548, #E59139);
   border-radius: 20px;
   display: flex;
   justify-content: space-between;
@@ -158,12 +154,25 @@ h1, h2, h3, h4, h5 {
   flex-direction: row;
   box-sizing: border-box;
   padding: 15px 20px;
-  box-shadow: 0 -5px #7a8aae;
   position: relative;
   min-width: 280px;
   max-width: 680px;
   width: calc(80% - 20px);
   height: auto; }
+
+.gameInfo::before {
+  background: linear-gradient(to right, #7b2431, #935d24);
+  content: '';
+  border-radius: 20px;
+  position: absolute;
+  left: 0%;
+  top: -5px;
+  width: 100%;
+  height: 100%;
+  z-index: -10; }
+
+.gameInfo::after {
+  content: ""; }
 
 .redScore,
 .yellowScore {
@@ -175,15 +184,33 @@ h1, h2, h3, h4, h5 {
   text-align: center;
   display: flex;
   align-content: center;
-  align-items: center; }
+  align-items: center;
+  z-index: 0;
+  position: relative; }
 
 .redScore {
-  background-color: #B83549;
-  border: 4px solid #FF7590; }
+  background-color: #b23548;
+  border: 4px solid #ff6684; }
 
 .yellowScore {
-  background-color: #EE7C0D;
-  border: 4px solid #FFAD00; }
+  background-color: #E59139;
+  border: 4px solid #ffd932; }
+
+@keyframes turnMark {
+  from {
+    box-shadow: 0px 0px 0px 3px white; }
+  to {
+    box-shadow: 0px 0px 0px 0px white; } }
+.yellowScore,
+.switch .redScore {
+  animation-name: turnMark;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-direction: alternate;
+  animation-iteration-count: infinite; }
+
+.switch .yellowScore {
+  animation: none; }
 
 .redScore h5,
 .yellowScore h5 {
@@ -196,30 +223,49 @@ h1, h2, h3, h4, h5 {
   margin: 0;
   font-size: 32px; }
 
-.turnMessages .red {
-  display: none; }
-.turnMessages .yellow {
-  display: block; }
-
-.switch .turnMessages .red {
-  display: block; }
+@keyframes wiggle {
+  0% {
+    transform: translateX(3px); }
+  33% {
+    transform: translateX(-3px); }
+  67% {
+    transform: translateX(3px); }
+  100% {
+    transform: translateX(0px); } }
+.turnMessages .red,
 .switch .turnMessages .yellow {
   display: none; }
 
-.winMessages .red {
-  display: none; }
-.winMessages .yellow {
-  display: none; }
+.turnMessages .yellow,
+.switch .turnMessages .red {
+  display: block;
+  animation-name: wiggle;
+  animation-duration: 0.1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1; }
 
+.winMessages .red,
+.winMessages .yellow,
 .redWin .turnMessages,
 .yellowWin .turnMessages {
   display: none; }
 
-.redWin .winMessages .red {
-  display: block; }
-
+@keyframes bigWiggle {
+  0% {
+    transform: translateX(6px); }
+  33% {
+    transform: translateX(-6px); }
+  67% {
+    transform: translateX(6px); }
+  100% {
+    transform: translateX(0px); } }
+.redWin .winMessages .red,
 .yellowWin .winMessages .yellow {
-  display: block; }
+  display: block;
+  animation-name: wiggle;
+  animation-duration: 0.1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1; }
 
 .buttonArea {
   margin: 5px auto 0; }
@@ -229,9 +275,12 @@ h1, h2, h3, h4, h5 {
     font-size: 4vw; } }
 @media (max-width: 540px) {
   .gameInfo {
-    padding: 2.5vw 3vw;
-    border-radius: 3vw;
-    box-shadow: 0 -3px #7a8aae; }
+    padding: 2.5vw 0;
+    border-radius: 3vw; }
+
+  .gameInfo::before {
+    top: -4px;
+    border-radius: 3vw; }
 
   .redScore h5,
   .yellowScore h5 {
@@ -244,23 +293,23 @@ h1, h2, h3, h4, h5 {
   padding: 15px;
   outline: medium none;
   border: medium none;
-  box-shadow: 0 -5px #2a87c2;
+  box-shadow: 0 -5px #179174;
   border-radius: 10px;
   font-size: 20px;
   font-weight: 600;
   color: white;
-  background-color: #57a9dd;
+  background-color: #26b492;
   margin: 0 auto;
   display: block;
   transition: background-color 0.3s ease; }
 
 .restartGame:hover {
   cursor: pointer;
-  box-shadow: 0 -4px #2a87c2;
+  box-shadow: 0 -4px #179174;
   transform: translateY(-1px); }
 
 .restartGame:active {
-  box-shadow: 0 0 #2a87c2;
+  box-shadow: 0 0 #179174;
   transform: translateY(-5px); }
 
 .buttonArea .restartGame:disabled {
@@ -277,39 +326,20 @@ h1, h2, h3, h4, h5 {
 .redWin .restartGame:disabled::before {
   left: 7%; }
 
-.restartGame.newGame {
-  background-color: #26b492;
-  box-shadow: 0 -5px #179174; }
-
-.restartGame.newGame:hover {
-  box-shadow: 0 -4px #179174; }
-
-.restartGame.newGame:active {
-  box-shadow: 0 0 #179174; }
-
 @media (max-width: 540px) {
   .restartGame {
     width: 150px;
     padding: 10px;
     border-radius: 6px;
     font-size: 16px;
-    box-shadow: 0 -3px #2a87c2; }
-
-  .restartGame:hover {
-    box-shadow: 0 -2px #2a87c2; }
-
-  .restartGame:active {
-    box-shadow: 0 0 #2a87c2;
-    transform: translateY(-3px); }
-
-  .restartGame.newGame {
     box-shadow: 0 -3px #179174; }
 
-  .restartGame.newGame:hover {
+  .restartGame:hover {
     box-shadow: 0 -2px #179174; }
 
-  .restartGame.newGame:active {
-    box-shadow: 0 0 #179174; }
+  .restartGame:active {
+    box-shadow: 0 0 #179174;
+    transform: translateY(-3px); }
 
   .buttonArea .restartGame:disabled::before {
     display: none; } }
