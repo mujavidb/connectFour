@@ -59,12 +59,14 @@ h1, h2, h3, h4, h5 {
   position: relative;
   width: 12.5%;
   height: 532px;
-  min-height: 228px; }
+  min-height: 228px;
+  padding: 0; }
 
 .column:hover {
   cursor: pointer; }
 
-.column:hover::after {
+.column:hover::after,
+.column:active::after {
   content: '';
   position: absolute;
   width: 80.85%;
@@ -72,17 +74,21 @@ h1, h2, h3, h4, h5 {
   background-image: url("../img/yellow_disc.svg");
   background-repeat: no-repeat;
   background-size: contain;
-  left: 9.57%;
+  left: 8%;
   top: -80px; }
 
-.switch .column:hover::after {
+.switch .column:hover::after,
+.switch .column:active::after {
   background-image: url("../img/red_disc.svg"); }
 
+.column:active::after {
+  transform: translateY(10px); }
+
 .column:first-child {
-  margin-left: 2.3%; }
+  margin-left: 3.6%; }
 
 .column:last-child {
-  margin-right: 2.3%; }
+  margin-right: 3.6%; }
 
 .boardSinglet {
   fill: #9CD2EA;

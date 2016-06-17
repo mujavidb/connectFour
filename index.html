@@ -40,21 +40,22 @@
         <svg id="discArea" class="discArea" viewBox="0 0 788 600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <defs>
                 <clipPath id="clipBottom">
-        		    <rect x="14" y="5" width="760" height="25"></rect>
+        		    <rect x="14" y="0" width="760" height="25"></rect>
         		</clipPath>
             </defs>
 
             <g class="perspective">
                 <g class="perspectiveChild">
 
-                    <rect x="14" y="4" width="760" height="50" ry="20" rx="20" fill="rgb(114, 180, 211)" clip-path="url(#clipBottom)"></rect>
-                    <image id="boardShadows" x="10" y="6" width="768" height="580" xlink:href="img/boardShadows.svg"></image>
+                    <image id="boardShadows" x="10" y="1" width="768" height="580" xlink:href="img/boardShadows.svg"></image>
 
-                    <g id="discAreaGroup" transform="translate(10 10) scale(0.9746 0.9667)"></g>
+                    <!-- TODO: Add mask to fade out dropping discs -->
+                    <g id="discAreaGroup" transform="translate(10 5) scale(0.9746 0.9667)"></g>
 
-                    <image id="boardShadows" x="10" y="10" width="768" height="580" xlink:href="img/board.svg"></image>
+                    <rect x="14" y="0" width="760" height="50" ry="20" rx="20" fill="rgb(114, 180, 211)" clip-path="url(#clipBottom)"></rect>
+                    <image x="10" y="5" width="768" height="580" xlink:href="img/board.svg"></image>
 
-                    <g id="winHighlight" class="winHighlightArea" transform="translate(10 10) scale(0.9746 0.9667)"></g>
+                    <g id="winHighlight" class="winHighlightArea" transform="translate(10 5) scale(0.9746 0.9667)"></g>
                 </g>
             </g>
         </svg>
