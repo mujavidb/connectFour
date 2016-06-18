@@ -1,0 +1,26 @@
+//Mixins
+
+@mixin buttonStyleExtrude($className, $foreColor, $shadowColor){
+    #{$className} {
+        background-color: $foreColor;
+        box-shadow: 0 -5px $shadowColor;
+    }
+    #{$className}:hover {
+        box-shadow: 0 -4px $shadowColor;
+    }
+    #{$className}:active {
+        box-shadow: 0 0 $shadowColor;
+    }
+    @media (max-width:540px){
+        #{$className} {
+            box-shadow: 0 -3px $shadowColor;
+        }
+        #{$className}:hover {
+            box-shadow: 0 -2px $shadowColor;
+        }
+        #{$className}:active {
+            box-shadow: 0 0 $shadowColor;
+            transform: translateY(-3px);
+        }
+    }
+}
