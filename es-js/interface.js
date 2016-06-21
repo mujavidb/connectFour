@@ -1,25 +1,35 @@
-//TODO: Add background to game
+//TODO: Internationalise
+//TODO: Document
+//TODO: Add github url
 //TODO: Structure JS correctly
 //TODO: Compatible for iOS8
 //TODO: Add ability to play opponents online, yes
 //TODO: Structure CSS, yes
 
+function _$(x) {
+    return document.querySelector(x);
+}
+
+function _$$(x) {
+    return document.querySelectorAll(x)
+}
+
 let addDiscToBoard
 
 let setup = (() => {
 
-    let theGame = new Play(2)
-    let connectFourArea = document.getElementsByClassName("gameContainer")[0]
-    let columns = document.querySelectorAll('.column')
-    let discSVG = document.getElementById('discArea')
-    let discArea = document.getElementById('discAreaGroup')
-    let winHighlightArea = document.getElementById("winHighlight")
-    let redScore = document.getElementById("redScore")
-    let yellowScore = document.getElementById("yellowScore")
-    let perspective = document.getElementsByClassName("perspectiveChild")[0]
-    let restartButton = document.getElementsByClassName("restartGame")[0]
-    let modal = document.getElementsByClassName("modalOverlay")[0]
-    let svgNS = "http://www.w3.org/2000/svg"
+    let theGame = new OfflineGame(2)
+    const connectFourArea = _$(".gameContainer")
+    const columns = _$$('.column')
+    const discSVG = _$('#discArea')
+    const discArea = _$('#discAreaGroup')
+    const winHighlightArea = _$("#winHighlight")
+    const redScore = _$("#redScore")
+    const yellowScore = _$("#yellowScore")
+    const perspective = _$(".perspectiveChild")
+    const restartButton = _$(".restartGame")
+    const playOnline = _$('.playOnline')
+    const svgNS = "http://www.w3.org/2000/svg"
 
     function animateDiscDown(disc, y){
         const finalLocation = 18 + (5 - y) * 94 + 7
@@ -61,9 +71,9 @@ let setup = (() => {
 
     function ensureScreenSize(){
         if (screen.width < 320) {
-            modal.classList.add("show")
+            _$(".screenSize").classList.add("show")
         } else {
-            modal.classList.remove("show")
+            _$(".screenSize").classList.remove("show")
         }
     }
 
@@ -117,49 +127,77 @@ let setup = (() => {
         winHighlightArea.appendChild(transform)
     }
 
-    function ensureColumnHeight(){
-        for (let column of columns) {
-            column.style.height = `calc( ${discSVG.style.height} - 20px )`
-        }
+    function restartGame(isOnline){
+        restartButton.disabled = true
+        //remove highlights
+        while (winHighlightArea.firstChild) winHighlightArea.removeChild(winHighlightArea.firstChild)
+        //animate discs down and out
+        discArea.classList.add("moveOut")
+        perspective.classList.add("active")
+        setTimeout(() => {
+            restartButton.disabled = false
+            //remove discs
+            while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
+            discArea.classList.remove("moveOut")
+            perspective.classList.remove("active")
+            //remove deslectAll
+            connectFourArea.classList.remove("deselectAll")
+            //remove all deselects
+            for (let disc of discArea.childNodes) {
+                disc.classList.remove("deselect")
+            }
+            //remove win classes and return to normal
+            document.body.classList.remove("redWin")
+            document.body.classList.remove("yellowWin")
+            document.body.classList.add("switch")
+            //new game
+            if (isOnline){
+                if (theGame.isOnline){
+                    theGame.internalRestart()
+                } else {
+                    theGame = new OnlineGame(2)
+                }
+            } else {
+                theGame = new OfflineGame(2)
+            }
+        }, 1500)
     }
 
     // Setup code
     (() => {
         window.addEventListener('resize', () => {
             ensureScreenSize()
-            ensureColumnHeight()
         }, false)
 
         ensureScreenSize()
-        ensureColumnHeight()
 
         restartButton.addEventListener('click', () => {
-            restartButton.disabled = true
-            //remove highlights
-            while (winHighlightArea.firstChild) winHighlightArea.removeChild(winHighlightArea.firstChild)
-            //animate discs down and out
-            discArea.classList.add("moveOut")
-            perspective.classList.add("active")
-            setTimeout(() => {
-                restartButton.disabled = false
-                //remove discs
-                while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
-                discArea.classList.remove("moveOut")
-                perspective.classList.remove("active")
-                //remove deslectAll
-                connectFourArea.classList.remove("deselectAll")
-                //remove all deselects
-                for (let disc of discArea.childNodes) {
-                    disc.classList.remove("deselect")
-                }
-                //remove win classes and return to normal
-                document.body.classList.remove("redWin")
-                document.body.classList.remove("yellowWin")
-                document.body.classList.add("switch")
-                //new game
-                theGame = new Play(2)
-            }, 1500)
+            restartGame(false)
         }, false)
+
+        playOnline.addEventListener('click', () => {
+            _$('.startOnline').classList.add("show")
+        }, false)
+
+        _$('.slideOptions_choices .random').addEventListener('click', () => {
+            _$('.startOnline .slideOptions').classList.add('random')
+            restartGame(true)
+        }, false)
+
+        _$(".cancelRandomSearch").addEventListener("click", () => {
+            //cancel actual searching
+            _$(".close").parentNode.classList.remove("show")
+            _$('.startOnline .slideOptions').classList.remove('random')
+            _$('.startOnline .slideOptions').classList.remove('friend')
+        }, false)
+
+        for (let button of document.querySelectorAll('button.close')) {
+            button.addEventListener('click', () => {
+                button.parentNode.classList.remove("show")
+                _$('.startOnline .slideOptions').classList.remove('random')
+                _$('.startOnline .slideOptions').classList.remove('friend')
+            }, false)
+        }
 
         for (let column of columns) {
             column.addEventListener('click', () => {

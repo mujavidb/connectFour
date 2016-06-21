@@ -1,12 +1,13 @@
 "use strict"
 
-class Play {
+class OfflineGame {
 
     constructor(players) {
         this.game = new GameBoard(8, 6, 4)
         this.players = Array.from(Array(players), (x, i) => i + 1)
         this.winningSequence = {}
         this.currentPlayer = 1
+        this.online = false
     }
 
 	isPossibleMove(column){

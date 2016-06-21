@@ -328,23 +328,10 @@ h1, h2, h3, h4, h5 {
 .buttonArea button {
     padding: 15px 40px;
     outline: medium none;
-    border: medium none;
-    border-radius: 10px;
     font-size: 20px;
     font-weight: 600;
     color: white;
     display: block;
-    transition: background-color 0.3s ease;
-}
-
-.buttonArea button:hover {
-    cursor: pointer;
-    transform: translateY(-1px);
-}
-
-.buttonArea button:active {
-    cursor: pointer;
-    transform: translateY(-5px);
 }
 
 @include buttonStyleExtrude(".playOnline", $onlineBlueFore, $onlineBlueShadow);
@@ -399,12 +386,12 @@ h1, h2, h3, h4, h5 {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.7);
     width: 100vw;
     height: 100vh;
     z-index: 20;
     opacity:0;
     visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.7);
     transition: visibility 0s linear 1s, opacity 0.3s ease;
 }
 
@@ -415,17 +402,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .modalContent {
-    box-sizing: border-box;
-    position: absolute;
-    top: 30vw;
-    left: 10%;
-    padding: 12vw 6vw;
-    width: 80%;
-    height: auto;
-    background-color: rgb(40, 174, 154);
-    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    transform: translateY(800px);
+    transform: translateY(300px);
     opacity: 0;
     transition: transform 0.3s ease, opacity 0.5s ease;
 }
@@ -436,9 +413,122 @@ h1, h2, h3, h4, h5 {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.modalContent h3 {
+.modalOverlay .close {
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    right: 10px;
+    z-index: 50;
+    background-image: url("../img/cross.svg");
+    background-color: transparent;
+    border: none;
+    background-size: contain;
+    cursor: pointer;
+    padding: 0;
+}
+
+.modalOverlay .close:hover {
+    background-image: url("../img/cross_hover.svg");
+}
+
+.screenSize .modalContent {
+    box-sizing: border-box;
+    margin: 10vw auto 0;
+    padding: 12vw 6vw;
+    width: 80%;
+    height: auto;
+    background-color: $restartGreenShadow;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.screenSize .modalContent h3 {
     color: rgba(255, 255, 255, 0.8);
     text-align: center;
     font-size: 6vw;
     margin: 0;
+}
+
+.startOnline {
+    background-color: $onlineOverlayBack;
+}
+
+.startOnline .modalContent {
+    box-sizing: border-box;
+    margin: 10vw auto 0;
+    padding: 40px;
+    width: 80%;
+    max-width: 700px;
+    height: auto;
+    background-color: $onlineOverlayFore;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}
+
+.startOnline .slideOptions,
+.startOnline .slideRandom,
+.startOnline .slideFriend {
+    display: none;
+}
+
+.show.startOnline .slideOptions {
+    display: block;
+}
+
+.show.startOnline .slideOptions.random {
+    display: none;
+}
+
+.startOnline .random + .slideRandom {
+    display: block;
+}
+
+.modalOverlay button {
+    padding: 10px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+@include buttonStyleExtrude(".cancelRandomSearch", $cancelRedFore, $cancelRedBack);
+
+.cancelRandomSearch {
+    margin: 0 auto;
+}
+
+.startOnline h2 {
+    font-size: 26px;
+    margin: 0 0 10px;
+}
+
+.startOnline .alias {
+    font-size: 24px;
+    color: #9DABFF;
+    line-height: 1.4;
+    margin: 0 0 25px;
+}
+
+.slideOptions_choices {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.slideOptions_choices .choice:first-child {
+    margin-right: 15px;
+}
+
+.slideOptions_choices .choice {
+    height:100px;
+    color: #4c4c4c;
+    background-color: white;
+    flex-grow: 1;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 20px;
 }

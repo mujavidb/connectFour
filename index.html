@@ -98,11 +98,28 @@
         <button class="restartGame">New Game</button>
     </div>
 
-    <div class="modalWindow">
-        <div class="modalOverlay">
-            <div class="modalContent">
-                <h3>To get started, please rotate your screen into the landscape position.</h3>
+    <div class="modalOverlay screenSize">
+        <div class="modalContent">
+            <h3>To get started, please rotate your screen into the landscape position.</h3>
+        </div>
+    </div>
+
+    <div class="modalOverlay startOnline">
+        <button class="close"></button>
+        <div class="modalContent">
+            <div class="slideOptions">
+                <h2>Your online alias is:</h2>
+                <h3 class="alias">monkeyButtFace</h2>
+                <div class="slideOptions_choices">
+                    <button class="choice random">Random</button>
+                    <button class="choice friends">Friends</button>
+                </div>
             </div>
+            <div class="slideRandom">
+                <h2>Finding you an opponent...</h2>
+                <button class="cancelRandomSearch">Cancel</button>
+            </div>
+            <div class="slideFriends"></div>
         </div>
     </div>
 
