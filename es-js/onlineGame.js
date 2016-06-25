@@ -32,10 +32,6 @@ class OnlineGame {
 
         this.socket.on('playerMove', this.onPlayerMove.bind(this));
 
-        //TODO: add listener for gameMove
-
-        // this.socket.on('onserverupdate', this.onUpdateRecieved.bind(this));
-
         // this.socket.on('error', this.onDisconnection.bind(this));
     }
 
@@ -53,13 +49,14 @@ class OnlineGame {
         console.log(this.opponent)
 
         //clear the modal
-        //update playOnline button
+        cancelSearchModal(false, true)
+
         //tell players whose turn it is
     }
 
     onPlayerMove(response){
-        if (response.restart) {
-            this.internalRestart()
+        if (response.restart){
+            restartGame(true, false)
         } else if (response.column && response.gameID == this.gameID) {
             this.playerMove(response.column)
         }
@@ -69,12 +66,13 @@ class OnlineGame {
         console.log(response.details)
     }
 
+    forceDisconnect() {
+        this.socket.disconnect()
+    }
+
     onDisconnection(){
         console.log(":: Sockets :: Disconnected from server")
-        this.isOnline = false
-        this.player.id = null
-        this.player.number = null
-        this.opponent.number = null
+        restartGame(false)
         //activate quitOnline setting
     }
 
@@ -88,8 +86,7 @@ class OnlineGame {
 
     playerMove(column) {
         if (this.game.isPossibleMove(column)) {
-            let userInput = column
-            this.game.addDisc(this.currentPlayer, userInput)
+            this.game.addDisc(this.currentPlayer, column)
 
             //if own turn, then send current move to other player
             if (this.isOwnTurn()) {
@@ -108,20 +105,23 @@ class OnlineGame {
                 addDiscToBoard(this.game.lastMove, this.currentPlayer, this.game.height)
             } else {
                 addDiscToBoard(this.game.lastMove, this.currentPlayer, this.game.height)
-                this.currentPlayer == this.players.length ? this.currentPlayer = 1 : this.currentPlayer++;
+                this.currentPlayer == this.players.length ? this.currentPlayer = 1 : this.currentPlayer++
             }
         }
     }
 
-    internalRestart() {
-        console.log("Internal restart requested")
+    requestRestart(){
         this.socket.emit('playerMove', {
             gameID: this.gameID,
             column: 0,
             restart: true
         })
+    }
+
+    internalRestart(sender) {
+        console.log("Internal restart requested")
         this.game = new GameBoard(8, 6, 4)
-        this.players = Array.from(Array(players), (x, i) => i + 1)
+        this.players = Array.from(Array(2), (x, i) => i + 1)
         this.winningSequence = {}
         this.currentPlayer = 1
         //flip coin to see who goes first

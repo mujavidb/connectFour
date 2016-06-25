@@ -354,10 +354,6 @@ var OnlineGame = function () {
 
             this.socket.on('playerMove', this.onPlayerMove.bind(this));
 
-            //TODO: add listener for gameMove
-
-            // this.socket.on('onserverupdate', this.onUpdateRecieved.bind(this));
-
             // this.socket.on('error', this.onDisconnection.bind(this));
         }
     }, {
@@ -377,14 +373,15 @@ var OnlineGame = function () {
             console.log(this.opponent);
 
             //clear the modal
-            //update playOnline button
+            cancelSearchModal(false, true);
+
             //tell players whose turn it is
         }
     }, {
         key: "onPlayerMove",
         value: function onPlayerMove(response) {
             if (response.restart) {
-                this.internalRestart();
+                restartGame(true, false);
             } else if (response.column && response.gameID == this.gameID) {
                 this.playerMove(response.column);
             }
@@ -395,13 +392,15 @@ var OnlineGame = function () {
             console.log(response.details);
         }
     }, {
+        key: "forceDisconnect",
+        value: function forceDisconnect() {
+            this.socket.disconnect();
+        }
+    }, {
         key: "onDisconnection",
         value: function onDisconnection() {
             console.log(":: Sockets :: Disconnected from server");
-            this.isOnline = false;
-            this.player.id = null;
-            this.player.number = null;
-            this.opponent.number = null;
+            restartGame(false);
             //activate quitOnline setting
         }
     }, {
@@ -418,8 +417,7 @@ var OnlineGame = function () {
         key: "playerMove",
         value: function playerMove(column) {
             if (this.game.isPossibleMove(column)) {
-                var userInput = column;
-                this.game.addDisc(this.currentPlayer, userInput);
+                this.game.addDisc(this.currentPlayer, column);
 
                 //if own turn, then send current move to other player
                 if (this.isOwnTurn()) {
@@ -443,16 +441,20 @@ var OnlineGame = function () {
             }
         }
     }, {
-        key: "internalRestart",
-        value: function internalRestart() {
-            console.log("Internal restart requested");
+        key: "requestRestart",
+        value: function requestRestart() {
             this.socket.emit('playerMove', {
                 gameID: this.gameID,
                 column: 0,
                 restart: true
             });
+        }
+    }, {
+        key: "internalRestart",
+        value: function internalRestart(sender) {
+            console.log("Internal restart requested");
             this.game = new GameBoard(8, 6, 4);
-            this.players = Array.from(Array(players), function (x, i) {
+            this.players = Array.from(Array(2), function (x, i) {
                 return i + 1;
             });
             this.winningSequence = {};
@@ -465,13 +467,16 @@ var OnlineGame = function () {
 }();
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 //TODO: Internationalise
 //TODO: Document
 //TODO: Add github url
 //TODO: Structure JS correctly
 //TODO: Compatible for iOS8
-//TODO: Add ability to play opponents online, yes
 //TODO: Structure CSS, yes
+//TODO: Allow for minification of selectors and variables across all files
+//TODO: Use npm for sass
 
 function _$(x) {
     return document.querySelector(x);
@@ -481,7 +486,28 @@ function _$$(x) {
     return document.querySelectorAll(x);
 }
 
-var addDiscToBoard = void 0;
+// http://stackoverflow.com/questions/7238177/how-to-detect-htmlcollection-nodelist-in-javascript
+function isNodeList(nodes) {
+    var stringRepr = Object.prototype.toString.call(nodes);
+
+    return (typeof nodes === 'undefined' ? 'undefined' : _typeof(nodes)) === 'object' && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(stringRepr) && typeof nodes.length === 'number' && (nodes.length === 0 || _typeof(nodes[0]) === "object" && nodes[0].nodeType > 0);
+}
+
+function _f(selected, modifier) {
+    if (isNodeList(selected)) {
+        Array.prototype.forEach.call(selected, modifier);
+    } else {
+        modifier(selected);
+    }
+}
+
+function p(x) {
+    console.log(x);
+}
+
+var addDiscToBoard = null;
+var restartGame = null;
+var cancelSearchModal = null;
 
 var setup = function () {
 
@@ -497,15 +523,7 @@ var setup = function () {
     var restartButton = _$(".restartGame");
     var playOnline = _$('.playOnline');
     var svgNS = "http://www.w3.org/2000/svg";
-
-    function animateDiscDown(disc, y) {
-        var finalLocation = 18 + (5 - y) * 94 + 7;
-        var transitionSpeed = 'transform ' + 0.3 / 5 * (5 - y) + 's ease-in';
-        disc.style.transition = transitionSpeed;
-        setTimeout(function () {
-            disc.style.transform = 'translateY(' + (finalLocation + 80) + 'px)';
-        }, 20);
-    }
+    var KEYCODE_ESC = 27;
 
     addDiscToBoard = function addDiscToBoard(location, player, maxHeight) {
         var disc = document.createElementNS(svgNS, "image");
@@ -535,6 +553,15 @@ var setup = function () {
             }
         }, 100 + 300 / 5 * (5 - location[0]));
     };
+
+    function animateDiscDown(disc, y) {
+        var finalLocation = 18 + (5 - y) * 94 + 7;
+        var transitionSpeed = 'transform ' + 0.3 / 5 * (5 - y) + 's ease-in';
+        disc.style.transition = transitionSpeed;
+        setTimeout(function () {
+            disc.style.transform = 'translateY(' + (finalLocation + 80) + 'px)';
+        }, 20);
+    }
 
     function ensureScreenSize() {
         if (screen.width < 320) {
@@ -569,7 +596,7 @@ var setup = function () {
         var boardHeight = 564;
         var left = 18 + x * width;
         var top = 18 + boardHeight - height - y * 94;
-        var highlight = createSVGHighlight(left, top, 94, 376, theGame.currentPlayer);
+        var highlight = createSVGHighlight(left, top, width, height, theGame.currentPlayer);
         winHighlightArea.appendChild(highlight);
     }
 
@@ -578,7 +605,7 @@ var setup = function () {
         var width = 376; // 4 * 94
         var left = 18 + y * height;
         var top = 18 + (6 - x - 1) * height;
-        var highlight = createSVGHighlight(left, top, 376, 94, theGame.currentPlayer);
+        var highlight = createSVGHighlight(left, top, width, height, theGame.currentPlayer);
         winHighlightArea.appendChild(highlight);
     }
 
@@ -594,8 +621,11 @@ var setup = function () {
         winHighlightArea.appendChild(transform);
     }
 
-    function restartGame(isOnline) {
+    restartGame = function restartGame(isOnline) {
+        var didInitiateRestart = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+
         restartButton.disabled = true;
+
         //remove highlights
         while (winHighlightArea.firstChild) {
             winHighlightArea.removeChild(winHighlightArea.firstChild);
@@ -641,33 +671,62 @@ var setup = function () {
             document.body.classList.remove("redWin");
             document.body.classList.remove("yellowWin");
             document.body.classList.add("switch");
-            //new game
+            //start a new game in model
             if (isOnline) {
                 if (theGame.isOnline) {
+                    if (didInitiateRestart) {
+                        theGame.requestRestart();
+                    }
                     theGame.internalRestart();
                 } else {
                     theGame = new OnlineGame(2);
                 }
             } else {
+                if (String(playOnline.classList).indexOf("quitOnline") > -1) {
+                    redScore.innerHTML = "0";
+                    yellowScore.innerHTML = "0";
+                    playOnline.classList.remove("quitOnline");
+                    playOnline.innerHTML = "Play Online";
+                }
                 theGame = new OfflineGame(2);
             }
         }, 1500);
-    }
+    };
+
+    cancelSearchModal = function cancelSearchModal(cancelGame) {
+        var goOnline = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+        _$(".close").parentNode.classList.remove("show");
+        _$('.startOnline .slideOptions').classList.remove('random');
+        _$('.startOnline .slideOptions').classList.remove('friend');
+        if (cancelGame) {
+            theGame.isOnline ? theGame = new OnlineGame(2) : theGame = new OfflineGame(2);
+        } else if (goOnline) {
+            redScore.innerHTML = "0";
+            yellowScore.innerHTML = "0";
+            playOnline.classList.add("quitOnline");
+            playOnline.innerHTML = "Quit Online";
+        }
+    };
 
     // Setup code
     (function () {
+        ensureScreenSize();
+
         window.addEventListener('resize', function () {
             ensureScreenSize();
         }, false);
 
-        ensureScreenSize();
-
         restartButton.addEventListener('click', function () {
-            restartGame(false);
+            restartGame(theGame.isOnline);
         }, false);
 
         playOnline.addEventListener('click', function () {
-            _$('.startOnline').classList.add("show");
+            if (String(playOnline.classList).indexOf("quitOnline") > -1) {
+                theGame.forceDisconnect();
+            } else {
+                _$('.startOnline').classList.add("show");
+            }
         }, false);
 
         _$('.slideOptions_choices .random').addEventListener('click', function () {
@@ -675,12 +734,24 @@ var setup = function () {
             restartGame(true);
         }, false);
 
+        document.onkeydown = function (event) {
+            if (event.keyCode == KEYCODE_ESC && String(_$(".startOnline").classList).indexOf("show") > -1) {
+                theGame.forceDisconnect();
+                cancelSearchModal(false);
+            }
+        };
+
         _$(".cancelRandomSearch").addEventListener("click", function () {
             //cancel actual searching
-            _$(".close").parentNode.classList.remove("show");
-            _$('.startOnline .slideOptions').classList.remove('random');
-            _$('.startOnline .slideOptions').classList.remove('friend');
+            cancelSearchModal(true);
         }, false);
+
+        _f(_$$("button.close"), function (button) {
+            button.addEventListener('click', function () {
+                theGame.forceDisconnect();
+                cancelSearchModal(false);
+            }, false);
+        });
 
         var _iteratorNormalCompletion2 = true;
         var _didIteratorError2 = false;
@@ -688,40 +759,7 @@ var setup = function () {
 
         try {
             var _loop = function _loop() {
-                var button = _step2.value;
-
-                button.addEventListener('click', function () {
-                    button.parentNode.classList.remove("show");
-                    _$('.startOnline .slideOptions').classList.remove('random');
-                    _$('.startOnline .slideOptions').classList.remove('friend');
-                }, false);
-            };
-
-            for (var _iterator2 = document.querySelectorAll('button.close')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                _loop();
-            }
-        } catch (err) {
-            _didIteratorError2 = true;
-            _iteratorError2 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                    _iterator2.return();
-                }
-            } finally {
-                if (_didIteratorError2) {
-                    throw _iteratorError2;
-                }
-            }
-        }
-
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
-
-        try {
-            var _loop2 = function _loop2() {
-                var column = _step3.value;
+                var column = _step2.value;
 
                 column.addEventListener('click', function () {
                     for (var i = 0; i < columns.length; i++) {
@@ -737,20 +775,20 @@ var setup = function () {
                 }, false);
             };
 
-            for (var _iterator3 = columns[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                _loop2();
+            for (var _iterator2 = columns[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                _loop();
             }
         } catch (err) {
-            _didIteratorError3 = true;
-            _iteratorError3 = err;
+            _didIteratorError2 = true;
+            _iteratorError2 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                    _iterator3.return();
+                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                    _iterator2.return();
                 }
             } finally {
-                if (_didIteratorError3) {
-                    throw _iteratorError3;
+                if (_didIteratorError2) {
+                    throw _iteratorError2;
                 }
             }
         }

@@ -20,6 +20,7 @@
     @media (max-width:540px){
         #{$className} {
             box-shadow: 0 -3px $shadowColor;
+            border-radius: 6px;
         }
         #{$className}:hover {
             box-shadow: 0 -2px $shadowColor;

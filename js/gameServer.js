@@ -18,7 +18,6 @@ gameServer.playerMove = function(senderID, moveDetails) {
 
 gameServer.createGame = function(player) {
 
-    //Create a new game instance
     var newGame = {
         id: UUID(),
         playerHost: player,
@@ -27,19 +26,19 @@ gameServer.createGame = function(player) {
     };
 
     //add to current games
-    this.games[newGame.id] = newGame;
-    this.gameCount++;
+    this.games[newGame.id] = newGame
+    this.gameCount++
 
     //tell game host that a game has been created
     player.emit("message", {
         details: `New game created for ${player.userID}`
     })
-    player.game = newGame;
-    player.hosting = true;
+    player.game = newGame
+    player.hosting = true
 
-    console.log(`Player ${player.userID} created a game with id ${player.game.id}`);
+    console.log(`Player ${player.userID} created a game with id ${player.game.id}`)
 
-    return newGame;
+    // return newGame;
 };
 
 gameServer.startGame = function(game) {
@@ -48,7 +47,7 @@ gameServer.startGame = function(game) {
     game.playerClient.emit("message", {
         details: `You are joining a new game with ${game.playerHost.userID}`
     })
-    game.playerClient.game = game;
+    game.playerClient.game = game
 
     //now we tell both that the game is ready to start
     //clients will reset their positions in this case.
@@ -108,69 +107,39 @@ gameServer.findGame = function(player) {
 
                 //start running the game on the server,
                 //which will tell them to respawn/start
-                this.startGame(gameInstance);
+                this.startGame(gameInstance)
             }
         }
 
         //if still not in game
         if (!inGame) {
-            this.createGame(player);
+            this.createGame(player)
         }
 
     } else {
 
         //no games? create one!
-        this.createGame(player);
+        this.createGame(player)
     }
 }
 
 gameServer.endGame = function(gameID, userID) {
 
-    var newGame = this.games[gameID];
+    var playerToDisconnect
+    var currentGame = this.games[gameID]
 
-    if (newGame) {
-
-        //stop the game updates immediate
-        // newGame.gamecore.stop_update();
-
-        //if the game has two players, the one is leaving
-        if (newGame.playerCount > 1) {
-
-            //send the players the message the game is ending
-            if (userID == newGame.playerHost.userID) {
-
-                //the host left, oh snap. Lets try join another game
-                if (newGame.playerClient) {
-                    //tell them the game is over
-                    newGame.playerClient.emit("message", {
-                        details: `Your match against ${newGame.playerHost.userID} has ended.`
-                    })
-                    //now look for/create a new game.
-                    // this.findGame(newGame.playerClient);
-                }
-            } else {
-                //the other player left, we were hosting
-                if (newGame.playerHost) {
-                    //tell the client the game is ended
-                    // newGame.playerHost.send('s.e');
-                    newGame.playerHost.emit("message", {
-                        details: `Your match against ${newGame.playerClient.userID} has ended.`
-                    })
-                    //game is going down
-                    newGame.playerHost.hosting = false;
-                    //now look for/create a new game.
-                    // this.findGame(newGame.playerHost);
-                }
-            }
+    if (currentGame) {
+        if (userID == currentGame.playerHost.userID && currentGame.playerClient) {
+            playerToDisconnect = currentGame.playerClient
+        } else if (currentGame.playerHost){
+            playerToDisconnect = currentGame.playerHost
         }
-
-        delete this.games[gameID];
-        this.gameCount--;
-
-        console.log(`::: Game removed. There are now ${this.gameCount} games being played.`);
-
+        delete this.games[gameID]
+        this.gameCount--
+        playerToDisconnect.disconnect()
+        console.log(`::: Game removed. There are now ${this.gameCount} games being played.`)
     } else {
-        console.log(`Game not found`);
+        console.log(`Game not found`)
     }
 
 }

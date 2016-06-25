@@ -338,6 +338,8 @@ h1, h2, h3, h4, h5 {
 
 @include buttonStyleExtrude(".restartGame", $restartGreenFore, $restartGreenShadow);
 
+@include buttonStyleExtrude(".playOnline.quitOnline", $cancelRedFore, $cancelRedBack);
+
 .playOnline {
     margin-right: 20px;
 }
@@ -358,7 +360,6 @@ h1, h2, h3, h4, h5 {
     .buttonArea button {
         width: 45%;
         padding: 10px;
-        border-radius: 6px;
         font-size: 16px;
     }
     .playOnline {
