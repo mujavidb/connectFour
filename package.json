@@ -2,16 +2,16 @@
   "name": "connectFour",
   "version": "1.0.0",
   "scripts": {
-
     "build": "npm run build_js & npm run compile_sass",
+
     "build_js": "babel es-js/gameBoard.js es-js/offlineGame.js es-js/onlineGame.js es-js/interface.js -w -o js/connectFour.js",
-    "compile_sass": "sass --watch -t compressed scss/:css/",
+    "compile_sass": "node-sass --watch --output-style compressed --include-path scss scss/main.scss css/main.css",
 
     "build_production": "npm run build_js_once & compile_sass_once & npm run autoprefix_css",
-    "build_js_once": "babel es-js/gameBoard.js es-js/offlineGame.js es-js/onlineGame.js es-js/interface.js -o js/connectFour.js",
-    "compile_sass_once": "sass scss/main.scss css/main.css",
-    "autoprefix_css": "postcss --use autoprefixer css/main.css -d css/"
 
+    "build_js_once": "babel es-js/gameBoard.js es-js/offlineGame.js es-js/onlineGame.js es-js/interface.js -o js/connectFour.js",
+    "compile_sass_once": "node-sass --output-style compressed --include-path scss scss/main.scss css/main.css",
+    "autoprefix_css": "postcss --use autoprefixer css/main.css -d css/"
   },
   "keywords": [],
   "author": "Mujavid Bukhari",
@@ -20,6 +20,7 @@
     "babel-cli": "^6.10.1",
     "babel-preset-es2015": "^6.9.0",
     "express": "^4.14.0",
+    "node-sass": "^3.8.0",
     "node-uuid": "^1.4.7",
     "socket.io": "^1.4.6"
   },

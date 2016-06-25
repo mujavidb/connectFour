@@ -467,16 +467,14 @@ var OnlineGame = function () {
 }();
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 //TODO: Internationalise
 //TODO: Document
 //TODO: Add github url
-//TODO: Structure JS correctly
 //TODO: Compatible for iOS8
-//TODO: Structure CSS, yes
+//TODO: Structure CSS
 //TODO: Allow for minification of selectors and variables across all files
-//TODO: Use npm for sass
+//TODO: Add online username functionality
+//TODO: Notification that game has begun and which player the user is, including flip coin
 
 function _$(x) {
     return document.querySelector(x);
@@ -486,19 +484,8 @@ function _$$(x) {
     return document.querySelectorAll(x);
 }
 
-// http://stackoverflow.com/questions/7238177/how-to-detect-htmlcollection-nodelist-in-javascript
-function isNodeList(nodes) {
-    var stringRepr = Object.prototype.toString.call(nodes);
-
-    return (typeof nodes === 'undefined' ? 'undefined' : _typeof(nodes)) === 'object' && /^\[object (HTMLCollection|NodeList|Object)\]$/.test(stringRepr) && typeof nodes.length === 'number' && (nodes.length === 0 || _typeof(nodes[0]) === "object" && nodes[0].nodeType > 0);
-}
-
 function _f(selected, modifier) {
-    if (isNodeList(selected)) {
-        Array.prototype.forEach.call(selected, modifier);
-    } else {
-        modifier(selected);
-    }
+    Array.prototype.forEach.call(selected, modifier);
 }
 
 function p(x) {
