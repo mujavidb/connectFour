@@ -8,18 +8,36 @@
 
     <title>Connect Four</title>
 
+    <link rel="apple-touch-icon" sizes="57x57" href="img/icon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="img/icon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/icon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/icon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="img/icon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/icon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="img/icon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/icon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/icon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="img/icon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/icon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="img/icon/favicon-96x96.png">
+
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
     <!-- STYLESHEET -->
     <link rel="stylesheet" href="css/main.css">
 
     <!-- ANALYTICS TRACKING -->
-	<script>
+	<!-- <script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 	  ga('create', 'UA-71793001-1', 'auto');
 	  ga('send', 'pageview');
-	</script>
+	</script> -->
 
 </head>
 <body class="switch">
@@ -80,14 +98,31 @@
         <button class="restartGame">New Game</button>
     </div>
 
-    <div class="modalWindow">
-        <div class="modalOverlay">
-            <div class="modalContent">
-                <h3>To get started, please rotate your screen into the landscape position.</h3>
-            </div>
+    <div class="modalOverlay screenSize">
+        <div class="modalContent">
+            <h3>To get started, please rotate your screen into the landscape position.</h3>
         </div>
     </div>
-    
+
+    <div class="modalOverlay startOnline">
+        <button class="close"></button>
+        <div class="modalContent">
+            <div class="slideOptions">
+                <h2>Your online alias is:</h2>
+                <h3 class="alias">monkeyButtFace</h2>
+                <div class="slideOptions_choices">
+                    <button class="choice random">Random</button>
+                    <button class="choice friends">Friends</button>
+                </div>
+            </div>
+            <div class="slideRandom">
+                <h2>Finding you an opponent...</h2>
+                <button class="cancelRandomSearch">Cancel</button>
+            </div>
+            <div class="slideFriends"></div>
+        </div>
+    </div>
+
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script type="text/javascript" src="js/connectFour.js"></script>
 </body>

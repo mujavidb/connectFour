@@ -1,0 +1,5 @@
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g fill="rgba(255, 255, 255, 0.3)" stroke="none" stroke-width="1" fill-rule="evenodd">
+        <path d="M56,44 L56,-8 L44,-8 L44,44 L-8,44 L-8,56 L44,56 L44,108 L56,108 L56,56 L108,56 L108,44 L56,44 Z" id="Combined-Shape" transform="translate(50, 50) rotate(45) translate(-50, -50) "></path>
+    </g>
+</svg>

@@ -1,37 +1,60 @@
-//TODO: Add background to game
+//TODO: Internationalise
+//TODO: Document
+//TODO: Add github url
 //TODO: Structure JS correctly
 //TODO: Compatible for iOS8
-//TODO: Add ability to play opponents online, yes
 //TODO: Structure CSS, yes
+//TODO: Allow for minification of selectors and variables across all files
+//TODO: Use npm for sass
 
-let addDiscToBoard
+function _$(x){ return document.querySelector(x) }
+
+function _$$(x){ return document.querySelectorAll(x) }
+
+// http://stackoverflow.com/questions/7238177/how-to-detect-htmlcollection-nodelist-in-javascript
+function isNodeList(nodes) {
+    var stringRepr = Object.prototype.toString.call(nodes);
+
+    return typeof nodes === 'object' &&
+        /^\[object (HTMLCollection|NodeList|Object)\]$/.test(stringRepr) &&
+        (typeof nodes.length === 'number') &&
+        (nodes.length === 0 || (typeof nodes[0] === "object" && nodes[0].nodeType > 0));
+}
+
+function _f(selected, modifier) {
+    if (isNodeList(selected)) {
+        Array.prototype.forEach.call(selected, modifier)
+    } else {
+        modifier(selected)
+    }
+}
+
+function p(x){
+    console.log(x)
+}
+
+let addDiscToBoard = null
+let restartGame = null
+let cancelSearchModal = null
 
 let setup = (() => {
 
-    let theGame = new Play(2)
-    let connectFourArea = document.getElementsByClassName("gameContainer")[0]
-    let columns = document.querySelectorAll('.column')
-    let discSVG = document.getElementById('discArea')
-    let discArea = document.getElementById('discAreaGroup')
-    let winHighlightArea = document.getElementById("winHighlight")
-    let redScore = document.getElementById("redScore")
-    let yellowScore = document.getElementById("yellowScore")
-    let perspective = document.getElementsByClassName("perspectiveChild")[0]
-    let restartButton = document.getElementsByClassName("restartGame")[0]
-    let modal = document.getElementsByClassName("modalOverlay")[0]
-    let svgNS = "http://www.w3.org/2000/svg"
-
-    function animateDiscDown(disc, y){
-        const finalLocation = 18 + (5 - y) * 94 + 7
-        const transitionSpeed = `transform ${ (0.3 / 5) * (5 - y) }s ease-in`
-        disc.style.transition = transitionSpeed
-        setTimeout(() => {
-            disc.style.transform = `translateY(${finalLocation + 80}px)`
-        }, 20)
-    }
+    let theGame = new OfflineGame(2)
+    const connectFourArea = _$(".gameContainer")
+    const columns = _$$('.column')
+    const discSVG = _$('#discArea')
+    const discArea = _$('#discAreaGroup')
+    const winHighlightArea = _$("#winHighlight")
+    const redScore = _$("#redScore")
+    const yellowScore = _$("#yellowScore")
+    const perspective = _$(".perspectiveChild")
+    const restartButton = _$(".restartGame")
+    const playOnline = _$('.playOnline')
+    const svgNS = "http://www.w3.org/2000/svg"
+    const KEYCODE_ESC = 27;
 
     addDiscToBoard = function(location, player, maxHeight){
-        let disc = document.createElementNS(svgNS, "image")
+        const disc = document.createElementNS(svgNS, "image")
         disc.setAttributeNS("http://www.w3.org/1999/xlink", "href", player == 1 ? "img/red_disc.svg" : "img/yellow_disc.svg")
         disc.setAttribute("x", `${ 18 + (location[1]) * 94 + 7}`)
         disc.setAttribute("y", "-80")
@@ -59,11 +82,20 @@ let setup = (() => {
         }, 100 + (300 / 5) * (5 - location[0]))
     }
 
+    function animateDiscDown(disc, y){
+        const finalLocation = 18 + (5 - y) * 94 + 7
+        const transitionSpeed = `transform ${ (0.3 / 5) * (5 - y) }s ease-in`
+        disc.style.transition = transitionSpeed
+        setTimeout(() => {
+            disc.style.transform = `translateY(${finalLocation + 80}px)`
+        }, 20)
+    }
+
     function ensureScreenSize(){
         if (screen.width < 320) {
-            modal.classList.add("show")
+            _$(".screenSize").classList.add("show")
         } else {
-            modal.classList.remove("show")
+            _$(".screenSize").classList.remove("show")
         }
     }
 
@@ -72,7 +104,7 @@ let setup = (() => {
     }
 
     function createSVGHighlight(x, y, width, height, player){
-        let highlight = document.createElementNS(svgNS, "rect")
+        const highlight = document.createElementNS(svgNS, "rect")
         let styles = ""
         highlight.setAttributeNS(null, "x", `${ x }`)
         highlight.setAttributeNS(null, "y", `${ y }`)
@@ -87,12 +119,12 @@ let setup = (() => {
     }
 
     function verticalHighlight(x, y) {
-        let height = 376 // 4 * 94
-        let width = 94
-        let boardHeight = 564
-        let left = 18 + (x * width)
-        let top = 18 + boardHeight - height - (y * 94)
-        let highlight = createSVGHighlight(left, top, 94, 376, theGame.currentPlayer)
+        const height = 376 // 4 * 94
+        const width = 94
+        const boardHeight = 564
+        const left = 18 + (x * width)
+        const top = 18 + boardHeight - height - (y * 94)
+        const highlight = createSVGHighlight(left, top, width, height, theGame.currentPlayer)
         winHighlightArea.appendChild(highlight)
     }
 
@@ -101,7 +133,7 @@ let setup = (() => {
         let width = 376 // 4 * 94
         let left = 18 + (y * height)
         let top = 18 + ((6 - x - 1) * height)
-        let highlight = createSVGHighlight(left, top, 376, 94, theGame.currentPlayer)
+        let highlight = createSVGHighlight(left, top, width, height, theGame.currentPlayer)
         winHighlightArea.appendChild(highlight)
     }
 
@@ -117,49 +149,110 @@ let setup = (() => {
         winHighlightArea.appendChild(transform)
     }
 
-    function ensureColumnHeight(){
-        for (let column of columns) {
-            column.style.height = `calc( ${discSVG.style.height} - 20px )`
+    restartGame = (isOnline, didInitiateRestart = true) => {
+        restartButton.disabled = true
+
+        //remove highlights
+        while (winHighlightArea.firstChild) winHighlightArea.removeChild(winHighlightArea.firstChild)
+
+        //animate discs down and out
+        discArea.classList.add("moveOut")
+        perspective.classList.add("active")
+        setTimeout(() => {
+            restartButton.disabled = false
+            //remove discs
+            while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
+            discArea.classList.remove("moveOut")
+            perspective.classList.remove("active")
+            //remove deslectAll
+            connectFourArea.classList.remove("deselectAll")
+            //remove all deselects
+            for (let disc of discArea.childNodes) {
+                disc.classList.remove("deselect")
+            }
+            //remove win classes and return to normal
+            document.body.classList.remove("redWin")
+            document.body.classList.remove("yellowWin")
+            document.body.classList.add("switch")
+            //start a new game in model
+            if (isOnline){
+                if (theGame.isOnline){
+                    if (didInitiateRestart) {
+                        theGame.requestRestart()
+                    }
+                    theGame.internalRestart()
+                } else {
+                    theGame = new OnlineGame(2)
+                }
+            } else {
+                if (String(playOnline.classList).indexOf("quitOnline") > -1) {
+                    redScore.innerHTML = "0"
+                    yellowScore.innerHTML = "0"
+                    playOnline.classList.remove("quitOnline")
+                    playOnline.innerHTML = "Play Online"
+                }
+                theGame = new OfflineGame(2)
+            }
+        }, 1500)
+    }
+
+    cancelSearchModal = (cancelGame, goOnline = false) => {
+        _$(".close").parentNode.classList.remove("show")
+        _$('.startOnline .slideOptions').classList.remove('random')
+        _$('.startOnline .slideOptions').classList.remove('friend')
+        if (cancelGame) {
+            theGame.isOnline ? theGame = new OnlineGame(2) : theGame = new OfflineGame(2)
+        } else if (goOnline) {
+            redScore.innerHTML = "0"
+            yellowScore.innerHTML = "0"
+            playOnline.classList.add("quitOnline")
+            playOnline.innerHTML = "Quit Online"
         }
     }
 
     // Setup code
     (() => {
+        ensureScreenSize()
+
         window.addEventListener('resize', () => {
             ensureScreenSize()
-            ensureColumnHeight()
         }, false)
-
-        ensureScreenSize()
-        ensureColumnHeight()
 
         restartButton.addEventListener('click', () => {
-            restartButton.disabled = true
-            //remove highlights
-            while (winHighlightArea.firstChild) winHighlightArea.removeChild(winHighlightArea.firstChild)
-            //animate discs down and out
-            discArea.classList.add("moveOut")
-            perspective.classList.add("active")
-            setTimeout(() => {
-                restartButton.disabled = false
-                //remove discs
-                while (discArea.firstChild) discArea.removeChild(discArea.firstChild)
-                discArea.classList.remove("moveOut")
-                perspective.classList.remove("active")
-                //remove deslectAll
-                connectFourArea.classList.remove("deselectAll")
-                //remove all deselects
-                for (let disc of discArea.childNodes) {
-                    disc.classList.remove("deselect")
-                }
-                //remove win classes and return to normal
-                document.body.classList.remove("redWin")
-                document.body.classList.remove("yellowWin")
-                document.body.classList.add("switch")
-                //new game
-                theGame = new Play(2)
-            }, 1500)
+            restartGame(theGame.isOnline)
         }, false)
+
+        playOnline.addEventListener('click', () => {
+            if (String(playOnline.classList).indexOf("quitOnline") > -1) {
+                theGame.forceDisconnect()
+            } else {
+                _$('.startOnline').classList.add("show")
+            }
+        }, false)
+
+        _$('.slideOptions_choices .random').addEventListener('click', () => {
+            _$('.startOnline .slideOptions').classList.add('random')
+            restartGame(true)
+        }, false)
+
+        document.onkeydown = (event) => {
+            if (event.keyCode == KEYCODE_ESC && String(_$(".startOnline").classList).indexOf("show") > -1) {
+                theGame.forceDisconnect()
+                cancelSearchModal(false)
+            }
+        }
+
+        _$(".cancelRandomSearch").addEventListener("click", () => {
+            //cancel actual searching
+            cancelSearchModal(true)
+        }, false)
+
+        _f(_$$("button.close"), (button) => {
+            button.addEventListener('click', () => {
+                theGame.forceDisconnect()
+                cancelSearchModal(false)
+            }, false)
+        })
 
         for (let column of columns) {
             column.addEventListener('click', () => {
