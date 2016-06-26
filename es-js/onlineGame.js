@@ -53,8 +53,6 @@ class OnlineGame {
         setTimeout(() => {
             cancelSearchModal(false, true)
         }, 3000)
-
-        //tell players whose turn it is
     }
 
     onPlayerMove(response){
@@ -76,7 +74,6 @@ class OnlineGame {
     onDisconnection(){
         console.log(":: Sockets :: Disconnected from server")
         restartGame(false)
-        //activate quitOnline setting
     }
 
     isPossibleMove(column) {

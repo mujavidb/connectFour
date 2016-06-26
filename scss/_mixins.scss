@@ -3,31 +3,31 @@
 @mixin buttonStyleExtrude($className, $foreColor, $shadowColor){
     #{$className} {
         background-color: $foreColor;
-        box-shadow: 0 -5px $shadowColor;
+        box-shadow: 0 5px $shadowColor;
         outline: medium none;
         border: medium none;
         border-radius: 10px;
         cursor: pointer;
     }
     #{$className}:hover {
-        box-shadow: 0 -4px $shadowColor;
-        transform: translateY(-1px);
+        box-shadow: 0 4px $shadowColor;
+        transform: translateY(1px);
     }
     #{$className}:active {
         box-shadow: 0 0 $shadowColor;
-        transform: translateY(-5px);
+        transform: translateY(5px);
     }
     @media (max-width:540px){
         #{$className} {
-            box-shadow: 0 -3px $shadowColor;
+            box-shadow: 0 3px $shadowColor;
             border-radius: 6px;
         }
         #{$className}:hover {
-            box-shadow: 0 -2px $shadowColor;
+            box-shadow: 0 2px $shadowColor;
         }
         #{$className}:active {
             box-shadow: 0 0 $shadowColor;
-            transform: translateY(-3px);
+            transform: translateY(3px);
         }
     }
 }

@@ -106,6 +106,48 @@ h1, h2, h3, h4, h5 {
     margin-right: 2.3%;
 }
 
+.followGithub {
+    position: fixed;
+    width:50px;
+    height: 50px;
+    top: 10px;
+    right: 10px;
+    color: #ff8eca;
+    text-decoration: none;
+    text-align: center;
+    font-size: 36px;
+    line-height: 1.1;
+}
+
+.followGithub:hover,
+.followGithub:active {
+    color: #ff8eca;
+    text-decoration: none;
+}
+
+@include buttonStyleExtrude(".followGithub", white, #BBB);
+
+.followGithub::before {
+    content: "Star on Github";
+    position: absolute;
+    top: 15px;
+    right: 60px;
+    width: 120px;
+    padding: 6px 2px;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,0.4);
+    color: white;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateX(5px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.followGithub:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+}
+
 @media (max-width:880px){
     .column {
         height: calc( (80vw + 1vw) /8 * 6 );
@@ -116,6 +158,9 @@ h1, h2, h3, h4, h5 {
 }
 
 @media (max-width:540px){
+    .followGithub{
+        display: none;
+    }
     .connectFourBoard {
         margin-top: 8%;
     }
@@ -146,6 +191,16 @@ h1, h2, h3, h4, h5 {
     top:0;
     left: 0;
     z-index: -5;
+}
+
+.singletShadows,
+.bottomBoardShadow {
+    transition: transform 0.3s ease;
+}
+
+.active .singletShadows,
+.active .bottomBoardShadow {
+    transform: translateY(-2px);
 }
 
 .deselect.column:hover::after {
@@ -197,7 +252,7 @@ h1, h2, h3, h4, h5 {
     border-radius: 20px;
     position: absolute;
     left: 0%;
-    top: -5px;
+    top: 5px;
     width: 100%;
     height: 100%;
     z-index: -10;
@@ -414,38 +469,25 @@ h1, h2, h3, h4, h5 {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.modalOverlay .close {
-    position: fixed;
-    width: 30px;
-    height: 30px;
-    top: 10px;
-    right: 10px;
-    z-index: 50;
-    background-image: url("../img/cross.svg");
-    background-color: transparent;
-    border: none;
-    background-size: contain;
-    cursor: pointer;
-    padding: 0;
-}
-
-.modalOverlay .close:hover {
-    background-image: url("../img/cross_hover.svg");
-}
-
-.screenSize .modalContent {
-    box-sizing: border-box;
+.modalContent {
     margin: 10vw auto 0;
     padding: 12vw 6vw;
+    max-width: 700px;
     width: 80%;
     height: auto;
-    background-color: $restartGreenShadow;
-    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
     border-radius: 10px;
 }
 
+.screenSize .modalContent {
+    // background-color: $restartGreenShadow;
+    background-color: white;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
+}
+
 .screenSize .modalContent h3 {
-    color: rgba(255, 255, 255, 0.8);
+    // color: rgba(255, 255, 255, 0.8);
+    color: black;
     text-align: center;
     font-size: 6vw;
     margin: 0;
@@ -456,34 +498,14 @@ h1, h2, h3, h4, h5 {
 }
 
 .startOnline .modalContent {
-    box-sizing: border-box;
-    margin: 10vw auto 0;
     padding: 40px;
-    width: 80%;
-    max-width: 700px;
-    height: auto;
-    background-color: $onlineOverlayFore;
+    background-color: white;
     box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    color: white;
+    color: #4c4c4c;
     text-align: center;
 }
 
-.startOnline .slideOptions,
-.startOnline .slideRandom,
-.startOnline .slideFriend {
-    display: none;
-}
-
 .show.startOnline .slideOptions {
-    display: block;
-}
-
-.show.startOnline .slideOptions.random {
-    display: none;
-}
-
-.startOnline .random + .slideRandom {
     display: block;
 }
 
@@ -513,19 +535,17 @@ h1, h2, h3, h4, h5 {
     display: block;
 }
 
-.modalOverlay button {
-    padding: 10px 30px;
+@include buttonStyleExtrude(".cancelRandomSearch", $cancelRedFore, $cancelRedBack);
+
+.cancelRandomSearch {
+    margin: 25px auto 0;
+    padding: 10px 40px;
     font-size: 18px;
     font-weight: 600;
     color: white;
     display: block;
     transition: background-color 0.3s ease;
-}
-
-@include buttonStyleExtrude(".cancelRandomSearch", $cancelRedFore, $cancelRedBack);
-
-.cancelRandomSearch {
-    margin: 0 auto;
+    border-radius: 6px;
 }
 
 .startOnline h2 {

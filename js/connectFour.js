@@ -377,8 +377,6 @@ var OnlineGame = function () {
             setTimeout(function () {
                 cancelSearchModal(false, true);
             }, 3000);
-
-            //tell players whose turn it is
         }
     }, {
         key: "onPlayerMove",
@@ -404,7 +402,6 @@ var OnlineGame = function () {
         value: function onDisconnection() {
             console.log(":: Sockets :: Disconnected from server");
             restartGame(false);
-            //activate quitOnline setting
         }
     }, {
         key: "isPossibleMove",
@@ -476,9 +473,8 @@ var OnlineGame = function () {
 //TODO: Compatible for iOS8
 //TODO: Structure CSS
 //TODO: Allow for minification of selectors and variables across all files
-//TODO: Add online username functionality
-//TODO: Improve modals design
-//TODO: Notification that game has begun and which player the user is, including flip coin
+//TODO: Add strips inbetween columns of board
+//TODO: Find all bugs and edge-cases
 
 function _$(x) {
     return document.querySelector(x);
@@ -624,6 +620,7 @@ var setup = function () {
         } //animate discs down and out
         discArea.classList.add("moveOut");
         perspective.classList.add("active");
+
         setTimeout(function () {
             restartButton.disabled = false;
             //remove discs
@@ -688,16 +685,15 @@ var setup = function () {
     cancelSearchModal = function cancelSearchModal(cancelGame) {
         var goOnline = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
-        _$(".close").parentNode.classList.remove("show");
-        _$('.startOnline .slideOptions').classList.remove('random');
-        _$('.startOnline .slideOptions').classList.remove('friend');
+        _$(".startOnline").classList.remove("show");
         if (cancelGame) {
-            theGame.isOnline ? theGame = new OnlineGame(2) : theGame = new OfflineGame(2);
+            // theGame.isOnline ? theGame = new OnlineGame(2) : theGame = new OfflineGame(2)
         } else if (goOnline) {
             redScore.innerHTML = "0";
             yellowScore.innerHTML = "0";
             playOnline.classList.add("quitOnline");
             playOnline.innerHTML = "Quit Online";
+            restartGame(true);
         }
     };
 
@@ -714,12 +710,14 @@ var setup = function () {
             _$(".slideRandom").classList.remove("online");
             _$(".gameFound").classList.remove("playerOne");
             _$(".gameFound").classList.remove("playerTwo");
-        }, 5000);
+        }, 4000);
     };
 
     // Setup code i.e. bind all event listeners
     (function () {
+
         ensureScreenSize();
+        restartButton.disabled = false;
 
         window.addEventListener('resize', function () {
             ensureScreenSize();
@@ -734,12 +732,8 @@ var setup = function () {
                 theGame.forceDisconnect();
             } else {
                 _$('.startOnline').classList.add("show");
+                theGame = new OnlineGame(2);
             }
-        }, false);
-
-        _$('.slideOptions_choices .random').addEventListener('click', function () {
-            _$('.startOnline .slideOptions').classList.add('random');
-            restartGame(true);
         }, false);
 
         document.onkeydown = function (event) {
@@ -750,16 +744,10 @@ var setup = function () {
         };
 
         _$(".cancelRandomSearch").addEventListener("click", function () {
-            //cancel actual searching
+            //cancel actual searching in socket/server
+            theGame.forceDisconnect();
             cancelSearchModal(true);
         }, false);
-
-        _f(_$$("button.close"), function (button) {
-            button.addEventListener('click', function () {
-                theGame.forceDisconnect();
-                cancelSearchModal(false);
-            }, false);
-        });
 
         var _iteratorNormalCompletion2 = true;
         var _didIteratorError2 = false;

@@ -16,9 +16,11 @@
             <use xlink:href="#path-1" fill="black"></use>
         </mask>
         <path id="singlet" class="boardSinglet" d="M0,0 L94,0 L94,94 L0,94 L0,0 Z M47,83 C66.882251,83 83,66.882251 83,47 C83,27.117749 66.882251,11 47,11 C27.117749,11 11,27.117749 11,47 C11,66.882251 27.117749,83 47,83 Z"></path>
+        <rect id="vCover" x="-4" y="-2" width="8" height="600" fill="#5EAACD"></rect>
+        <rect id="hCover" x="-2" y="-4" width="788" height="8" fill="#5EAACD"></rect>
         <g id="singleColumn">
             <rect x="0" y="0" width="94" height="564" fill="none"></rect>
-			<use xlink:href="#singlet"></use>
+            <use xlink:href="#singlet"></use>
 			<use xlink:href="#singlet" transform="translate(0 94)"></use>
 			<use xlink:href="#singlet" transform="translate(0 188)"></use>
 			<use xlink:href="#singlet" transform="translate(0 282)"></use>
@@ -35,6 +37,28 @@
 		<use xlink:href="#singleColumn" transform="translate(470 0)"></use>
 		<use xlink:href="#singleColumn" transform="translate(564 0)"></use>
 		<use xlink:href="#singleColumn" transform="translate(658 0)"></use>
+
+        <!-- Used to cover gaps created on resize -->
+        <g>
+            <use xlink:href="#vCover"></use>
+            <use xlink:href="#vCover" transform="translate(94 0)"></use>
+            <use xlink:href="#vCover" transform="translate(188 0)"></use>
+            <use xlink:href="#vCover" transform="translate(282 0)"></use>
+            <use xlink:href="#vCover" transform="translate(376 0)"></use>
+            <use xlink:href="#vCover" transform="translate(470 0)"></use>
+            <use xlink:href="#vCover" transform="translate(564 0)"></use>
+    		<use xlink:href="#vCover" transform="translate(658 0)"></use>
+    		<use xlink:href="#vCover" transform="translate(752 0)"></use>
+            <use xlink:href="#hCover"></use>
+            <use xlink:href="#hCover" transform="translate(0 94)"></use>
+            <use xlink:href="#hCover" transform="translate(0 188)"></use>
+            <use xlink:href="#hCover" transform="translate(0 282)"></use>
+            <use xlink:href="#hCover" transform="translate(0 376)"></use>
+            <use xlink:href="#hCover" transform="translate(0 470)"></use>
+            <use xlink:href="#hCover" transform="translate(0 564)"></use>
+    		<use xlink:href="#hCover" transform="translate(0 658)"></use>
+    		<use xlink:href="#hCover" transform="translate(0 752)"></use>
+        </g>
 	</g>
 	<g id="boardBorder" stroke="none" fill="none" fill-rule="evenodd" transform="translate(18, 18)" stroke-linejoin="round">
 	    <use id="Rectangle-1" stroke="#5EAACD" mask="url(#mask-2)" stroke-width="36" xlink:href="#path-1"></use>

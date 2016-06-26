@@ -58,7 +58,7 @@ gameServer.startGame = function(game) {
     })
 
     game.playerHost.emit("gameStart", {
-        playerNumber   : randomNumber >= 0.5 ? 1 : 2,
+        playerNumber   : randomNumber > 0.5 ,
         opponentID     : game.playerClient.userID,
         opponentNumber : 2,
         gameID         : game.id
@@ -69,7 +69,7 @@ gameServer.startGame = function(game) {
     })
 
     game.playerClient.emit("gameStart", {
-        playerNumber   : randomNumber >= 0.5 ? 2 : 1,
+        playerNumber   : 2,
         opponentID     : game.playerHost.userID,
         opponentNumber : 1,
         gameID         : game.id

@@ -4,10 +4,8 @@
 //TODO: Compatible for iOS8
 //TODO: Structure CSS
 //TODO: Allow for minification of selectors and variables across all files
-//TODO: Add online username functionality
-//TODO: Improve modals design
-//TODO: Notification that game has begun and which player the user is, including flip coin
-
+//TODO: Add strips inbetween columns of board
+//TODO: Find all bugs and edge-cases
 
 function _$(x){ return document.querySelector(x) }
 
@@ -147,6 +145,7 @@ let setup = (() => {
         //animate discs down and out
         discArea.classList.add("moveOut")
         perspective.classList.add("active")
+
         setTimeout(() => {
             restartButton.disabled = false
             //remove discs
@@ -186,16 +185,15 @@ let setup = (() => {
     }
 
     cancelSearchModal = (cancelGame, goOnline = false) => {
-        _$(".close").parentNode.classList.remove("show")
-        _$('.startOnline .slideOptions').classList.remove('random')
-        _$('.startOnline .slideOptions').classList.remove('friend')
+        _$(".startOnline").classList.remove("show")
         if (cancelGame) {
-            theGame.isOnline ? theGame = new OnlineGame(2) : theGame = new OfflineGame(2)
+            // theGame.isOnline ? theGame = new OnlineGame(2) : theGame = new OfflineGame(2)
         } else if (goOnline) {
             redScore.innerHTML = "0"
             yellowScore.innerHTML = "0"
             playOnline.classList.add("quitOnline")
             playOnline.innerHTML = "Quit Online"
+            restartGame(true)
         }
     }
 
@@ -212,12 +210,14 @@ let setup = (() => {
             _$(".slideRandom").classList.remove("online")
             _$(".gameFound").classList.remove("playerOne")
             _$(".gameFound").classList.remove("playerTwo")
-        }, 5000)
+        }, 4000)
     }
 
     // Setup code i.e. bind all event listeners
     (() => {
+
         ensureScreenSize()
+        restartButton.disabled = false
 
         window.addEventListener('resize', () => {
             ensureScreenSize()
@@ -232,12 +232,8 @@ let setup = (() => {
                 theGame.forceDisconnect()
             } else {
                 _$('.startOnline').classList.add("show")
+                theGame = new OnlineGame(2)
             }
-        }, false)
-
-        _$('.slideOptions_choices .random').addEventListener('click', () => {
-            _$('.startOnline .slideOptions').classList.add('random')
-            restartGame(true)
         }, false)
 
         document.onkeydown = (event) => {
@@ -248,16 +244,10 @@ let setup = (() => {
         }
 
         _$(".cancelRandomSearch").addEventListener("click", () => {
-            //cancel actual searching
+            //cancel actual searching in socket/server
+            theGame.forceDisconnect()
             cancelSearchModal(true)
         }, false)
-
-        _f(_$$("button.close"), (button) => {
-            button.addEventListener('click', () => {
-                theGame.forceDisconnect()
-                cancelSearchModal(false)
-            }, false)
-        })
 
         for (let column of columns) {
             column.addEventListener('click', () => {
