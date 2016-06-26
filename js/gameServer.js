@@ -43,6 +43,8 @@ gameServer.createGame = function(player) {
 
 gameServer.startGame = function(game) {
 
+    var randomNumber = Math.random()
+
     //tell the other client they are joining a game
     game.playerClient.emit("message", {
         details: `You are joining a new game with ${game.playerHost.userID}`
@@ -54,8 +56,9 @@ gameServer.startGame = function(game) {
     game.playerHost.emit("message", {
         details: `Your match against ${game.playerClient.userID} is about to begin`
     })
+
     game.playerHost.emit("gameStart", {
-        playerNumber   : 1,
+        playerNumber   : randomNumber >= 0.5 ? 1 : 2,
         opponentID     : game.playerClient.userID,
         opponentNumber : 2,
         gameID         : game.id
@@ -66,7 +69,7 @@ gameServer.startGame = function(game) {
     })
 
     game.playerClient.emit("gameStart", {
-        playerNumber   : 2,
+        playerNumber   : randomNumber >= 0.5 ? 2 : 1,
         opponentID     : game.playerHost.userID,
         opponentNumber : 1,
         gameID         : game.id

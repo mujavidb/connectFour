@@ -487,6 +487,32 @@ h1, h2, h3, h4, h5 {
     display: block;
 }
 
+.slideRandom.online .searching,
+.slideRandom .gameFound {
+    display: none;
+}
+
+.slideRandom .searching,
+.slideRandom.online .gameFound {
+    display: block;
+}
+
+.gameFound .redDisc,
+.gameFound .yellowDisc {
+    display: none;
+    width: 80px;
+    height: 80px;
+    margin: 25px auto;
+}
+
+.gameFound.playerOne .redDisc{
+    display: block;
+}
+
+.gameFound.playerTwo .yellowDisc{
+    display: block;
+}
+
 .modalOverlay button {
     padding: 10px 30px;
     font-size: 18px;

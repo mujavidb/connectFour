@@ -116,8 +116,16 @@
                 </div>
             </div>
             <div class="slideRandom">
-                <h2>Finding you an opponent...</h2>
-                <button class="cancelRandomSearch">Cancel</button>
+                <div class="searching">
+                    <h2>Finding you an opponent...</h2>
+                    <button class="cancelRandomSearch">Cancel</button>
+                </div>
+                <div class="gameFound">
+                    <h2>We found you a game!</h2>
+                    <img class="yellowDisc" src="img/yellow_disc.svg" alt="Yellow Disc">
+                    <img class="redDisc" src="img/red_disc.svg" alt="Red Disc">
+                    <h2 id="playerStartInfo"></h2>
+                </div>
             </div>
             <div class="slideFriends"></div>
         </div>
@@ -126,5 +134,4 @@
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script type="text/javascript" src="js/connectFour.js"></script>
 </body>
-
 </html>

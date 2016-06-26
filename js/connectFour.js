@@ -373,7 +373,10 @@ var OnlineGame = function () {
             console.log(this.opponent);
 
             //clear the modal
-            cancelSearchModal(false, true);
+            onlineGameSetup(this.player.number);
+            setTimeout(function () {
+                cancelSearchModal(false, true);
+            }, 3000);
 
             //tell players whose turn it is
         }
@@ -474,6 +477,7 @@ var OnlineGame = function () {
 //TODO: Structure CSS
 //TODO: Allow for minification of selectors and variables across all files
 //TODO: Add online username functionality
+//TODO: Improve modals design
 //TODO: Notification that game has begun and which player the user is, including flip coin
 
 function _$(x) {
@@ -495,6 +499,7 @@ function p(x) {
 var addDiscToBoard = null;
 var restartGame = null;
 var cancelSearchModal = null;
+var onlineGameSetup = null;
 
 var setup = function () {
 
@@ -696,7 +701,23 @@ var setup = function () {
         }
     };
 
-    // Setup code
+    onlineGameSetup = function onlineGameSetup(playerNumber) {
+        _$(".slideRandom").classList.add("online");
+        if (playerNumber == 1) {
+            _$("#playerStartInfo").innerHTML = "You are playing as Red, starting first";
+            _$(".gameFound").classList.add("playerOne");
+        } else {
+            _$("#playerStartInfo").innerHTML = "You are playing as Yellow, starting second";
+            _$(".gameFound").classList.add("playerTwo");
+        }
+        setTimeout(function () {
+            _$(".slideRandom").classList.remove("online");
+            _$(".gameFound").classList.remove("playerOne");
+            _$(".gameFound").classList.remove("playerTwo");
+        }, 5000);
+    };
+
+    // Setup code i.e. bind all event listeners
     (function () {
         ensureScreenSize();
 

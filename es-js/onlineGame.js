@@ -49,7 +49,10 @@ class OnlineGame {
         console.log(this.opponent)
 
         //clear the modal
-        cancelSearchModal(false, true)
+        onlineGameSetup(this.player.number)
+        setTimeout(() => {
+            cancelSearchModal(false, true)
+        }, 3000)
 
         //tell players whose turn it is
     }

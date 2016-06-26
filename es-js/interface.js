@@ -5,7 +5,9 @@
 //TODO: Structure CSS
 //TODO: Allow for minification of selectors and variables across all files
 //TODO: Add online username functionality
+//TODO: Improve modals design
 //TODO: Notification that game has begun and which player the user is, including flip coin
+
 
 function _$(x){ return document.querySelector(x) }
 
@@ -22,6 +24,7 @@ function p(x){
 let addDiscToBoard = null
 let restartGame = null
 let cancelSearchModal = null
+let onlineGameSetup = null
 
 let setup = (() => {
 
@@ -196,7 +199,23 @@ let setup = (() => {
         }
     }
 
-    // Setup code
+    onlineGameSetup = (playerNumber) => {
+        _$(".slideRandom").classList.add("online")
+        if (playerNumber == 1) {
+            _$("#playerStartInfo").innerHTML = "You are playing as Red, starting first"
+            _$(".gameFound").classList.add("playerOne")
+        } else {
+            _$("#playerStartInfo").innerHTML = "You are playing as Yellow, starting second"
+            _$(".gameFound").classList.add("playerTwo")
+        }
+        setTimeout(() => {
+            _$(".slideRandom").classList.remove("online")
+            _$(".gameFound").classList.remove("playerOne")
+            _$(".gameFound").classList.remove("playerTwo")
+        }, 5000)
+    }
+
+    // Setup code i.e. bind all event listeners
     (() => {
         ensureScreenSize()
 
