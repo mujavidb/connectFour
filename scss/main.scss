@@ -243,7 +243,10 @@ h1, h2, h3, h4, h5 {
     min-width: 300px;
     max-width: 700px;
     width: 80%;
-    height: auto;
+    max-height: 108px;
+    min-height: 40px;
+    height: 15vw;
+    position: relative;
 }
 
 .gameInfo::before {
@@ -258,9 +261,9 @@ h1, h2, h3, h4, h5 {
     z-index: -10;
 }
 
-.gameInfo::after {
-    content: ""
-}
+// .gameInfo::after {
+//     content: ""
+// }
 
 .redScore,
 .yellowScore {
@@ -274,17 +277,21 @@ h1, h2, h3, h4, h5 {
     align-content: center;
     align-items: center;
     z-index:0;
-    position: relative;
+    position: absolute;
+    position: absolute;
+    top: 15%;
 }
 
 .redScore {
     background-color: $redDiscFore;
     border: 4px solid $redDiscBack;
+    left: 5%;
 }
 
 .yellowScore {
     background-color: $yellowDiscFore;
     border: 4px solid $yellowDiscBack;
+    right: 5%;
 }
 
 .yellowScore,
@@ -353,6 +360,7 @@ h1, h2, h3, h4, h5 {
     .gameInfo {
         padding: 2.5vw 0;
         border-radius: 3vw;
+        // height: 10vw;
     }
     .gameInfo::before {
         top: -4px;

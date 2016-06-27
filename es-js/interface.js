@@ -1,19 +1,18 @@
 //TODO: Internationalise
+//TODO: Add move authentication
 //TODO: Document
 //TODO: Add github url
 //TODO: Compatible for iOS8
 //TODO: Structure CSS
 //TODO: Allow for minification of selectors and variables across all files
-//TODO: Add strips inbetween columns of board
+//TODO: Add gone offline notification
 //TODO: Find all bugs and edge-cases
 
 function _$(x){ return document.querySelector(x) }
 
 function _$$(x){ return document.querySelectorAll(x) }
 
-function _f(selected, modifier) {
-    Array.prototype.forEach.call(selected, modifier)
-}
+function _f(selected, modifier) {Array.prototype.forEach.call(selected, modifier)}
 
 function p(x){
     console.log(x)
