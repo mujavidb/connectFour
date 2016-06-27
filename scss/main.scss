@@ -11,12 +11,22 @@ body {
 	-moz-osx-font-smoothing: grayscale;
     margin:0;
     position: relative;
-    background-color: $mainBackground;
+    background: linear-gradient(45deg, #271848, #14335a);
+    width: 100vw;
+    height: 100vh;
 }
 
 h1, h2, h3, h4, h5 {
     font-weight: 600;
     line-height: 1.4;
+}
+
+.gameEnclosure{
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: auto;
+    top: 12%;
 }
 
 .connectFourBoard,
@@ -53,7 +63,7 @@ h1, h2, h3, h4, h5 {
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: stretch;
-    margin: 14% auto 0;
+    margin: auto 0;
     width: 100%;
     height: auto;
 }

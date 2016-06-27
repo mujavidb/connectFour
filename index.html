@@ -43,85 +43,85 @@
 <body class="switch">
     <a class="followGithub" href="https://github.com/mujavidb/connectFour" target="_blank">⭑</a>
 
-    <div class="gameContainer">
+    <div class="gameEnclosure">
+        <div class="gameContainer">
+            <div class="connectFourBoard">
+                <button class="column"></button>
+                <button class="column"></button>
+                <button class="column"></button>
+                <button class="column"></button>
+                <button class="column"></button>
+                <button class="column"></button>
+                <button class="column"></button>
+                <button class="column"></button>
+            </div>
 
-        <div class="connectFourBoard">
-            <button class="column"></button>
-            <button class="column"></button>
-            <button class="column"></button>
-            <button class="column"></button>
-            <button class="column"></button>
-            <button class="column"></button>
-            <button class="column"></button>
-            <button class="column"></button>
-        </div>
+            <svg id="discArea" class="discArea" viewBox="0 0 788 607" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs>
+                    <clipPath id="clipBottom">
+            		    <rect x="0" y="582" width="788" height="25"></rect>
+            		</clipPath>
+                </defs>
 
-        <svg id="discArea" class="discArea" viewBox="0 0 788 607" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <defs>
-                <clipPath id="clipBottom">
-        		    <rect x="0" y="582" width="788" height="25"></rect>
-        		</clipPath>
-            </defs>
+                <g class="perspective">
+                    <g class="perspectiveChild">
 
-            <g class="perspective">
-                <g class="perspectiveChild">
+                        <image id="boardShadows" class="singletShadows" x="0" y="4" width="788" height="600" xlink:href="img/boardShadows.svg"></image>
 
-                    <image id="boardShadows" class="singletShadows" x="0" y="4" width="788" height="600" xlink:href="img/boardShadows.svg"></image>
+                        <!-- TODO: Add mask to fade out dropping discs -->
+                        <g id="discAreaGroup" transform="translate(0 1)"></g>
+                        <!-- Z dimension of board -->
+                        <rect class="bottomBoardShadow" x="0" y="557" width="788" height="50" ry="20" rx="20" fill="#29799E" clip-path="url(#clipBottom)"></rect>
+                        <image x="0" y="0" width="788" height="600" xlink:href="img/board.svg"></image>
 
-                    <!-- TODO: Add mask to fade out dropping discs -->
-                    <g id="discAreaGroup" transform="translate(0 1)"></g>
-                    <!-- Z dimension of board -->
-                    <rect class="bottomBoardShadow" x="0" y="557" width="788" height="50" ry="20" rx="20" fill="#29799E" clip-path="url(#clipBottom)"></rect>
-                    <image x="0" y="0" width="788" height="600" xlink:href="img/board.svg"></image>
-
-                    <g id="winHighlight" class="winHighlightArea"></g>
+                        <g id="winHighlight" class="winHighlightArea"></g>
+                    </g>
                 </g>
-            </g>
-        </svg>
-    </div>
-
-    <div class="gameInfo">
-        <div class="redScore"><h5 id="redScore">0</h5></div>
-        <div class="messageArea">
-            <div class="turnMessages">
-                <h2 class="red">Red player's turn</h2>
-                <h2 class="yellow">Yellow player's turn</h2>
-            </div>
-            <div class="winMessages">
-                <h2 class="red">Red player wins!</h2>
-                <h2 class="yellow">Yellow player wins!</h2>
-            </div>
+            </svg>
         </div>
-        <div class="yellowScore"><h5 id="yellowScore">0</h5></div>
-    </div>
-    <div class="buttonArea">
-        <button class="playOnline">Play Online</button>
-        <button class="restartGame">New Game</button>
-    </div>
 
-    <div class="modalOverlay screenSize">
-        <div class="modalContent">
-            <h3>To get started, please rotate your screen into the landscape position.</h3>
-        </div>
-    </div>
-
-    <div class="modalOverlay startOnline">
-        <div class="modalContent">
-            <div class="slideRandom">
-                <div class="searching">
-                    <h2>Finding you an opponent...</h2>
-                    <button class="cancelRandomSearch">Cancel</button>
+        <div class="gameInfo">
+            <div class="redScore"><h5 id="redScore">0</h5></div>
+            <div class="messageArea">
+                <div class="turnMessages">
+                    <h2 class="red">Red player's turn</h2>
+                    <h2 class="yellow">Yellow player's turn</h2>
                 </div>
-                <div class="gameFound">
-                    <h2>We found you a game!</h2>
-                    <img class="yellowDisc" src="img/yellow_disc.svg" alt="Yellow Disc">
-                    <img class="redDisc" src="img/red_disc.svg" alt="Red Disc">
-                    <h2 id="playerStartInfo"></h2>
+                <div class="winMessages">
+                    <h2 class="red">Red player wins!</h2>
+                    <h2 class="yellow">Yellow player wins!</h2>
                 </div>
             </div>
+            <div class="yellowScore"><h5 id="yellowScore">0</h5></div>
+        </div>
+        <div class="buttonArea">
+            <button class="playOnline">Play Online</button>
+            <button class="restartGame">New Game</button>
+        </div>
+
+        <div class="modalOverlay screenSize">
+            <div class="modalContent">
+                <h3>To get started, please rotate your screen into the landscape position.</h3>
+            </div>
+        </div>
+
+        <div class="modalOverlay startOnline">
+            <div class="modalContent">
+                <div class="slideRandom">
+                    <div class="searching">
+                        <h2>Finding you an opponent...</h2>
+                        <button class="cancelRandomSearch">Cancel</button>
+                    </div>
+                    <div class="gameFound">
+                        <h2>We found you a game!</h2>
+                        <img class="yellowDisc" src="img/yellow_disc.svg" alt="Yellow Disc">
+                        <img class="redDisc" src="img/red_disc.svg" alt="Red Disc">
+                        <h2 id="playerStartInfo"></h2>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script type="text/javascript" src="js/connectFour.js"></script>
 </body>
