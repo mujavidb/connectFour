@@ -1,4 +1,4 @@
-<h1 style="text-align:center;">#Connect Four</h1>
+<h1 style="text-align:center;">Connect Four</h1>
 
 A clean and simplistic Connect Four game that allows for offline and online games.
 
