@@ -1,6 +1,6 @@
 "use strict"
 
-var gameport = process.env.PORT || 4004
+var gameport = process.env.PORT || 8080
 var io = require('socket.io')
 var express = require('express')
 var UUID = require('node-uuid')
