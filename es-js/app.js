@@ -9,7 +9,7 @@ var http = require('http')
 var app = express()
 var server = http.createServer(app)
 
-server.listen(gameport, () => {
+server.listen(gameport, "localhost", () => {
     console.log(':: Express :: Listening on port ' + gameport)
 })
 
