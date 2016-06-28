@@ -1,64 +1,63 @@
-"use strict"
+"use strict";
 
-var gameport = process.env.PORT || 8080
-var io = require('socket.io')
-var express = require('express')
-var UUID = require('node-uuid')
-var verbose = false
-var http = require('http')
-var app = express()
-var server = http.createServer(app)
+var gameport = process.env.PORT || 8080;
+var io = require('socket.io');
+var express = require('express');
+var UUID = require('node-uuid');
+var verbose = false;
+var http = require('http');
+var app = express();
+var server = http.createServer(app);
 
-server.listen(gameport, () => {
-    console.log(':: Express :: Listening on port ' + gameport)
-})
+server.listen(gameport, function () {
+    console.log(':: Express :: Listening on port ' + gameport);
+});
 
-app.use(express.static('./'))
+app.use(express.static('./'));
 
-app.get('/', (req, res) => {
-    console.log('Loading the homepage /index.html')
+app.get('/', function (req, res) {
+    console.log('Loading the homepage /index.html');
     res.sendFile('/index.html', {
         root: __dirname
-    })
-})
+    });
+});
 
-app.get('/*', (req, res, next) => {
-    var file = req.params[0]
-    if (verbose) console.log(':: Express :: file requested : ' + file)
-    res.sendFile(__dirname + '/' + file)
-})
+app.get('/*', function (req, res, next) {
+    var file = req.params[0];
+    if (verbose) console.log(':: Express :: file requested : ' + file);
+    res.sendFile(__dirname + '/' + file);
+});
 
-let sio = io.listen(server)
-var gameServer = require("./js/gameServer.js")
+var sio = io.listen(server);
+var gameServer = require("./js/gameServer.js");
 
-sio.on('connection', (client) => {
+sio.on('connection', function (client) {
 
-    client.userID = UUID()
+    client.userID = UUID();
 
     //Send user their UUID on connection
     client.emit('onconnection', {
         id: client.userID
-    })
+    });
 
     console.log(':: Socket.io :: player ' + client.userID + ' connected');
 
     gameServer.findGame(client);
 
-    client.on('playerMove', (data) => {
-        gameServer.playerMove(client.userID, data)
-    })
+    client.on('playerMove', function (data) {
+        gameServer.playerMove(client.userID, data);
+    });
 
     //make sure the other player knows that they left and so on.
-    client.on('disconnect', () => {
+    client.on('disconnect', function () {
 
         //Useful to know when soomeone disconnects
-        console.log(':: Socket.io :: client disconnected ' + client.userID + ' ' + client.game_id)
+        console.log(':: Socket.io :: client disconnected ' + client.userID + ' ' + client.game_id);
 
         // If the client was in a game, set by gameServer.findGame,
         // we can tell the game server to update that game state.
         if (client.game && client.game.id) {
-            gameServer.endGame(client.game.id, client.userID)
+            gameServer.endGame(client.game.id, client.userID);
         }
     });
-
 });
