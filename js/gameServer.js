@@ -9,7 +9,7 @@ var UUID = require('node-uuid');
 
 gameServer.playerMove = function (senderID, moveDetails) {
     var receiver = null;
-    var currentGame = undefined.games[moveDetails.gameID];
+    var currentGame = this.games[moveDetails.gameID];
     if (currentGame.playerHost.userID == senderID) {
         receiver = currentGame.playerClient;
     } else {
@@ -28,8 +28,8 @@ gameServer.createGame = function (player) {
     };
 
     //add to current games
-    undefined.games[newGame.id] = newGame;
-    undefined.gameCount++;
+    this.games[newGame.id] = newGame;
+    this.gameCount++;
 
     //tell game host that a game has been created
     player.emit("message", {
@@ -80,22 +80,22 @@ gameServer.startGame = function (game) {
 
 gameServer.findGame = function (player) {
 
-    console.log("Looking for an open game. We have: " + undefined.gameCount);
+    console.log("Looking for an open game. We have: " + this.gameCount);
 
-    if (undefined.gameCount) {
+    if (this.gameCount) {
 
         var inGame = false;
 
         //Check the list of games for an open game
-        for (var gameId in undefined.games) {
+        for (var gameId in this.games) {
 
             //only care about our own properties.
-            if (!undefined.games.hasOwnProperty(gameId)) {
+            if (!this.games.hasOwnProperty(gameId)) {
                 continue;
             }
 
             //get the game we are checking against
-            var gameInstance = undefined.games[gameId];
+            var gameInstance = this.games[gameId];
 
             //If the game is a player short
             if (gameInstance.playerCount < 2) {
@@ -111,25 +111,25 @@ gameServer.findGame = function (player) {
 
                 //start running the game on the server,
                 //which will tell them to respawn/start
-                undefined.startGame(gameInstance);
+                this.startGame(gameInstance);
             }
         }
 
         //if still not in game
         if (!inGame) {
-            undefined.createGame(player);
+            this.createGame(player);
         }
     } else {
 
         //no games? create one!
-        undefined.createGame(player);
+        this.createGame(player);
     }
 };
 
 gameServer.endGame = function (gameID, userID) {
 
     var playerToDisconnect;
-    var currentGame = undefined.games[gameID];
+    var currentGame = this.games[gameID];
 
     if (currentGame) {
         if (userID == currentGame.playerHost.userID && currentGame.playerClient) {
@@ -137,10 +137,10 @@ gameServer.endGame = function (gameID, userID) {
         } else if (currentGame.playerHost) {
             playerToDisconnect = currentGame.playerHost;
         }
-        delete undefined.games[gameID];
-        undefined.gameCount--;
+        delete this.games[gameID];
+        this.gameCount--;
         playerToDisconnect.disconnect();
-        console.log("::: Game removed. There are now " + undefined.gameCount + " games being played.");
+        console.log("::: Game removed. There are now " + this.gameCount + " games being played.");
     } else {
         console.log("Game not found");
     }
