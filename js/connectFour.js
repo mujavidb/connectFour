@@ -465,8 +465,6 @@ var OnlineGame = function () {
 
     return OnlineGame;
 }();
-'use strict';
-
 //TODO: Internationalise
 //TODO: Add move authentication
 //TODO: Document
