@@ -29,6 +29,7 @@ app.get('/*', function (req, res, next) {
 });
 
 var sio = io.listen(server);
+
 var gameServer = require("./js/gameServer.js");
 
 sio.on('connection', function (client) {

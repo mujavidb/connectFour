@@ -1,11 +1,13 @@
-var gameServer = module.exports = {
-    games: {},
-    gameCount: 0
-}
-
 var UUID = require('node-uuid')
 
-gameServer.playerMove = (senderID, moveDetails) => {
+//OOP modules inspired by: http://darrenderidder.github.io/talks/ModulePatterns
+
+var GameServer = () => {
+    this.games = {}
+    this.gameCount = 0
+}
+
+GameServer.prototype.playerMove = (senderID, moveDetails) => {
     var receiver = null
     var currentGame = this.games[moveDetails.gameID]
     if (currentGame.playerHost.userID == senderID) {
@@ -16,7 +18,7 @@ gameServer.playerMove = (senderID, moveDetails) => {
     receiver.emit("playerMove", moveDetails)
 }
 
-gameServer.createGame = (player) => {
+GameServer.prototype.createGame = (player) => {
 
     var newGame = {
         id: UUID(),
@@ -41,7 +43,7 @@ gameServer.createGame = (player) => {
     // return newGame;
 };
 
-gameServer.startGame = (game) => {
+GameServer.prototype.startGame = (game) => {
 
     var randomNumber = Math.random()
 
@@ -77,7 +79,7 @@ gameServer.startGame = (game) => {
 
 }
 
-gameServer.findGame = (player) => {
+GameServer.prototype.findGame = (player) => {
 
     console.log(`Looking for an open game. We have: ${this.gameCount}`)
 
@@ -126,7 +128,7 @@ gameServer.findGame = (player) => {
     }
 }
 
-gameServer.endGame = (gameID, userID) => {
+GameServer.prototype.endGame = (gameID, userID) => {
 
     var playerToDisconnect
     var currentGame = this.games[gameID]
@@ -146,3 +148,5 @@ gameServer.endGame = (gameID, userID) => {
     }
 
 }
+
+module.exports = new GameServer()

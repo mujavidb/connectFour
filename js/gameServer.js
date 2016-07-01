@@ -1,15 +1,17 @@
-var _this = this;
-
-var gameServer = module.exports = {
-    games: {},
-    gameCount: 0
-};
+// var this = this;
 
 var UUID = require('node-uuid');
 
-gameServer.playerMove = function (senderID, moveDetails) {
+//OOP modules inspired by: http://darrenderidder.github.io/talks/ModulePatterns
+
+var GameServer = function GameServer() {
+    this.games = {};
+    this.gameCount = 0;
+};
+
+GameServer.prototype.playerMove = function (senderID, moveDetails) {
     var receiver = null;
-    var currentGame = _this.games[moveDetails.gameID];
+    var currentGame = this.games[moveDetails.gameID];
     if (currentGame.playerHost.userID == senderID) {
         receiver = currentGame.playerClient;
     } else {
@@ -18,7 +20,9 @@ gameServer.playerMove = function (senderID, moveDetails) {
     receiver.emit("playerMove", moveDetails);
 };
 
-gameServer.createGame = function (player) {
+// exports.playerMove = playerMove
+
+GameServer.prototype.createGame = function (player) {
 
     var newGame = {
         id: UUID(),
@@ -28,8 +32,8 @@ gameServer.createGame = function (player) {
     };
 
     //add to current games
-    _this.games[newGame.id] = newGame;
-    _this.gameCount++;
+    this.games[newGame.id] = newGame;
+    this.gameCount++;
 
     //tell game host that a game has been created
     player.emit("message", {
@@ -43,7 +47,9 @@ gameServer.createGame = function (player) {
     // return newGame;
 };
 
-gameServer.startGame = function (game) {
+// exports.createGame = createGame
+
+GameServer.prototype.startGame = function (game) {
 
     var randomNumber = Math.random();
 
@@ -78,24 +84,26 @@ gameServer.startGame = function (game) {
     });
 };
 
-gameServer.findGame = function (player) {
+// exports.startGame = startGame
 
-    console.log("Looking for an open game. We have: " + _this.gameCount);
+GameServer.prototype.findGame = function (player) {
 
-    if (_this.gameCount) {
+    console.log("Looking for an open game. We have: " + this.gameCount);
+
+    if (this.gameCount) {
 
         var inGame = false;
 
         //Check the list of games for an open game
-        for (var gameId in _this.games) {
+        for (var gameId in this.games) {
 
             //only care about our own properties.
-            if (!_this.games.hasOwnProperty(gameId)) {
+            if (!this.games.hasOwnProperty(gameId)) {
                 continue;
             }
 
             //get the game we are checking against
-            var gameInstance = _this.games[gameId];
+            var gameInstance = this.games[gameId];
 
             //If the game is a player short
             if (gameInstance.playerCount < 2) {
@@ -111,25 +119,27 @@ gameServer.findGame = function (player) {
 
                 //start running the game on the server,
                 //which will tell them to respawn/start
-                _this.startGame(gameInstance);
+                this.startGame(gameInstance);
             }
         }
 
         //if still not in game
         if (!inGame) {
-            _this.createGame(player);
+            this.createGame(player);
         }
     } else {
 
         //no games? create one!
-        _this.createGame(player);
+        this.createGame(player);
     }
 };
 
-gameServer.endGame = function (gameID, userID) {
+// exports.findGame = findGame
+
+GameServer.prototype.endGame = function (gameID, userID) {
 
     var playerToDisconnect;
-    var currentGame = _this.games[gameID];
+    var currentGame = this.games[gameID];
 
     if (currentGame) {
         if (userID == currentGame.playerHost.userID && currentGame.playerClient) {
@@ -137,11 +147,15 @@ gameServer.endGame = function (gameID, userID) {
         } else if (currentGame.playerHost) {
             playerToDisconnect = currentGame.playerHost;
         }
-        delete _this.games[gameID];
-        _this.gameCount--;
+        delete this.games[gameID];
+        this.gameCount--;
         playerToDisconnect.disconnect();
-        console.log("::: Game removed. There are now " + _this.gameCount + " games being played.");
+        console.log("::: Game removed. There are now " + this.gameCount + " games being played.");
     } else {
         console.log("Game not found");
     }
 };
+
+// exports.endGame = endGame
+
+module.exports = new GameServer();
