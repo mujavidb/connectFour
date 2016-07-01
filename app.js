@@ -4,17 +4,17 @@ var gameport = process.env.PORT || 8080;
 var io = require('socket.io');
 var express = require('express');
 var UUID = require('node-uuid');
-var verbose = false;
 var http = require('http');
 var app = express();
 var server = http.createServer(app);
 
 server.listen(gameport, "localhost", function () {
-    console.log(':: Express :: Listening on port ' + gameport);
+    console.log(':: Server :: Listening on port ' + gameport);
 });
 
 app.use(express.static('./'));
 
+//Allow accessing to homepage
 app.get('/', function (req, res) {
     console.log('Loading the homepage /index.html');
     res.sendFile('/index.html', {
@@ -22,18 +22,22 @@ app.get('/', function (req, res) {
     });
 });
 
+//Expose all assets and urls under conndectFour/
 app.get('/*', function (req, res, next) {
     var file = req.params[0];
-    if (verbose) console.log(':: Express :: file requested : ' + file);
     res.sendFile(__dirname + '/' + file);
 });
 
+//Setup sockets to listen on port
 var sio = io.listen(server);
 
+//Set up gameServer model instance
 var gameServer = require("./js/gameServer.js");
 
+//Listen for connections via socket.io
 sio.on('connection', function (client) {
 
+    //assign UUID to user
     client.userID = UUID();
 
     //Send user their UUID on connection
@@ -45,18 +49,18 @@ sio.on('connection', function (client) {
 
     gameServer.findGame(client);
 
+    //Listen for game moves
     client.on('playerMove', function (data) {
         gameServer.playerMove(client.userID, data);
     });
 
-    //make sure the other player knows that they left and so on.
+    //Ensure both users disconnect when one disconnects
     client.on('disconnect', function () {
 
         //Useful to know when soomeone disconnects
         console.log(':: Socket.io :: client disconnected ' + client.userID + ' ' + client.game_id);
 
-        // If the client was in a game, set by gameServer.findGame,
-        // we can tell the game server to update that game state.
+        //Disconnect users
         if (client.game && client.game.id) {
             gameServer.endGame(client.game.id, client.userID);
         }
