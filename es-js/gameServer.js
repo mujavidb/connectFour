@@ -58,8 +58,7 @@ class GameServer {
 
         game.playerHost.emit("gameStart", {
             playerNumber   : randomNumber >= 0.5 ? 1 : 2,
-            opponentID     : game.playerClient.userID,
-            opponentNumber : 2,
+            opponentID     : game.playerClient.userID
             gameID         : game.id
         })
 
@@ -70,7 +69,6 @@ class GameServer {
         game.playerClient.emit("gameStart", {
             playerNumber   : randomNumber < 0.5 ? 1 : 2,
             opponentID     : game.playerHost.userID,
-            opponentNumber : 1,
             gameID         : game.id
         })
 

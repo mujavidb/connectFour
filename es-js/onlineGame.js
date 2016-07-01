@@ -43,7 +43,6 @@ class OnlineGame {
     onGameStart(response){
         this.player.number = response.playerNumber
         this.opponent.id = response.opponentID
-        this.opponent.number = response.opponentNumber
         this.gameID = response.gameID
         console.log(this.player)
         console.log(this.opponent)
