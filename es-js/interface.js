@@ -134,7 +134,7 @@ let setup = (() => {
         winHighlightArea.appendChild(transform)
     }
 
-    restartGame = (isOnline, didInitiateRestart = true) => {
+    function clearBoard(restartLogic){
         restartButton.disabled = true
 
         //remove highlights
@@ -160,7 +160,16 @@ let setup = (() => {
             document.body.classList.remove("redWin")
             document.body.classList.remove("yellowWin")
             document.body.classList.add("switch")
-            //start a new game in model
+
+            if (restartLogic != null) {
+                restartLogic()
+            }
+
+        }, 1500)
+    }
+
+    restartGame = (isOnline, didInitiateRestart = true) => {
+        clearBoard(() => {
             if (isOnline){
                 if (theGame.isOnline){
                     if (didInitiateRestart) {
@@ -179,7 +188,7 @@ let setup = (() => {
                 }
                 theGame = new OfflineGame(2)
             }
-        }, 1500)
+        })
     }
 
     cancelSearchModal = (cancelGame, goOnline = false) => {
@@ -191,7 +200,7 @@ let setup = (() => {
             yellowScore.innerHTML = "0"
             playOnline.classList.add("quitOnline")
             playOnline.innerHTML = "Quit Online"
-            restartGame(true)
+            clearBoard()
         }
     }
 

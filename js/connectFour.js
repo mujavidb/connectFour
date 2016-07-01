@@ -607,9 +607,7 @@ var setup = function () {
         winHighlightArea.appendChild(transform);
     }
 
-    restartGame = function restartGame(isOnline) {
-        var didInitiateRestart = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
-
+    function clearBoard(restartLogic) {
         restartButton.disabled = true;
 
         //remove highlights
@@ -658,7 +656,17 @@ var setup = function () {
             document.body.classList.remove("redWin");
             document.body.classList.remove("yellowWin");
             document.body.classList.add("switch");
-            //start a new game in model
+
+            if (restartLogic != null) {
+                restartLogic();
+            }
+        }, 1500);
+    }
+
+    restartGame = function restartGame(isOnline) {
+        var didInitiateRestart = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+
+        clearBoard(function () {
             if (isOnline) {
                 if (theGame.isOnline) {
                     if (didInitiateRestart) {
@@ -677,7 +685,7 @@ var setup = function () {
                 }
                 theGame = new OfflineGame(2);
             }
-        }, 1500);
+        });
     };
 
     cancelSearchModal = function cancelSearchModal(cancelGame) {
@@ -691,7 +699,7 @@ var setup = function () {
             yellowScore.innerHTML = "0";
             playOnline.classList.add("quitOnline");
             playOnline.innerHTML = "Quit Online";
-            restartGame(true);
+            clearBoard();
         }
     };
 

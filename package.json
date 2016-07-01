@@ -2,10 +2,14 @@
   "name": "connectFour",
   "version": "1.0.0",
   "scripts": {
-    "build": "npm run build_js & npm run compile_sass",
+    "build": "npm run build_js & npm run build_server & npm run compile_sass",
+
     "build_js": "babel es-js/gameBoard.js es-js/offlineGame.js es-js/onlineGame.js es-js/interface.js -w -o js/connectFour.js",
+    "build_server": "babel es-js/gameServer.js -o js/gameServer.js && babel es-js/app.js -w -o ./app.js",
     "compile_sass": "node-sass --watch --output-style compressed --include-path scss scss/main.scss css/main.css",
+
     "build_production": "npm run build_js_once && npm run build_server_once && npm run compile_sass_once && npm run autoprefix_css",
+
     "build_js_once": "babel es-js/gameBoard.js es-js/offlineGame.js es-js/onlineGame.js es-js/interface.js -o js/connectFour.js",
     "build_server_once": "babel es-js/gameServer.js -o js/gameServer.js && babel es-js/app.js -o ./app.js",
     "compile_sass_once": "node-sass --output-style compressed --include-path scss scss/main.scss css/main.css",

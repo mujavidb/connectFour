@@ -39,7 +39,6 @@ class GameServer {
 
         console.log(`Player ${player.userID} created a game with id ${player.game.id}`)
 
-        // return newGame;
     };
     startGame(game){
 
@@ -58,7 +57,7 @@ class GameServer {
         })
 
         game.playerHost.emit("gameStart", {
-            playerNumber   : randomNumber > 0.5 ,
+            playerNumber   : randomNumber >= 0.5 ? 1 : 2,
             opponentID     : game.playerClient.userID,
             opponentNumber : 2,
             gameID         : game.id
@@ -69,7 +68,7 @@ class GameServer {
         })
 
         game.playerClient.emit("gameStart", {
-            playerNumber   : 2,
+            playerNumber   : randomNumber < 0.5 ? 1 : 2,
             opponentID     : game.playerHost.userID,
             opponentNumber : 1,
             gameID         : game.id
