@@ -30,6 +30,7 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
+    <!-- MISC META TAGS -->
     <meta name="url" content="https://mujavidb.com/connectFour/">
     <meta name="description" content="Simple online Connect Four game">
     <meta name="robots" content="index,follow,noodp">
@@ -79,10 +80,16 @@
 
 </head>
 <body class="switch">
+
+    <!-- Follow on Github -->
     <a class="followGithub" href="https://github.com/mujavidb/connectFour" target="_blank">⭑</a>
 
     <main class="gameEnclosure">
+
+        <!-- Encloses buttons and gameBoard svg -->
         <div class="gameContainer">
+
+            <!-- Each button represents a column on the board -->
             <div class="connectFourBoard">
                 <button class="column"></button>
                 <button class="column"></button>
@@ -95,29 +102,39 @@
             </div>
 
             <svg id="discArea" class="discArea" viewBox="0 0 788 607" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                <!-- Clip path for border radius on bottom of board -->
                 <defs>
                     <clipPath id="clipBottom">
             		    <rect x="0" y="582" width="788" height="25"></rect>
             		</clipPath>
                 </defs>
 
+                <!-- Two <g> tags to allow for emptying animation on New Game -->
                 <g class="perspective">
                     <g class="perspectiveChild">
 
+                        <!-- Drop shadows for each board singlet -->
                         <image id="boardShadows" class="singletShadows" x="0" y="4" width="788" height="600" xlink:href="img/boardShadows.svg"></image>
 
                         <!-- TODO: Add mask to fade out dropping discs -->
+                        <!-- Where discs go -->
                         <g id="discAreaGroup" transform="translate(0 1)"></g>
-                        <!-- Z dimension of board -->
+
+                        <!-- Drop shadow of board -->
                         <rect class="bottomBoardShadow" x="0" y="572" width="788" height="35" ry="20" rx="20" fill="#29799E" clip-path="url(#clipBottom)"></rect>
+
+                        <!-- Board image -->
                         <image x="0" y="0" width="788" height="600" xlink:href="img/board.svg"></image>
 
+                        <!-- Where winning sequence highlights are placed -->
                         <g id="winHighlight" class="winHighlightArea"></g>
                     </g>
                 </g>
             </svg>
         </div>
 
+        <!-- Info on turns, scores and wins -->
         <div class="gameInfo">
             <div class="redScore"><h5 id="redScore">0</h5></div>
             <div class="messageArea">
@@ -132,17 +149,21 @@
             </div>
             <div class="yellowScore"><h5 id="yellowScore">0</h5></div>
         </div>
+
+        <!-- Online and restart buttons -->
         <div class="buttonArea">
             <button class="playOnline">Play Online</button>
             <button class="restartGame">New Game</button>
         </div>
 
+        <!-- Modal for small screen size -->
         <div class="modalOverlay screenSize">
             <div class="modalContent">
                 <h3>To get started, please rotate your screen into the landscape position.</h3>
             </div>
         </div>
 
+        <!-- Modal to begin online game -->
         <div class="modalOverlay startOnline">
             <div class="modalContent">
                 <div class="slideRandom">
@@ -152,6 +173,8 @@
                     </div>
                     <div class="gameFound">
                         <h2>We found you a game!</h2>
+
+                        <!-- Dynamically filmed and shown using JS -->
                         <img class="yellowDisc" src="img/yellow_disc.svg" alt="Yellow Disc">
                         <img class="redDisc" src="img/red_disc.svg" alt="Red Disc">
                         <h2 id="playerStartInfo"></h2>
@@ -160,6 +183,8 @@
             </div>
         </div>
     </main>
+
+    <!-- SCRIPTS -->
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script src="js/connectFour.js" type="text/javascript"></script>
 </body>

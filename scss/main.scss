@@ -4,6 +4,12 @@
 @import "mixins";
 @import "animations";
 
+/*
+///////
+/// BASE STYLES
+//////
+*/
+
 body {
     font-family: "Open Sans", sans-serif;
     font-weight: 400;
@@ -21,100 +27,11 @@ h1, h2, h3, h4, h5 {
     line-height: 1.4;
 }
 
-.gameEnclosure{
-    display: block;
-    position: fixed;
-    width: 100%;
-    height: auto;
-    top: 12%;
-}
-
-.connectFourBoard,
-.column,
-.gameInfo {
-    user-select: none;
-}
-
-.gameContainer {
-    position: relative;
-    min-width: 300px;
-    max-width: 700px;
-    width: 80%;
-    height: auto;
-    margin: 0 auto;
-}
-
-.perspective {
-    perspective-origin: center center;
-    perspective: 5000px;
-}
-
-.perspectiveChild {
-    transition: transform 0.3s ease;
-}
-
-.perspectiveChild.active {
-    transform: rotateX(-15deg);
-}
-
-.connectFourBoard {
-    display:flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: stretch;
-    margin: auto 0;
-    width: 100%;
-    height: auto;
-}
-
-.column {
-    display: flex;
-    flex-direction: column-reverse;
-    background-color: transparent;
-    transition: background-color 0.2s ease;
-    border:none;
-    outline:none;
-    position: relative;
-    width: 12.5%;
-    height: 540px;
-    min-height: 228px;
-    padding: 0;
-}
-
-.column:hover {
-    cursor: pointer;
-}
-
-.column:hover::after,
-.column:active::after {
-    content: '';
-    position:absolute;
-    width: 80.85%;
-    height: 80.85%;
-    background-image: url($yellowDisc);
-    background-repeat: no-repeat;
-    background-size: contain;
-    left: 10%;
-    top: -80px;
-}
-
-.switch .column:hover::after,
-.switch .column:active::after {
-    background-image: url($redDisc);
-}
-
-.column:active::after {
-    transform: translateY(8px);
-}
-
-.column:first-child {
-    margin-left: 2.3%;
-}
-
-.column:last-child {
-    margin-right: 2.3%;
-}
+/*
+///////
+/// MISC
+//////
+*/
 
 .followGithub {
     position: fixed;
@@ -158,6 +75,101 @@ h1, h2, h3, h4, h5 {
     transform: translateX(0);
 }
 
+@media (max-width:540px){
+    .followGithub{
+        display: none;
+    }
+}
+
+/*
+///////
+/// GAME-PLAY BUTTONS
+//////
+*/
+
+.gameEnclosure {
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: auto;
+    top: 12%;
+}
+.gameContainer {
+    position: relative;
+    min-width: 300px;
+    max-width: 700px;
+    width: 80%;
+    height: auto;
+    margin: 0 auto;
+}
+.connectFourBoard,
+.column,
+.gameInfo {
+    user-select: none;
+}
+.connectFourBoard {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin: auto 0;
+    width: 100%;
+    height: auto;
+}
+.column {
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+    border:none;
+    outline:none;
+    position: relative;
+    width: 12.5%;
+    height: 540px;
+    min-height: 228px;
+    padding: 0;
+}
+.column:hover {
+    cursor: pointer;
+}
+.column:hover::after,
+.column:active::after {
+    content: '';
+    position:absolute;
+    width: 80.85%;
+    height: 80.85%;
+    background-image: url($yellowDisc);
+    background-repeat: no-repeat;
+    background-size: contain;
+    left: 10%;
+    top: -80px;
+}
+.switch .column:hover::after,
+.switch .column:active::after {
+    background-image: url($redDisc);
+}
+.column:active::after {
+    transform: translateY(8px);
+}
+.column:first-child {
+    margin-left: 2.3%;
+}
+.column:last-child {
+    margin-right: 2.3%;
+}
+.deselect.column:hover::after {
+    display: none;
+}
+.deselectAll .column:hover::after {
+    display: none;
+}
+.deselectAll .column:hover,
+.deselect.column:hover {
+    background-color: transparent;
+    cursor: default;
+}
+
 @media (max-width:880px){
     .column {
         height: calc( (80vw + 1vw) /8 * 6 );
@@ -168,9 +180,6 @@ h1, h2, h3, h4, h5 {
 }
 
 @media (max-width:540px){
-    .followGithub{
-        display: none;
-    }
     .connectFourBoard {
         margin-top: 8%;
     }
@@ -196,46 +205,48 @@ h1, h2, h3, h4, h5 {
     }
 }
 
+/*
+///////
+/// SVG STYLES
+//////
+*/
+
+.perspective {
+    perspective-origin: center center;
+    perspective: 5000px;
+}
+.perspectiveChild {
+    transition: transform 0.3s ease;
+}
+.perspectiveChild.active {
+    transform: rotateX(-15deg);
+}
 .discArea {
     position: absolute;
     top:0;
     left: 0;
     z-index: -5;
 }
-
 .singletShadows,
 .bottomBoardShadow {
     transition: transform 0.3s ease;
 }
-
 .active .singletShadows,
 .active .bottomBoardShadow {
     transform: translateY(-2px);
 }
-
-.deselect.column:hover::after {
-    display: none;
+#discAreaGroup.moveOut {
+    animation-name: slideDown;
+    animation-duration: 1.5s;
+	animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
 }
 
-.deselectAll .column:hover::after {
-    display: none;
-}
-
-.deselectAll .column:hover,
-.deselect.column:hover {
-    background-color: transparent;
-    cursor: default;
-}
-
-.connectFourBoard img {
-    flex-grow: 0;
-    z-index: 5;
-}
-
-.red,
-.yellow {
-    color: white;
-}
+/*
+///////
+/// GAMEPLAY INFORMATION
+//////
+*/
 
 .gameInfo {
     margin: 24px auto 0;
@@ -258,7 +269,6 @@ h1, h2, h3, h4, h5 {
     height: 15vw;
     position: relative;
 }
-
 .gameInfo::before {
     background: linear-gradient(to right, $redDiscForeDark, $yellowDiscForeDark);
     content: '';
@@ -270,11 +280,13 @@ h1, h2, h3, h4, h5 {
     height: 100%;
     z-index: -10;
 }
-
-// .gameInfo::after {
-//     content: ""
-// }
-
+.messageArea {
+    width: 100%;
+}
+.red,
+.yellow {
+    color: white;
+}
 .redScore,
 .yellowScore {
     width: 8vw;
@@ -291,19 +303,16 @@ h1, h2, h3, h4, h5 {
     position: absolute;
     top: 15%;
 }
-
 .redScore {
     background-color: $redDiscFore;
     border: 4px solid $redDiscBack;
     left: 5%;
 }
-
 .yellowScore {
     background-color: $yellowDiscFore;
     border: 4px solid $yellowDiscBack;
     right: 5%;
 }
-
 .yellowScore,
 .switch .redScore {
     animation-name: turnMark;
@@ -312,29 +321,25 @@ h1, h2, h3, h4, h5 {
     animation-direction: alternate;
     animation-iteration-count: infinite;
 }
-
 .switch .yellowScore {
     animation: none;
 }
-
-.redScore h5,
-.yellowScore h5 {
+.gameInfo h2 {
+    margin: 0;
+    font-size: 32px;
+}
+.gameInfo h5 {
     margin: 0;
     color: white;
     font-size: 36px;
     width: 100%;
 }
 
-.gameInfo h2 {
-    margin: 0;
-    font-size: 32px;
-}
-
+// Unfortunate logic start ------------------------>
 .turnMessages .red,
 .switch .turnMessages .yellow {
     display: none;
 }
-
 .turnMessages .yellow,
 .switch .turnMessages .red {
     display: block;
@@ -343,14 +348,12 @@ h1, h2, h3, h4, h5 {
     animation-fill-mode: forwards;
     animation-iteration-count: 1;
 }
-
 .winMessages .red,
 .winMessages .yellow,
 .redWin .turnMessages,
 .yellowWin .turnMessages {
     display: none;
 }
-
 .redWin .winMessages .red,
 .yellowWin .winMessages .yellow {
     display: block;
@@ -359,6 +362,7 @@ h1, h2, h3, h4, h5 {
     animation-fill-mode: forwards;
     animation-iteration-count: 1;
 }
+// Unfortunate logic end ------------------------->
 
 @media (max-width:880px){
     .gameInfo h2 {
@@ -370,26 +374,29 @@ h1, h2, h3, h4, h5 {
     .gameInfo {
         padding: 2.5vw 0;
         border-radius: 3vw;
-        // height: 10vw;
     }
     .gameInfo::before {
         top: -4px;
         border-radius: 3vw;
     }
-    .redScore h5,
-    .yellowScore h5 {
+    .gameInfo h5 {
         font-size: 3.5vw;
     }
     @media (max-height:440px){
         .gameInfo {
             display: none;
         }
+        .messageArea {
+            margin-top: 10px;
+        }
     }
 }
 
-.messageArea {
-    width: 100%;
-}
+/*
+///////
+/// GAME CONTROL BUTTONS
+//////
+*/
 
 .buttonArea {
     display: flex;
@@ -402,6 +409,7 @@ h1, h2, h3, h4, h5 {
     margin: 24px auto;
 }
 
+//Default button behaviour
 .buttonArea button {
     padding: 15px 40px;
     outline: medium none;
@@ -410,22 +418,16 @@ h1, h2, h3, h4, h5 {
     color: white;
     display: block;
 }
-
 @include buttonStyleExtrude(".playOnline", $onlineBlueFore, $onlineBlueShadow);
-
 @include buttonStyleExtrude(".restartGame", $restartGreenFore, $restartGreenShadow);
-
 @include buttonStyleExtrude(".playOnline.quitOnline", $cancelRedFore, $cancelRedBack);
-
 .playOnline {
     margin-right: 20px;
 }
-
 .buttonArea .restartGame:disabled {
     cursor: not-allowed;
     position: relative;
 }
-
 .buttonArea .restartGame:disabled::before {
     content: url(../img/circularLoader.svg);
     position: absolute;
@@ -445,20 +447,15 @@ h1, h2, h3, h4, h5 {
     .buttonArea .restartGame:disabled::before {
         display: none;
     }
-    @media (max-height:440px){
-        .messageArea {
-            margin-top: 10px;
-        }
-    }
 }
 
-#discAreaGroup.moveOut {
-    animation-name: slideDown;
-    animation-duration: 1.5s;
-	animation-fill-mode: forwards;
-    animation-timing-function: ease-out;
-}
+/*
+///////
+/// MODALS
+//////
+*/
 
+//Default modal behaviour
 .modalOverlay {
     overflow: hidden;
     position: fixed;
@@ -472,25 +469,11 @@ h1, h2, h3, h4, h5 {
     background-color: rgba(0, 0, 0, 0.7);
     transition: visibility 0s linear 1s, opacity 0.3s ease;
 }
-
 .show.modalOverlay {
     visibility: visible;
     opacity:1;
     transition: opacity 0.3s ease;
 }
-
-.modalContent {
-    transform: translateY(300px);
-    opacity: 0;
-    transition: transform 0.3s ease, opacity 0.5s ease;
-}
-
-.show .modalContent {
-    transform: translateY(0px);
-    opacity: 1;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
 .modalContent {
     margin: 10vw auto 0;
     padding: 12vw 6vw;
@@ -499,66 +482,57 @@ h1, h2, h3, h4, h5 {
     height: auto;
     box-sizing: border-box;
     border-radius: 10px;
+    opacity: 0;
+    transform: translateY(300px);
+    transition: transform 0.3s ease, opacity 0.5s ease;
+}
+.show .modalContent {
+    transform: translateY(0px);
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+//Screensize modal
 .screenSize .modalContent {
-    // background-color: $restartGreenShadow;
     background-color: white;
     box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
 }
-
 .screenSize .modalContent h3 {
-    // color: rgba(255, 255, 255, 0.8);
-    color: black;
+    color: $normalTextColor;
     text-align: center;
     font-size: 6vw;
     margin: 0;
 }
 
+//Online search modal
 .startOnline {
     background-color: $onlineOverlayBack;
 }
-
 .startOnline .modalContent {
     padding: 40px;
     background-color: white;
     box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
-    color: #4c4c4c;
+    color: $normalTextColor;
     text-align: center;
 }
-
-.show.startOnline .slideOptions {
-    display: block;
-}
-
 .slideRandom.online .searching,
 .slideRandom .gameFound {
     display: none;
 }
-
 .slideRandom .searching,
 .slideRandom.online .gameFound {
     display: block;
 }
-
-.gameFound .redDisc,
-.gameFound .yellowDisc {
+.gameFound img {
     display: none;
     width: 80px;
     height: 80px;
     margin: 25px auto;
 }
-
-.gameFound.playerOne .redDisc{
-    display: block;
-}
-
+.gameFound.playerOne .redDisc,
 .gameFound.playerTwo .yellowDisc{
     display: block;
 }
-
-@include buttonStyleExtrude(".cancelRandomSearch", $cancelRedFore, $cancelRedBack);
-
 .cancelRandomSearch {
     margin: 25px auto 0;
     padding: 10px 40px;
@@ -569,35 +543,8 @@ h1, h2, h3, h4, h5 {
     transition: background-color 0.3s ease;
     border-radius: 6px;
 }
-
+@include buttonStyleExtrude(".cancelRandomSearch", $cancelRedFore, $cancelRedBack);
 .startOnline h2 {
     font-size: 26px;
     margin: 0 0 10px;
-}
-
-.startOnline .alias {
-    font-size: 24px;
-    color: #9DABFF;
-    line-height: 1.4;
-    margin: 0 0 25px;
-}
-
-.slideOptions_choices {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-}
-
-.slideOptions_choices .choice:first-child {
-    margin-right: 15px;
-}
-
-.slideOptions_choices .choice {
-    height:100px;
-    color: #4c4c4c;
-    background-color: white;
-    flex-grow: 1;
-    box-sizing: border-box;
-    padding: 10px;
-    font-size: 20px;
 }

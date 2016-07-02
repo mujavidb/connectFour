@@ -15,10 +15,11 @@ class OnlineGame {
         this.connectToServer(userName)
     }
 
+    //Setup socket.io and listen for messages from server
     connectToServer(userName) {
         this.socket = io.connect();
 
-        this.socket.on('connect', function() {
+        this.socket.on('connect', () => {
             console.log(":: Sockets :: Connected to server")
         }.bind(this));
 
@@ -35,11 +36,13 @@ class OnlineGame {
         // this.socket.on('error', this.onDisconnection.bind(this));
     }
 
+    //Update user UUID and online state
     onConnection(response){
         this.player.id = response.id
         this.isOnline = true
     }
 
+    //Update player numbers and get views ready
     onGameStart(response){
         this.player.number = response.playerNumber
         this.opponent.id = response.opponentID
@@ -47,29 +50,37 @@ class OnlineGame {
         console.log(this.player)
         console.log(this.opponent)
 
-        //clear the modal
+        //Clear the game search modal
         onlineGameSetup(this.player.number)
         setTimeout(() => {
             cancelSearchModal(false, true)
         }, 3000)
     }
 
+    //When a move is received from the server
     onPlayerMove(response){
+
+        //If a restart is requested
         if (response.restart){
             restartGame(true, false)
         } else if (response.column && response.gameID == this.gameID) {
+
+            // If a valid move is requested
             this.playerMove(response.column)
         }
     }
 
+    //Just prints any message sent to it
     onMessage(response) {
         console.log(response.details)
     }
 
+    //When quitting online mode
     forceDisconnect() {
         this.socket.disconnect()
     }
 
+    //When socket.io disconnected
     onDisconnection(){
         console.log(":: Sockets :: Disconnected from server")
         restartGame(false)
@@ -83,11 +94,16 @@ class OnlineGame {
         return (this.currentPlayer === this.player.number ? true : false)
     }
 
+    //Updates game model and view
     playerMove(column) {
-        if (this.game.isPossibleMove(column)) {
+
+        //If a player is allowed to make the move
+        if (this.isPossibleMove(column)) {
+
+            //Update model with new move
             this.game.addDisc(this.currentPlayer, column)
 
-            //if own turn, then send current move to other player
+            //If own turn, then send current move to opponent
             if (this.isOwnTurn()) {
                 this.socket.emit('playerMove', {
                     gameID: this.gameID,
@@ -96,19 +112,29 @@ class OnlineGame {
                 })
             }
 
-            //check if the move won the game
+            //Check if the move won the game
             if (this.game.checkWin()) {
+
                 console.log(`Player ${this.currentPlayer} wins!`)
+
+                //Update internal win-state
                 this.winningSequence = this.game.winStatus
                 console.log(this.winningSequence)
+
+                //Update view with the move
                 addDiscToBoard(this.game.lastMove, this.currentPlayer, this.game.height)
             } else {
+
+                //Update view with the move
                 addDiscToBoard(this.game.lastMove, this.currentPlayer, this.game.height)
+
+                //Change player
                 this.currentPlayer == this.players.length ? this.currentPlayer = 1 : this.currentPlayer++
             }
         }
     }
 
+    //If user requests restart, tell opponent to restart, too
     requestRestart(){
         this.socket.emit('playerMove', {
             gameID: this.gameID,
@@ -117,12 +143,14 @@ class OnlineGame {
         })
     }
 
+    //If told to restart
     internalRestart(sender) {
         console.log("Internal restart requested")
+
+        //New model for game
         this.game = new GameBoard(8, 6, 4)
         this.players = Array.from(Array(2), (x, i) => i + 1)
         this.winningSequence = {}
         this.currentPlayer = 1
-        //flip coin to see who goes first
     }
 }
