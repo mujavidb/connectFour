@@ -21,7 +21,7 @@ class OnlineGame {
 
         this.socket.on('connect', () => {
             console.log(":: Sockets :: Connected to server")
-        }.bind(this));
+        });
 
         this.socket.on('onconnection', this.onConnection.bind(this));
 
@@ -33,7 +33,7 @@ class OnlineGame {
 
         this.socket.on('playerMove', this.onPlayerMove.bind(this));
 
-        // this.socket.on('error', this.onDisconnection.bind(this));
+        this.socket.on('error', this.onMessage.bind(this));
     }
 
     //Update user UUID and online state
